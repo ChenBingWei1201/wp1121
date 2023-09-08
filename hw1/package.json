@@ -1,0 +1,10 @@
+{
+  "name": "hw1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "cd ./frontend && xdg-open index.html &",
+    "server": "cd ./backend && yarn dev"
+  }
+}
