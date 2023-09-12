@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>todo list</title>
+    <title>My Diary</title>
     <link rel="stylesheet" href="style.css" />
     <script defer src="index.js"></script>
     <script
@@ -12,20 +12,56 @@
     ></script>
   </head>
   <body>
-    <h1>My Diary</h1>
-    <div id="todo-input-container">
+
+    <header id="my-dairy-header">
+      <h1 id="my-dairy-title">My Diary</h1>
+      <button id="my-dairy-add" tabindex="3">新增日記卡</button>
+    </header>
+
+    <section id="my-dairy-cards">
+      
+      <div class="my-dairy-card">
+        <ul class="my-dairy-info">
+          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+          <li><p class="my-dairy-tag">學業</p></li>
+          <li><p class="my-dairy-emo">開心</p></li>
+        </ul>
+        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
+      </div>
+      
+      <div class="my-dairy-card">
+        <ul class="my-dairy-info">
+          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+          <li><p class="my-dairy-tag">學業</p></li>
+          <li><p class="my-dairy-emo">開心</p></li>
+        </ul>
+        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
+      </div>
+
+      <div class="my-dairy-card">
+        <ul class="my-dairy-info">
+          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+          <li><p class="my-dairy-tag">學業</p></li>
+          <li><p class="my-dairy-emo">開心</p></li>
+        </ul>
+        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
+      </div>
+      
+    </section>
+    <!-- <div id="todo-input-container">
       <input type="text" id="todo-input" placeholder="new todo" tabindex="1" />
-      <button id="todo-add" tabindex="3">新增日記卡</button>
     </div>
     <textarea
       id="todo-description-input"
       placeholder="description"
       tabindex="2"
     ></textarea>
-    <section id="todos"></section>
+    <section id="todos"></section> -->
   </body>
-  <template id="todo-item-template">
-    <details id="" class="todo-item">
+
+
+  <template id="my-dairy-card-template">
+    <details id="" class="my-dairy-card">
       <summary>
         <div>
           <input data-id="" type="checkbox" />
