@@ -36,12 +36,14 @@ body {
   height: 2.5em;
   margin-top: 3em;
   margin-right: 3em;
-  font-size: larger;
+  font-size: 20px;
+  font-weight: 500;
   background-color: #B9D9EB;
   text-align: center;
   border: 1px solid;
   border-radius: 10px;
   border-color: #5D76A9;
+  cursor: pointer;
 }
 
 #my-dairy-cards {
@@ -50,21 +52,23 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-between;
 }
 
 .my-dairy-card {
   margin: 10px;
-  border: 2px solid;
-  border-radius: 30px;
+  margin-top: 20px;
+  margin-left: 30px;
+  border: 3px solid;
+  border-radius: 40px;
   border-color: black;
-  width: 24em;
-  height: 9em;
+  width: 27em;
+  height: 10em;
   background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .my-dairy-info {
@@ -100,9 +104,10 @@ body {
 .my-dairy-content {
   margin-top: 0;
   width: 90%;
-  font-size: larger;
+  font-size: 1.3em;
   color: rgb(128,128,128);
 }
+
 /* #todo-input-container {
   width: 100%;
   display: flex;

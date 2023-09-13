@@ -28,7 +28,7 @@
         </ul>
         <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
       </div>
-      
+
       <div class="my-dairy-card">
         <ul class="my-dairy-info">
           <li><p class="my-dairy-date">2023.09.06(三)</p></li>
@@ -38,6 +38,15 @@
         <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
       </div>
 
+      <div class="my-dairy-card">
+        <ul class="my-dairy-info">
+          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+          <li><p class="my-dairy-tag">學業</p></li>
+          <li><p class="my-dairy-emo">開心</p></li>
+        </ul>
+        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
+      </div>
+      
       <div class="my-dairy-card">
         <ul class="my-dairy-info">
           <li><p class="my-dairy-date">2023.09.06(三)</p></li>
@@ -59,8 +68,20 @@
     <section id="todos"></section> -->
   </body>
 
-
   <template id="my-dairy-card-template">
+    <details class="my-dairy-card">
+      <summary>
+        <ul class="my-dairy-info">
+          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+          <li><p class="my-dairy-tag">學業</p></li>
+          <li><p class="my-dairy-emo">開心</p></li>
+        </ul>
+      </summary>
+      <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
+    </details>
+  </template>
+
+  <!-- <template id="my-dairy-card-template">
     <details id="" class="my-dairy-card">
       <summary>
         <div>
@@ -71,5 +92,6 @@
       </summary>
       <p class="todo-description">todo 1 description</p>
     </details>
-  </template>
+  </template> -->
+
 </html>
