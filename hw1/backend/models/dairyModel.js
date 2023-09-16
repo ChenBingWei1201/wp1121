@@ -17,8 +17,11 @@ const dairySchema = new mongoose.Schema(
     content: {
       type: String,
       require: true
-    }
+    },
   },
+  {
+    timestamps: true,
+  }
 )
 
 const DairyModel = mongoose.model("Dairy", dairySchema);

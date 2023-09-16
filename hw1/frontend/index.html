@@ -12,60 +12,88 @@
     ></script>
   </head>
   <body>
+    <div id="my-dairy-overview">
+      <header id="my-dairy-header">
+        <h1 id="my-dairy-title">My Diary</h1>
+        <button id="my-dairy-add" tabindex="3">新增日記卡</button>
+      </header>
 
-    <header id="my-dairy-header">
-      <h1 id="my-dairy-title">My Diary</h1>
-      <button id="my-dairy-add" tabindex="3">新增日記卡</button>
-    </header>
-
-    <section id="my-dairy-cards">
+      <section id="my-dairy-cards">
       
-      <div class="my-dairy-card">
-        <ul class="my-dairy-info">
-          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
-          <li><p class="my-dairy-tag">學業</p></li>
-          <li><p class="my-dairy-emo">開心</p></li>
-        </ul>
-        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
-      </div>
-
-      <div class="my-dairy-card">
-        <ul class="my-dairy-info">
-          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
-          <li><p class="my-dairy-tag">學業</p></li>
-          <li><p class="my-dairy-emo">開心</p></li>
-        </ul>
-        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
-      </div>
-
-      <div class="my-dairy-card">
-        <ul class="my-dairy-info">
-          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
-          <li><p class="my-dairy-tag">學業</p></li>
-          <li><p class="my-dairy-emo">開心</p></li>
-        </ul>
-        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
-      </div>
-      
-      <div class="my-dairy-card">
-        <ul class="my-dairy-info">
-          <li><p class="my-dairy-date">2023.09.06(三)</p></li>
-          <li><p class="my-dairy-tag">學業</p></li>
-          <li><p class="my-dairy-emo">開心</p></li>
-        </ul>
-        <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
-      </div>
-      
-    </section>
-    <!-- <div id="todo-input-container">
-      <input type="text" id="todo-input" placeholder="new todo" tabindex="1" />
+        <div class="my-dairy-card">
+          <ul class="my-dairy-info">
+            <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+            <li><p class="my-dairy-tag">學業</p></li>
+            <li><p class="my-dairy-emo">開心</p></li>
+          </ul>
+          <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行</p>
+        </div>
+  
+        <div class="my-dairy-card">
+          <ul class="my-dairy-info">
+            <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+            <li><p class="my-dairy-tag">學業</p></li>
+            <li><p class="my-dairy-emo">開心</p></li>
+          </ul>
+          <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行</p>
+        </div>
+  
+        <div class="my-dairy-card">
+          <ul class="my-dairy-info">
+            <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+            <li><p class="my-dairy-tag">學業</p></li>
+            <li><p class="my-dairy-emo">開心</p></li>
+          </ul>
+          <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行</p>
+        </div>
+        
+        <div class="my-dairy-card">
+          <ul class="my-dairy-info">
+            <li><p class="my-dairy-date">2023.09.06(三)</p></li>
+            <li><p class="my-dairy-tag">學業</p></li>
+            <li><p class="my-dairy-emo">開心</p></li>
+          </ul>
+          <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行</p>
+        </div>
+        
+      </section>
     </div>
-    <textarea
-      id="todo-description-input"
-      placeholder="description"
-      tabindex="2"
-    ></textarea>
-    <section id="todos"></section> -->
+    
+    <section id="my-dairy-page">
+
+        <ul class="dairy-page-info">
+          <!-- <li><p class="my-dairy-tag">學業</p></li> cannot edit -->
+          <li> <!--can edit-->
+            <select id="select-tag" class="dairy-page-select my-dairy-tag">
+              <option>學業</option>
+              <option>人際</option>
+              <option>社團</option>
+            </select>
+          </li>
+          <!-- <li><p class="my-dairy-emo">快樂</p></li> cannot edit -->
+          <li> <!--can edit-->
+            <select id="select-emo" class="dairy-page-select my-dairy-emo">
+              <option>快樂</option>
+              <option>生氣</option>
+              <option>難過</option>
+            </select>
+          </li>
+          <li><p id="page-date" class="dairy-page-date">2023.09.06(三)</p></li> <!--os time-->
+        </ul>
+      <div class="dairy-page-button">
+        <button id="button-quit">離開</button>
+        <button id="button-edit">編輯</button> <!--when click deit button-->
+        <button id="button-cancel">取消</button>
+        <button id="button-store">儲存</button> <!--then store & cancel buttons show up-->
+      </div>
+      <textarea 
+        id="dairy-content-input"
+        placeholder="dairy content"
+        tabindex="2"
+      ></textarea> <!--text area also show up-->
+      <p id="dairy-content-display"></p> <!--when click store or cancel-->
+    </section>
+
   </body>
 
   <template id="my-dairy-card-template">
@@ -77,20 +105,42 @@
           <li><p class="my-dairy-emo">開心</p></li>
         </ul>
       </summary>
-      <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p>
+      <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮...</p>
     </details>
   </template>
 
-  <!-- <template id="my-dairy-card-template">
-    <details id="" class="my-dairy-card">
+  <!-- <template class="my-dairy-page-template">
+    <details class="my-dairy-page">
       <summary>
-        <div>
-          <input data-id="" type="checkbox" />
-          <p class="todo-title">todo 1</p>
-        </div>
-        <button data-id="" class="delete-todo">delete</button>
+        <ul class="my-dairy-info">
+          <li><p class="my-dairy-tag">學業</p></li> 
+          <li> 
+            <select class="my-dairy-tag">
+              <option>學業</option>
+              <option>人際</option>
+              <option>社團</option>
+            </select>
+          </li>
+          <li><p class="my-dairy-emo">快樂</p></li> 
+          <li> 
+            <select class="my-dairy-emo">
+              <option>快樂</option>
+              <option>生氣</option>
+              <option>難過</option>
+            </select>
+          </li>
+          <li><p class="my-dairy-date">2023.09.06(三)</p></li> 
+        </ul>
       </summary>
-      <p class="todo-description">todo 1 description</p>
+      <button class="my-dairy-edit">編輯</button> 
+      <button class="my-dairy-store">儲存</button> 
+      <button class="my-dairy-cancel">取消</button>
+      <textarea 
+        class="dairy-content-input"
+        placeholder="dairy content"
+        tabindex="2"
+      ></textarea> 
+      <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮</p> 
     </details>
   </template> -->
 
