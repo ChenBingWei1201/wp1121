@@ -3,23 +3,49 @@ const dairyCardTemplate = document.querySelector("#my-dairy-card-template");
 const dairyList = document.querySelector("#my-dairy-cards");
 const body = document.querySelector("body");
 
-let id = 0;
-
 const instance = axios.create({
   baseURL: "http://localhost:8000/api",
 });
-// my-dairy-page
-// async function main() {
-//   setupEventListeners();
-//   try {
-//     const dairies = await getDairies();
-//     dairies.forEach((todo) => renderDairy(todo));
-//   } catch (error) {
-//     alert("Failed to load dairies!");
-//   }
-// }
 
-const editDairy = async () => {
+const getDairies = async () => {
+  const response = await instance.get("/dairies");
+  return response.data;
+}
+
+const createDairy = async (dairy) => {
+  const response = await instance.post("/dairies", dairy);
+  return response.data;
+}
+
+const createDairyElement = (dairy) => {
+  const { date, tag, emo, content }  = dairy;
+  const item = dairyCardTemplate.content.cloneNode(true);
+  const divNode = item.querySelector(".my-dairy-card");
+  divNode.id = dairy._id;
+  console.log(dairy);
+  
+  const ulNode = item.querySelector("my-dairy-info");
+  const dateNode = item.querySelector("p.my-dairy-date");
+  const tagNode = item.querySelector("p.my-dairy-tag");
+  const emoNode = item.querySelector("p.my-dairy-emo");
+
+  dateNode.innerText = date;
+  tagNode.innerText = tag;
+  emoNode.innerText = emo;
+
+  const contentNode = item.querySelector("p.my-dairy-content");
+  contentNode.innerText = content;
+  
+  return item;
+}
+
+const renderDairy = async (dairy) => {
+  const item = createDairyElement(dairy);
+  dairyList.appendChild(item);
+}
+
+const editDairy = async ({ overview, page }) => {
+  const quitButton = document.getElementById("button-quit");
   const editButton = document.getElementById("button-edit");
   const storeButton = document.getElementById("button-store");
   const cancelButtoon = document.getElementById("button-cancel");
@@ -38,9 +64,8 @@ const editDairy = async () => {
   // store button 
   storeButton.addEventListener("click", async () => {
     const content = textArea.value;
-    // console.log(content);
-    const tag = document.getElementById("select-tag").innerHTML;
-    const emo = document.getElementById("select-emo").innerHTML;
+    const tag = document.getElementById("select-tag").value;
+    const emo = document.getElementById("select-emo").value;
     const date = document.getElementById("page-date").innerHTML;
 
     if (!content) {
@@ -48,13 +73,14 @@ const editDairy = async () => {
       return;
     }
 
-    dairyContent.innerHTML = content; // change to backend type
+    // dairyContent.innerHTML = content; // change to backend type
     textArea.style.display = "none";
     dairyContent.style.display = "flex";
     storeButton.style.display = "none";
     cancelButtoon.style.display = "none";
     editButton.style.display = "flex";
-    
+    quitButton.style.display = "flex";
+
     try {
       const dairy = await createDairy({ tag, emo, date, content });
       renderDairy(dairy);
@@ -64,18 +90,17 @@ const editDairy = async () => {
     }
   })
 
+  // cancel button
   cancelButtoon.addEventListener("click", () => {
     textArea.style.display = "none";
     dairyContent.style.display = "flex";
     storeButton.style.display = "none";
     cancelButtoon.style.display = "none";
     editButton.style.display = "flex";
+    quitButton.style.display = "flex";
   })
-}
 
-
-const quitEditPage = ({ overview, page }) => {
-  const quitButton = document.getElementById("button-quit");
+  // quit button
   quitButton.addEventListener("click", () => {
     console.log("quit");
     overview.style.display = "block";
@@ -83,7 +108,7 @@ const quitEditPage = ({ overview, page }) => {
   })
 }
 
-const addDairy = async () => {
+const setUpEventListeners = async () => {
   const addDairyButton = document.getElementById("my-dairy-add");
   const overview = document.getElementById("my-dairy-overview");
   const page = document.getElementById("my-dairy-page");
@@ -93,12 +118,23 @@ const addDairy = async () => {
     page.style.display = "flex";
   });
 
-  editDairy();
-  quitEditPage({ overview, page });
+  editDairy({ overview, page });
+  // quitEditPage({ overview, page });
 }
 
-addDairy();
+const main = async () => {
+  setUpEventListeners();
+  try {
+    const dairies = await getDairies();
+    dairies.forEach((todo) => renderDairy(todo));
+  } catch (error) {
+    alert("Failed to load dairies!");
+  }
+}
 
+main();
+
+//--------------------------------
 async function deleteDairyElement(id) {
   try {
     await deleteDairyById(id);
@@ -108,41 +144,6 @@ async function deleteDairyElement(id) {
     const todo = document.getElementById(id);
     todo.remove();
   }
-}
-
-const renderDairy = async (dairy) => {
-  const item = createDairyElement(dairy);
-  todoList.appendChild(item);
-}
-
-function createDairyElement(todo) {
-  const item = dairyCardTemplate.content.cloneNode(true);
-  const container = item.querySelector(".todo-item");
-  container.id = todo.id;
-  console.log(todo)
-  const checkbox = item.querySelector(`input[type="checkbox"]`);
-  checkbox.checked = todo.completed;
-  checkbox.dataset.id = todo.id;
-  const title = item.querySelector("p.todo-title");
-  title.innerText = todo.title;
-  const description = item.querySelector("p.todo-description");
-  description.innerText = todo.description;
-  const deleteButton = item.querySelector("button.delete-todo");
-  deleteButton.dataset.id = todo.id;
-  deleteButton.addEventListener("click", () => {
-    deleteDairyElement(todo.id);
-  });
-  return item;
-}
-
-async function getDairies() {
-  const response = await instance.get("/dairies");
-  return response.data;
-}
-
-const createDairy = async (dairy) => {
-  const response = await instance.post("/dairies", dairy);
-  return response.data;
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -155,5 +156,4 @@ async function deleteDairyById(id) {
   const response = await instance.delete(`/dairies/${id}`);
   return response.data;
 }
-
-// main();
+// -----------------------------------

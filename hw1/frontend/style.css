@@ -154,6 +154,7 @@ body {
   font-size: 2em;
   border: 2px solid;
   border-radius: 10px;
+  display: none;
 }
 
 #button-quit {
@@ -161,6 +162,7 @@ body {
   font-size: 2em;
   border: 2px solid;
   border-radius: 10px;
+  display: none;
 }
 
 #button-store {
@@ -168,7 +170,7 @@ body {
   font-size: 2em;
   border: 2px solid;
   border-radius: 10px;
-  display: none;
+  /* display: none; */
 }
 
 #button-cancel {
@@ -176,11 +178,11 @@ body {
   font-size: 2em;
   border: 2px solid;
   border-radius: 10px;
-  display: none;
+  /* display: none; */
 }
 
 textarea#dairy-content-input {
-  display: none;
+  /* display: none; */
   width: 20em;
   margin-left: 2em;
   margin-top: 1rem;
@@ -193,6 +195,7 @@ textarea#dairy-content-input {
 }
 
 #dairy-content-display {
+  display: none;
   width: 20em;
   margin-left: 2em;
   margin-top: 1rem;
