@@ -1,6 +1,7 @@
 import {
   createDairy,
   getDairies,
+  getDairy,
   updateDairy,
   deleteDairy,
 } from "../controllers/dairy.js";
@@ -14,6 +15,8 @@ const router = express.Router();
 
 // GET /api/dairies
 router.get("/", getDairies);
+// GET /api/dairies/:id
+router.get("/:id", getDairy);
 // POST /api/dairies
 router.post("/", createDairy);
 // PUT /api/dairies/:id

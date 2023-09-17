@@ -17,6 +17,18 @@ export const getDairies = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+// Get a dairy
+export const getDairy = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Find a specific dairy
+    const dairy = await DairyModel.findById(id);
+    return res.status(200).json(dairy);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 // Create a dairy
 export const createDairy = async (req, res) => {
   const { date, tag, emo, content } = req.body;
@@ -64,8 +76,8 @@ export const updateDairy = async (req, res) => {
     await existedDairy.save();
 
     // Rename _id to id
-    existedDairy.id = existedDairy._id;
-    delete existedDairy._id;
+    // existedDairy.id = existedDairy._id;
+    // delete existedDairy._id;
 
     return res.status(200).json(existedDairy);
   } catch (error) {
