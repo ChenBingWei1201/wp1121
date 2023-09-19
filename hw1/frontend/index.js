@@ -1,4 +1,3 @@
-/* global axios */
 const dairyCardTemplate = document.querySelector("#my-dairy-card-template");
 const dairyList = document.querySelector("#my-dairy-cards");
 const overview = document.getElementById("my-dairy-overview");
@@ -9,7 +8,11 @@ const storeButton = document.getElementById("button-store");
 const cancelButtoon = document.getElementById("button-cancel");
 const textArea = document.getElementById("dairy-content-input");
 const dairyContent = document.getElementById("dairy-content-display");
+const selectTag = document.getElementById("select-tag");
+const selectEmo = document.getElementById("select-emo");
+const pageDate = document.getElementById("page-date");
 
+/* global axios */
 const instance = axios.create({
   baseURL: "http://localhost:8000/api",
 });
@@ -57,9 +60,14 @@ const createDairyElement = (dairy) => {
   contentNode.innerText = content;
   
   divNode.addEventListener("click", async () => {
-    const diary = await getDairy(divNode.id);
-    dairyContent.innerText = diary.content;
-    textArea.value = diary.content;
+    const { date, tag, emo, content } = await getDairy(divNode.id);
+    pageDate.innerText = date;
+    dairyContent.innerText = content;
+    textArea.value = content;
+    selectTag.options[selectTag.selectedIndex].text = tag;
+    selectEmo.options[selectEmo.selectedIndex].text = emo;
+    selectTag.disabled = true;
+    selectEmo.disabled = true;
     overview.style.display = "none";
     page.style.display = "flex";
     textArea.style.display = "none";
@@ -88,6 +96,8 @@ const editDairy = async ({ overview, page }) => {
     dairyContent.style.display = "none";
     editButton.style.display = "none";
     quitButton.style.display = "none";
+    selectTag.disabled = false;
+    selectEmo.disabled = false;
   })
 
   // store button 
@@ -127,6 +137,8 @@ const editDairy = async ({ overview, page }) => {
     cancelButtoon.style.display = "none";
     editButton.style.display = "flex";
     quitButton.style.display = "flex";
+    selectTag.disabled = true;
+    selectEmo.disabled = true;
   })
 
   // quit button
