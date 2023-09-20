@@ -10,7 +10,9 @@ const textArea = document.getElementById("dairy-content-input");
 const dairyContent = document.getElementById("dairy-content-display");
 const selectTag = document.getElementById("select-tag");
 const selectEmo = document.getElementById("select-emo");
-const pageDate = document.getElementById("page-date");
+const inputPageDate = document.getElementById("input-page-date");
+const displayPageDate = document.getElementById("display-page-date");
+let dairyID = "000000000000000000000000";
 
 /* global axios */
 const instance = axios.create({
@@ -57,11 +59,13 @@ const createDairyElement = (dairy) => {
   emoNode.innerText = emo;
 
   const contentNode = item.querySelector("p.my-dairy-content");
-  contentNode.innerText = content;
+  contentNode.innerText = (content.length >= 29) ? `${content.slice(0, 29) + " ..."}` : content;
   
   divNode.addEventListener("click", async () => {
     const { date, tag, emo, content } = await getDairy(divNode.id);
-    pageDate.innerText = date;
+    // inputPageDate.innerText = date;
+    dairyID = dairy._id;
+    displayPageDate.innerText = date;
     dairyContent.innerText = content;
     textArea.value = content;
     selectTag.options[selectTag.selectedIndex].text = tag;
@@ -76,6 +80,7 @@ const createDairyElement = (dairy) => {
     cancelButtoon.style.display = "none";
     quitButton.style.display = "flex";
     editButton.style.display = "flex";
+    inputPageDate.style.display = "none";
   })
 
   return item;
@@ -105,24 +110,39 @@ const editDairy = async ({ overview, page }) => {
     const content = textArea.value;
     const tag = document.getElementById("select-tag").value;
     const emo = document.getElementById("select-emo").value;
-    const date = document.getElementById("page-date").innerText;
+    const date = document.getElementById("input-page-date").value;
 
     if (!content) {
       alert("Please enter your dairy content!");
       return;
     }
-
+    displayPageDate.innerText = date;
     textArea.style.display = "none";
     dairyContent.style.display = "flex";
     storeButton.style.display = "none";
     cancelButtoon.style.display = "none";
     editButton.style.display = "flex";
     quitButton.style.display = "flex";
-
+    inputPageDate.style.display = "none";
+    selectTag.disabled = true;
+    selectEmo.disabled = true;
+    
     try {
-      const dairy = await createDairy({ tag, emo, date, content });
-      renderDairy(dairy);
-      dairyContent.innerText = dairy.content;
+      const dairy = await createDairy({ tag, emo, date, content, dairyID });
+      // console.log(dairy._id);
+      if (dairy._id === dairyID) {
+        const existedDairy = await updateDairy(dairyID, { tag, emo, date, content });
+        dairyContent.innerText = existedDairy.content;
+        selectTag.options[selectTag.selectedIndex].text = tag;
+        selectEmo.options[selectEmo.selectedIndex].text = emo;
+      }
+      else {
+        renderDairy(dairy);
+        dairyContent.innerText = dairy.content;
+        selectTag.options[selectTag.selectedIndex].text = dairy.tag;
+        selectEmo.options[selectEmo.selectedIndex].text = dairy.emo;
+        displayPageDate.innerText = dairy.date;
+      }
     } catch (error) {
       alert("Failed to create dairy!");
       return;
@@ -148,6 +168,8 @@ const editDairy = async ({ overview, page }) => {
     overview.style.display = "block";
     page.style.display = "none";
     dairyContent.innerText = "";
+    displayPageDate.innerText = "";
+    inputPageDate.style.display = "flex";
   })
 }
 
@@ -161,6 +183,9 @@ const setUpEventListeners = async () => {
     cancelButtoon.style.display = "flex";
     editButton.style.display = "none";
     quitButton.style.display = "none";
+    selectTag.disabled = false;
+    selectEmo.disabled = false;
+    dairyID = "000000000000000000000000";
   });
 
   editDairy({ overview, page });

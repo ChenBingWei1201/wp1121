@@ -31,7 +31,7 @@ export const getDairy = async (req, res) => {
 
 // Create a dairy
 export const createDairy = async (req, res) => {
-  const { date, tag, emo, content } = req.body;
+  const { date, tag, emo, content, dairyID } = req.body;
 
   // Check date, tag, mood, content
   if (!date || !tag || !emo || !content) {
@@ -40,17 +40,22 @@ export const createDairy = async (req, res) => {
       .json({ message: "Date, tag, mood, and content are required!" });
   }
 
-  // Create a new dairy
-  try {
-    const newDairy = await DairyModel.create({
-      date,
-      tag,
-      emo,
-      content,
-    });
-    return res.status(201).json(newDairy);
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+  const existedDairy = await DairyModel.findById(dairyID);
+  if (existedDairy)
+    return res.status(200).json(existedDairy);
+  else {
+    // Create a new dairy
+    try {
+      const newDairy = await DairyModel.create({
+        date,
+        tag,
+        emo,
+        content,
+      });
+      return res.status(201).json(newDairy);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
   }
 };
 
@@ -78,7 +83,7 @@ export const updateDairy = async (req, res) => {
     // Rename _id to id
     // existedDairy.id = existedDairy._id;
     // delete existedDairy._id;
-
+    // console.log(existedDairy.content);
     return res.status(200).json(existedDairy);
   } catch (error) {
     return res.status(500).json({ message: error.message });
