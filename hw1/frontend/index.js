@@ -64,7 +64,6 @@ const createDairyElement = (dairy) => {
 
   divNode.addEventListener("click", async () => {
     const { date, tag, emo, content } = await getDairy(divNode.id);
-    // inputPageDate.innerText = date;
     dairyID = dairy._id;
     displayPageDate.innerText = date;
     dairyContent.innerText = content;
@@ -110,10 +109,50 @@ const editDairy = async ({ overview, page }) => {
     const content = textArea.value;
     const tag = document.getElementById("select-tag").value;
     const emo = document.getElementById("select-emo").value;
-    const date = document.getElementById("input-page-date").value;
+    const originalDate = document.getElementById("input-page-date").value;
+    let day = `${new Date(originalDate)}`;
+    const week = [
+      "（日）",
+      "（一）",
+      "（二）",
+      "（三）",
+      "（四）",
+      "（五）",
+      "（六）",
+    ];
+    switch (day.slice(0, 3)) {
+      case "Sun":
+        day = 0;
+        break;
+      case "Mon":
+        day = 1;
+        break;
+      case "Tue":
+        day = 2;
+        break;
+      case "Wen":
+        day = 3;
+        break;
+      case "Thr":
+        day = 4;
+        break;
+      case "Fri":
+        day = 5;
+        break;
+      case "Sat":
+        day = 6;
+        break;
+    }
 
+    const date = originalDate.replaceAll("-", ".") + week[day];
+
+    console.log(day);
     if (!content) {
       alert("Please enter your dairy content!");
+      return;
+    }
+    if (!date) {
+      alert("Please choose a date!");
       return;
     }
     displayPageDate.innerText = date;
