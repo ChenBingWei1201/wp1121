@@ -23,33 +23,33 @@ const instance = axios.create({
 const getDairies = async () => {
   const response = await instance.get("/dairies");
   return response.data;
-}
+};
 
 // create a dairy
 const createDairy = async (dairy) => {
   const response = await instance.post("/dairies", dairy);
   return response.data;
-}
+};
 
 // get a  dairy
 const getDairy = async (id) => {
   const response = await instance.get(`/dairies/${id}`);
   return response.data;
-}
+};
 
 // update a diary
 const updateDairy = async (id, dairy) => {
   const response = await instance.put(`/dairies/${id}`, dairy);
   return response.data;
-}
+};
 
 // create a dairy overview
 const createDairyElement = (dairy) => {
-  const { date, tag, emo, content }  = dairy;
+  const { date, tag, emo, content } = dairy;
   const item = dairyCardTemplate.content.cloneNode(true);
   const divNode = item.querySelector(".my-dairy-card");
   divNode.id = dairy._id;
-  
+
   const dateNode = item.querySelector("p.my-dairy-date");
   const tagNode = item.querySelector("p.my-dairy-tag");
   const emoNode = item.querySelector("p.my-dairy-emo");
@@ -59,8 +59,9 @@ const createDairyElement = (dairy) => {
   emoNode.innerText = emo;
 
   const contentNode = item.querySelector("p.my-dairy-content");
-  contentNode.innerText = (content.length >= 29) ? `${content.slice(0, 29) + " ..."}` : content;
-  
+  contentNode.innerText =
+    content.length >= 29 ? `${content.slice(0, 29) + " ..."}` : content;
+
   divNode.addEventListener("click", async () => {
     const { date, tag, emo, content } = await getDairy(divNode.id);
     // inputPageDate.innerText = date;
@@ -81,18 +82,17 @@ const createDairyElement = (dairy) => {
     quitButton.style.display = "flex";
     editButton.style.display = "flex";
     inputPageDate.style.display = "none";
-  })
+  });
 
   return item;
-}
+};
 
 const renderDairy = async (dairy) => {
   const item = createDairyElement(dairy);
   dairyList.appendChild(item);
-}
+};
 
 const editDairy = async ({ overview, page }) => {
-
   // edit button
   editButton.addEventListener("click", () => {
     storeButton.style.display = "flex";
@@ -103,9 +103,9 @@ const editDairy = async ({ overview, page }) => {
     quitButton.style.display = "none";
     selectTag.disabled = false;
     selectEmo.disabled = false;
-  })
+  });
 
-  // store button 
+  // store button
   storeButton.addEventListener("click", async () => {
     const content = textArea.value;
     const tag = document.getElementById("select-tag").value;
@@ -126,17 +126,21 @@ const editDairy = async ({ overview, page }) => {
     inputPageDate.style.display = "none";
     selectTag.disabled = true;
     selectEmo.disabled = true;
-    
+
     try {
       const dairy = await createDairy({ tag, emo, date, content, dairyID });
       // console.log(dairy._id);
       if (dairy._id === dairyID) {
-        const existedDairy = await updateDairy(dairyID, { tag, emo, date, content });
+        const existedDairy = await updateDairy(dairyID, {
+          tag,
+          emo,
+          date,
+          content,
+        });
         dairyContent.innerText = existedDairy.content;
         selectTag.options[selectTag.selectedIndex].text = tag;
         selectEmo.options[selectEmo.selectedIndex].text = emo;
-      }
-      else {
+      } else {
         renderDairy(dairy);
         dairyContent.innerText = dairy.content;
         selectTag.options[selectTag.selectedIndex].text = dairy.tag;
@@ -147,7 +151,7 @@ const editDairy = async ({ overview, page }) => {
       alert("Failed to create dairy!");
       return;
     }
-  })
+  });
 
   // cancel button
   cancelButtoon.addEventListener("click", () => {
@@ -159,7 +163,7 @@ const editDairy = async ({ overview, page }) => {
     quitButton.style.display = "flex";
     selectTag.disabled = true;
     selectEmo.disabled = true;
-  })
+  });
 
   // quit button
   quitButton.addEventListener("click", () => {
@@ -170,12 +174,12 @@ const editDairy = async ({ overview, page }) => {
     dairyContent.innerText = "";
     displayPageDate.innerText = "";
     inputPageDate.style.display = "flex";
-  })
-}
+  });
+};
 
 const setUpEventListeners = async () => {
   const addDairyButton = document.getElementById("my-dairy-add");
-  
+
   addDairyButton.addEventListener("click", () => {
     overview.style.display = "none";
     page.style.display = "flex";
@@ -189,7 +193,7 @@ const setUpEventListeners = async () => {
   });
 
   editDairy({ overview, page });
-}
+};
 
 const main = async () => {
   setUpEventListeners();
@@ -199,30 +203,6 @@ const main = async () => {
   } catch (error) {
     alert("Failed to load dairies!");
   }
-}
+};
 
 main();
-
-//--------------------------------
-async function deleteDairyElement(id) {
-  try {
-    await deleteDairyById(id);
-  } catch (error) {
-    alert("Failed to delete todo!");
-  } finally {
-    const todo = document.getElementById(id);
-    todo.remove();
-  }
-}
-
-// eslint-disable-next-line no-unused-vars
-async function updateDairyStatus(id, todo) {
-  const response = await instance.put(`/dairies/${id}`, todo);
-  return response.data;
-}
-
-async function deleteDairyById(id) {
-  const response = await instance.delete(`/dairies/${id}`);
-  return response.data;
-}
-// -----------------------------------

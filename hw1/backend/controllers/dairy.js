@@ -27,7 +27,7 @@ export const getDairy = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}
+};
 
 // Create a dairy
 export const createDairy = async (req, res) => {
@@ -41,9 +41,9 @@ export const createDairy = async (req, res) => {
   }
 
   const existedDairy = await DairyModel.findById(dairyID);
-  if (existedDairy)
+  if (existedDairy) {
     return res.status(200).json(existedDairy);
-  else {
+  } else {
     // Create a new dairy
     try {
       const newDairy = await DairyModel.create({

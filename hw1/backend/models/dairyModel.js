@@ -4,25 +4,25 @@ const dairySchema = new mongoose.Schema(
   {
     date: {
       type: String,
-      require: true
+      require: true,
     },
     tag: {
       type: String,
-      require: true
+      require: true,
     },
     emo: {
       type: String,
-      require: true
+      require: true,
     },
     content: {
       type: String,
-      require: true
+      require: true,
     },
   },
   {
     timestamps: true,
-  }
-)
+  },
+);
 
 const DairyModel = mongoose.model("Dairy", dairySchema);
 

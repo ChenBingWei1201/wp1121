@@ -28,43 +28,47 @@
           <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行</p>
         </div> -->
       </section>
-
     </div>
-    
-    <section id="my-dairy-page">
 
-        <ul class="dairy-page-info">
-          <li>
-            <select id="select-tag" class="dairy-page-select my-dairy-tag">
-              <option>學業</option>
-              <option>人際</option>
-              <option>社團</option>
-            </select>
-          </li>
-          <li>
-            <select id="select-emo" class="dairy-page-select my-dairy-emo">
-              <option>快樂</option>
-              <option>生氣</option>
-              <option>難過</option>
-            </select>
-          </li>
-          <li><input id="input-page-date" class="dairy-page-date" placeholder="日期 YYYY.MM.DD(星期)" value="2023.09.28(四)"/></li>
-          <li><p id="display-page-date" class="dairy-page-date"></p></li>
-        </ul>
+    <section id="my-dairy-page">
+      <ul class="dairy-page-info">
+        <li>
+          <select id="select-tag" class="dairy-page-select my-dairy-tag">
+            <option>學業</option>
+            <option>人際</option>
+            <option>社團</option>
+          </select>
+        </li>
+        <li>
+          <select id="select-emo" class="dairy-page-select my-dairy-emo">
+            <option>快樂</option>
+            <option>生氣</option>
+            <option>難過</option>
+          </select>
+        </li>
+        <li>
+          <input
+            id="input-page-date"
+            class="dairy-page-date"
+            placeholder="日期 YYYY.MM.DD(星期)"
+            value="2023.09.28(四)"
+          />
+        </li>
+        <li><p id="display-page-date" class="dairy-page-date"></p></li>
+      </ul>
       <div class="dairy-page-button">
         <button id="button-quit">離開</button>
         <button id="button-edit">編輯</button>
         <button id="button-cancel">取消</button>
         <button id="button-store">儲存</button>
       </div>
-      <textarea 
+      <textarea
         id="dairy-content-input"
         placeholder="dairy content"
         tabindex="2"
       ></textarea>
       <p id="dairy-content-display"></p>
     </section>
-
   </body>
 
   <template id="my-dairy-card-template">
@@ -74,8 +78,9 @@
         <li><p class="my-dairy-tag">學業</p></li>
         <li><p class="my-dairy-emo">開心</p></li>
       </ul>
-      <p class="my-dairy-content">範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮...</p>
+      <p class="my-dairy-content">
+        範例圖片僅為示意，只要滿足以上功能描述，頁面編排部分可以自行發揮...
+      </p>
     </div>
   </template>
-
 </html>
