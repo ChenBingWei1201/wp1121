@@ -146,16 +146,15 @@ const editDairy = async ({ overview, page }) => {
 
     const date = originalDate.replaceAll("-", ".") + week[day];
 
-    console.log(day);
     if (!content) {
       alert("Please enter your dairy content!");
       return;
     }
-    if (!date) {
+    if (!displayPageDate.innerText && !originalDate) {
       alert("Please choose a date!");
       return;
     }
-    displayPageDate.innerText = date;
+
     textArea.style.display = "none";
     dairyContent.style.display = "flex";
     storeButton.style.display = "none";
@@ -168,7 +167,6 @@ const editDairy = async ({ overview, page }) => {
 
     try {
       const dairy = await createDairy({ tag, emo, date, content, dairyID });
-      // console.log(dairy._id);
       if (dairy._id === dairyID) {
         const existedDairy = await updateDairy(dairyID, {
           tag,
@@ -176,9 +174,15 @@ const editDairy = async ({ overview, page }) => {
           date,
           content,
         });
+
         dairyContent.innerText = existedDairy.content;
         selectTag.options[selectTag.selectedIndex].text = tag;
         selectEmo.options[selectEmo.selectedIndex].text = emo;
+        const card = document.getElementById(`${existedDairy._id}`);
+        card.children[0].children[0].children[0].innerText = date;
+        card.children[0].children[1].children[0].innerText = tag;
+        card.children[0].children[2].children[0].innerText = emo;
+        card.children[1].innerText = existedDairy.content;
       } else {
         renderDairy(dairy);
         dairyContent.innerText = dairy.content;
@@ -213,6 +217,7 @@ const editDairy = async ({ overview, page }) => {
     dairyContent.innerText = "";
     displayPageDate.innerText = "";
     inputPageDate.style.display = "flex";
+    displayPageDate.innerText = "";
   });
 };
 
