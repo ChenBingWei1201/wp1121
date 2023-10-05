@@ -1,5 +1,7 @@
 # Web Programming HW#2
 
+Please copy commands below and paste them into your terminal in order.
+
 ## Setup
 
 ### Step 1. Install dependencies
@@ -12,11 +14,20 @@ yarn
 ```
 
 ### Step 2. Setup MongoDB
+
 Please replace `${your connection string}` with your MongoDB url
+
 ```sh
 cp ./.env.example .env
-echo  "PORT=8000
+echo  "PORT=3000
 MONGO_URL=${your connection string}" > ./.env
+```
+
+## Step 3. Setup VITE_API_URL
+
+```sh
+cd ../frontend
+cp ./.env.example .env
 ```
 
 ## Run the frontend & backend
