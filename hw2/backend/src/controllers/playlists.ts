@@ -1,26 +1,27 @@
-import CardModel from "../models/card";
-import ListModel from "../models/list";
+import SongModel from "../models/song";
+import PlayListModel from "../models/playlist";
 import { genericErrorHandler } from "../utils/errors";
 import type {
-  CardData,
-  CreateListPayload,
-  CreateListResponse,
-  GetListsResponse,
-  ListData,
-  UpdateListPayload,
+  SongData,
+  CreatePlayListPayload,
+  CreatePlayListResponse,
+  GetPlayListsResponse,
+  PlayListData,
+  UpdatePlayListPayload,
 } from "@lib/shared_types";
 import type { Request, Response } from "express";
 
-// Get all lists
-export const getLists = async (_: Request, res: Response<GetListsResponse>) => {
+// Get all playlists
+export const getPlayLists = async (_: Request, res: Response<GetPlayListsResponse>) => {
   try {
-    const lists = await ListModel.find({});
+    const playlists = await PlayListModel.find({});
 
     // Return only the id and name of the list
-    const listsToReturn = lists.map((list) => {
+    const listsToReturn = playlists.map((list) => {
       return {
-        id: list.id,
+        id: list._id,
         name: list.name,
+        description: list.description
       };
     });
 
@@ -30,22 +31,23 @@ export const getLists = async (_: Request, res: Response<GetListsResponse>) => {
   }
 };
 
-// Get a list
-export const getList = async (
+// Get a playlist
+export const getPlayList = async (
   req: Request<{ id: string }>,
-  res: Response<ListData | { error: string }>,
+  res: Response<PlayListData | { error: string }>,
 ) => {
   try {
     const { id } = req.params;
-    const lists = await ListModel.findById(id).populate("cards");
-    if (!lists) {
+    const playlist = await PlayListModel.findById(id).populate("songs");
+    if (!playlist) {
       return res.status(404).json({ error: "id is not valid" });
     }
 
     return res.status(200).json({
-      id: lists.id,
-      name: lists.name,
-      cards: lists.cards as unknown as CardData[],
+      id: playlist.id,
+      name: playlist.name,
+      description: playlist.description,
+      songs: playlist.songs as unknown as SongData[],
     });
   } catch (error) {
     genericErrorHandler(error, res);
@@ -53,32 +55,33 @@ export const getList = async (
 };
 
 // Create a list
-export const createList = async (
-  req: Request<never, never, CreateListPayload>,
-  res: Response<CreateListResponse>,
+export const createPlayList = async (
+  req: Request<never, never, CreatePlayListPayload>,
+  res: Response<CreatePlayListResponse>,
 ) => {
   try {
-    const { id } = await ListModel.create(req.body);
+    const { id } = await PlayListModel.create(req.body);
     return res.status(201).json({ id });
   } catch (error) {
     genericErrorHandler(error, res);
   }
 };
 
-// Update a list
-export const updateList = async (
-  req: Request<{ id: string }, never, UpdateListPayload>,
+// Update a playlist
+export const updatePlayList = async (
+  req: Request<{ id: string }, never, UpdatePlayListPayload>,
   res: Response,
 ) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, description } = req.body;
 
     // Update the list
-    const newList = await ListModel.findByIdAndUpdate(
+    const newList = await PlayListModel.findByIdAndUpdate(
       id,
       {
         name: name,
+        description: description,
       },
       { new: true },
     );
@@ -95,28 +98,28 @@ export const updateList = async (
 };
 
 // Delete a list
-export const deleteList = async (
+export const deletePlayList = async (
   req: Request<{ id: string }>,
   res: Response,
 ) => {
   // Create a transaction
-  const session = await ListModel.startSession();
+  const session = await PlayListModel.startSession();
   session.startTransaction();
 
   try {
     const { id } = req.params;
 
     // Delete the list
-    const deletedList = await ListModel.findByIdAndDelete(id);
+    const deletedPlayList = await PlayListModel.findByIdAndDelete(id);// nonsense
 
     // If the list is not found, return 404
-    if (!deletedList) {
+    if (!deletedPlayList) {
       return res.status(404).json({ error: "id is not valid" });
     }
 
-    // Delete all the cards in the list
-    deletedList.cards.forEach(async (cardId) => {
-      await CardModel.findByIdAndDelete(cardId);
+    // Delete all the songs in the playlist
+    deletedPlayList.songs.forEach(async (songId) => {
+      await SongModel.findByIdAndDelete(songId);
     });
 
     // Commit the transaction
