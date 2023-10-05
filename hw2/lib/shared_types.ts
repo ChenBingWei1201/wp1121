@@ -9,45 +9,51 @@
 // A general rule of thumb is to always use `type` unless you have a good reason
 // to use `interface`. `interface` is more powerful, at the cost of baring more
 // footguns.
-export type CardData = {
-  id: string;
-  title: string;
-  description: string;
-  list_id: string;
-};
 
-export type ListData = {
+/* self-defined schema type */
+export type SongData = { 
   id: string;
   name: string;
-  cards: CardData[];
-};
+  singer: string;
+  link: string;
+  playListID: string;
+}
 
-export type GetCardsResponse = CardData[];
+export type PlayListData = {
+  id: string;
+  name: string;
+  description: string;
+  songs: SongData[]; // song.length
+}
 
-export type GetCardResponse = CardData;
+/* self-defined schema type */
+
+export type GetSongsResponse = SongData[];
+
+export type GetSongResponse = SongData;
 
 // Types can also be derived from other types using utility types. These are
 // a few examples of utility types:
 // for more information, see: https://www.typescriptlang.org/docs/handbook/utility-types.html
 // You don't need to memorize these, but it's good to know they exist.
-export type CreateCardPayload = Omit<CardData, "id">;
+export type CreateSongPayload = Omit<SongData, "id">;
 
-export type CreateCardResponse = Pick<CardData, "id">;
+export type CreateSongResponse = Pick<SongData, "id">;
 
-export type UpdateCardPayload = Partial<Omit<CardData, "id">>;
+export type UpdateSongPayload = Partial<Omit<SongData, "id">>;
 
-export type UpdateCardResponse = "OK";
+export type UpdateSongResponse = "OK";
 
-export type DeleteCardResponse = "OK";
+export type DeleteSongResponse = "OK";
 
-export type GetListsResponse = Omit<ListData, "cards">[];
+export type GetPlayListsResponse = Omit<PlayListData, "songs">[];
 
-export type CreateListPayload = Omit<ListData, "id" | "cards">;
+export type CreatePlayListPayload = Omit<PlayListData, "id" | "songs">;
 
-export type CreateListResponse = Pick<ListData, "id">;
+export type CreatePlayListResponse = Pick<PlayListData, "id">;
 
-export type UpdateListPayload = Partial<Omit<ListData, "id" | "cards">>;
+export type UpdatePlayListPayload = Partial<Omit<PlayListData, "id" | "songs">>;
 
-export type UpdateListResponse = "OK";
+export type UpdatePlayListResponse = "OK";
 
-export type DeleteListResponse = "OK";
+export type DeletePlayListResponse = "OK";
