@@ -23,7 +23,7 @@ echo  "PORT=3000
 MONGO_URL=${your connection string}" > ./.env
 ```
 
-## Step 3. Setup VITE_API_URL
+### Step 3. Setup VITE_API_URL
 
 ```sh
 cd ../frontend
@@ -53,3 +53,5 @@ yarn lint
 cd ../backend
 yarn lint
 ```
+
+## Introduction
