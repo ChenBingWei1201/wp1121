@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import App from "./App.tsx";
-import { CardProvider } from "./hooks/useCards.tsx";
+import { SongProvider } from "./hooks/useSongs.tsx";
 import "./index.css";
 
 const darkTheme = createTheme({
@@ -20,10 +20,12 @@ const darkTheme = createTheme({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider theme={darkTheme}>
-      <CardProvider>
+      {" "}
+      {/* use this to switch theme */}
+      <SongProvider>
         <CssBaseline />
         <App />
-      </CardProvider>
+      </SongProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

@@ -1,16 +1,16 @@
 import type {
-  CreateCardPayload,
-  CreateCardResponse,
-  CreateListPayload,
-  CreateListResponse,
-  GetCardsResponse,
-  GetListsResponse,
-  UpdateCardPayload,
-  UpdateCardResponse,
-  DeleteCardResponse,
-  DeleteListResponse,
-  UpdateListPayload,
-  UpdateListResponse,
+  CreateSongPayload,
+  CreateSongResponse,
+  CreatePlayListPayload,
+  CreatePlayListResponse,
+  GetSongsResponse,
+  GetPlayListsResponse,
+  UpdateSongPayload,
+  UpdateSongResponse,
+  DeleteSongResponse,
+  DeletePlayListResponse,
+  UpdatePlayListPayload,
+  UpdatePlayListResponse,
 } from "@lib/shared_types";
 import axios from "axios";
 
@@ -20,34 +20,34 @@ const client = axios.create({
   baseURL: env.VITE_API_URL,
 });
 
-export function getLists() {
-  return client.get<GetListsResponse>("/lists");
+export function getPlayLists() {
+  return client.get<GetPlayListsResponse>("/playlists");
 }
 
-export function getCards() {
-  return client.get<GetCardsResponse>("/cards");
+export function getSongs() {
+  return client.get<GetSongsResponse>("/songs");
 }
 
-export function createList(input: CreateListPayload) {
-  return client.post<CreateListResponse>("/lists", input);
+export function createPlayList(input: CreatePlayListPayload) {
+  return client.post<CreatePlayListResponse>("/playlists", input);
 }
 
-export function createCard(input: CreateCardPayload) {
-  return client.post<CreateCardResponse>("/cards", input);
+export function createSong(input: CreateSongPayload) {
+  return client.post<CreateSongResponse>("/songs", input);
 }
 
-export function updateCard(id: string, input: UpdateCardPayload) {
-  return client.put<UpdateCardResponse>(`/cards/${id}`, input);
+export function updateSong(id: string, input: UpdateSongPayload) {
+  return client.put<UpdateSongResponse>(`/songs/${id}`, input);
 }
 
-export function updateList(id: string, input: UpdateListPayload) {
-  return client.put<UpdateListResponse>(`/lists/${id}`, input);
+export function updatePlayList(id: string, input: UpdatePlayListPayload) {
+  return client.put<UpdatePlayListResponse>(`/playlists/${id}`, input);
 }
 
-export function deleteCard(id: string) {
-  return client.delete<DeleteCardResponse>(`/cards/${id}`);
+export function deleteSong(id: string) {
+  return client.delete<DeleteSongResponse>(`/songs/${id}`);
 }
 
-export function deleteList(id: string) {
-  return client.delete<DeleteListResponse>(`/lists/${id}`);
+export function deletePlayList(id: string) {
+  return client.delete<DeletePlayListResponse>(`/playlists/${id}`);
 }

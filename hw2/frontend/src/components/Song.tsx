@@ -1,17 +1,24 @@
 import { useState } from "react";
 
-import { Paper } from "@mui/material";
+import Paper from "@mui/material/Paper";
 
-import CardDialog from "./CardDialog";
+import SongDialog from "./SongDialog.tsx";
 
-export type CardProps = {
+export type SongProps = {
   id: string;
-  title: string;
-  description: string;
-  listId: string;
+  name: string;
+  singer: string;
+  link: string;
+  playListID: string;
 };
 
-export default function Card({ id, title, description, listId }: CardProps) {
+export default function Song({
+  id,
+  name,
+  singer,
+  link,
+  playListID,
+}: SongProps) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -22,17 +29,18 @@ export default function Card({ id, title, description, listId }: CardProps) {
     <>
       <button onClick={handleClickOpen} className="text-start">
         <Paper className="flex w-full flex-col p-2" elevation={6}>
-          {title}
+          {name}
         </Paper>
       </button>
-      <CardDialog
+      <SongDialog
         variant="edit"
         open={open}
         onClose={() => setOpen(false)}
-        title={title}
-        description={description}
-        listId={listId}
-        cardId={id}
+        name={name}
+        singer={singer}
+        playListId={playListID}
+        link={link}
+        songId={id}
       />
     </>
   );
