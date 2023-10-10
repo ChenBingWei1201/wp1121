@@ -3,34 +3,34 @@ import mongoose from "mongoose";
 import type { Types } from "mongoose";
 
 interface SongDocument
-	extends Omit<SongData, "id" | "playListID">,
-		mongoose.Document {
-			playListID: Types.ObjectId;
-		}
+  extends Omit<SongData, "id" | "playListID">,
+    mongoose.Document {
+  playListID: Types.ObjectId;
+}
 
 interface SongModel extends mongoose.Model<SongDocument> {}
 
 const SongSchema = new mongoose.Schema<SongDocument>(
-	{
-		name: {
-			type: String,
-			required: true,
-		},
-		singer: {
-			type: String,
-			required: true,
-		},
-		link: {
-			type: String,
-			required: true,
-		},
-		playListID: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "PlayList",
-			required: true,
-		},
-	},
-	{
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    singer: {
+      type: String,
+      required: true,
+    },
+    link: {
+      type: String,
+      required: true,
+    },
+    playListID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PlayList",
+      required: true,
+    },
+  },
+  {
     timestamps: true,
     // toJSON: {
     //   transform: (_, ret): void => {
@@ -41,7 +41,7 @@ const SongSchema = new mongoose.Schema<SongDocument>(
     //   },
     // },
   },
-)
+);
 
 const Song = mongoose.model<SongDocument, SongModel>("Song", SongSchema);
 

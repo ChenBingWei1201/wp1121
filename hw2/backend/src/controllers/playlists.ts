@@ -1,5 +1,5 @@
-import SongModel from "../models/song";
 import PlayListModel from "../models/playlist";
+import SongModel from "../models/song";
 import { genericErrorHandler } from "../utils/errors";
 import type {
   SongData,
@@ -12,16 +12,19 @@ import type {
 import type { Request, Response } from "express";
 
 // Get all playlists
-export const getPlayLists = async (_: Request, res: Response<GetPlayListsResponse>) => {
+export const getPlayLists = async (
+  _: Request,
+  res: Response<GetPlayListsResponse>,
+) => {
   try {
     const playlists = await PlayListModel.find({});
 
     // Return only the id and name of the list
-    const listsToReturn = playlists.map((list) => {
+    const listsToReturn = playlists.map((playlist) => {
       return {
-        id: list._id,
-        name: list.name,
-        description: list.description
+        id: playlist._id,
+        name: playlist.name,
+        description: playlist.description,
       };
     });
 
@@ -110,7 +113,7 @@ export const deletePlayList = async (
     const { id } = req.params;
 
     // Delete the list
-    const deletedPlayList = await PlayListModel.findByIdAndDelete(id);// nonsense
+    const deletedPlayList = await PlayListModel.findByIdAndDelete(id); // nonsense
 
     // If the list is not found, return 404
     if (!deletedPlayList) {

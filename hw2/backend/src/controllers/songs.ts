@@ -1,9 +1,8 @@
 // Get songs
 // Path: backend/src/controllers/songs.ts
-import SongModel from "../models/song";
 import PlayListModel from "../models/playlist";
+import SongModel from "../models/song";
 import { genericErrorHandler } from "../utils/errors";
-
 import type {
   CreateSongPayload,
   CreateSongResponse,
@@ -76,7 +75,7 @@ export const createSong = async (
       name,
       singer,
       link,
-      playListID
+      playListID,
     });
 
     // Add the song to the list
@@ -149,7 +148,7 @@ export const updateSong = async (
       }
       oldList.songs = oldList.songs.filter(
         (songId) => songId.toString() !== id,
-      );// the 
+      ); // the
       await oldList.save();
 
       // Add the card to the new list
@@ -188,18 +187,20 @@ export const deleteSong = async (
 
     const deleteSong = await SongModel.findByIdAndDelete(id);
     if (!deleteSong) {
-      return res.status(404).json({ msg: "id is not valid!"});
+      return res.status(404).json({ msg: "id is not valid!" });
     }
 
     const playList = await PlayListModel.findById(deleteSong.playListID);
 
     if (!playList) {
-      return res.status(404).json({ msg: "play list not found!"});
+      return res.status(404).json({ msg: "play list not found!" });
     }
 
-    playList.songs = playList.songs.filter((songId) => id !== songId.toString());
+    playList.songs = playList.songs.filter(
+      (songId) => id !== songId.toString(),
+    );
     await playList.save();
-    
+
     // Commit the transaction
     session.commitTransaction();
 
