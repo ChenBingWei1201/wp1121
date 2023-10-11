@@ -58,7 +58,7 @@ export default function OnlyTable({
           {row.singer}
         </TableCell>
         <TableCell align="left">
-          <a href={row.link} target="_blank">
+          <a href={row.link} target="_blank" rel="noreferrer">
             {row.link}
           </a>
         </TableCell>
