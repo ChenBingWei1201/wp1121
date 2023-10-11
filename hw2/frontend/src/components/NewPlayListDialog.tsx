@@ -27,14 +27,21 @@ export default function NewListDialog({
   const [description, setDescription] = useState("");
 
   const handleAddList = async () => {
-    try {
-      await createPlayList({ name: name, description: description });
-      fetchPlayLists();
-    } catch (error) {
-      alert("Error: Failed to create list");
-    } finally {
-      onClose();
-    }
+    if (!name) {
+      alert("請輸入標題");
+      return;
+    } else if (!description) {
+      alert("請輸入內容");
+      return;
+    } else
+      try {
+        await createPlayList({ name: name, description: description });
+        fetchPlayLists();
+      } catch (error) {
+        alert("Error: Failed to create list");
+      } finally {
+        onClose();
+      }
   };
   // const [form] = Form.useForm();
   return (

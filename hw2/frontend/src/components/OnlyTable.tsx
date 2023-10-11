@@ -57,8 +57,10 @@ export default function OnlyTable({
         <TableCell onClick={() => setOpenEdit(true)} align="left">
           {row.singer}
         </TableCell>
-        <TableCell onClick={() => setOpenEdit(true)} align="left">
-          {row.link}
+        <TableCell align="left">
+          <a href={row.link} target="_blank">
+            {row.link}
+          </a>
         </TableCell>
       </TableRow>
       <SongDialog

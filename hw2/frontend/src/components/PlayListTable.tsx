@@ -6,6 +6,8 @@ import type { CreateSongPayload } from "@lib/shared_types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Input from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,7 +20,7 @@ import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
 
 import useSongs from "@/hooks/useSongs";
-import { deleteSong } from "@/utils/client";
+import { deleteSong, updatePlayList } from "@/utils/client";
 
 import OnlyTable from "./OnlyTable.tsx";
 import type { SongProps } from "./Song.tsx";
@@ -144,7 +146,10 @@ export default function PlayListTable({
 }: PlayListTableProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [openNewCardDialog, setOpenNewCardDialog] = useState(false);
-  const { fetchSongs } = useSongs();
+  const [editingDescription, setEditingDescription] = useState(false);
+  const [editingTitle, setEditingTitle] = useState(false);
+
+  const { fetchSongs, fetchPlayLists } = useSongs();
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = songs.map((n) => n.id);
@@ -184,14 +189,45 @@ export default function PlayListTable({
   };
 
   const handleDelete = async (selectedId: string[]) => {
+    if (selectedId.length === 0) {
+      alert("請勾選歌曲");
+      return;
+    } else
+      alert("是否確定刪除?");
+      try {
+        selectedId.forEach(async (id) => {
+          await deleteSong(id); // bug
+          await fetchSongs();
+        });
+        setSelected([]);
+      } catch (error) {
+        alert("Error: Failed to delete card");
+      }
+  };
+
+  const handleUpdateDescription = async (de: string) => {
+    if (!de) {
+      alert("請輸入清單描述");
+      return;
+    }
     try {
-      selectedId.forEach(async (id) => {
-        await deleteSong(id); // bug
-        await fetchSongs();
-      });
-      setSelected([]);
+      await updatePlayList(id, { name: name, description: de });
+      await fetchPlayLists();
     } catch (error) {
-      alert("Error: Failed to delete card");
+      alert("Error: Failed to update playlist");
+    }
+  };
+
+  const handleUpdateTitle = async (n: string) => {
+    if (!n) {
+      alert("請輸入清單標題");
+      return;
+    }
+    try {
+      await updatePlayList(id, { name: n, description: description });
+      await fetchPlayLists();
+    } catch (error) {
+      alert("Error: Failed to update playlist");
     }
   };
 
@@ -212,7 +248,8 @@ export default function PlayListTable({
             />
             <div className="max-w-8xl">
               <div className=" mb-0 ml-8 text-6xl text-slate-200">
-                <Box
+                {!editingTitle ? (<Box
+                  onClick={() => setEditingTitle(true)}
                   component="div"
                   sx={{
                     height: 50,
@@ -221,19 +258,47 @@ export default function PlayListTable({
                   }}
                 >
                   {name}
-                </Box>
+                </Box>) : (
+                  <ClickAwayListener onClickAway={() => setEditingTitle(false)}>
+                  <Input
+                    autoFocus
+                    defaultValue={name}
+                    onChange={(e) => handleUpdateTitle(e.target.value)}
+                    className="grow"
+                    placeholder="Enter a new name for this playlist..."
+                    sx={{ fontSize: "3rem" }}
+                    
+                  />
+                </ClickAwayListener>
+                )}
               </div>
               <div className="m-5 p-5 text-xl text-slate-200">
-                <Box
-                  component="div"
-                  sx={{
-                    height: 200,
-                    maxWidth: 1200,
-                    minWidth: 200,
-                  }}
-                >
-                  {description}
-                </Box>
+                {!editingDescription ? (
+                  <Box
+                    onClick={() => setEditingDescription(true)}
+                    component="div"
+                    sx={{
+                      height: 200,
+                      maxWidth: 1200,
+                      minWidth: 200,
+                    }}
+                  >
+                    {description}
+                  </Box>
+                ) : (
+                  <ClickAwayListener
+                    onClickAway={() => setEditingDescription(false)}
+                  >
+                    <textarea
+                      autoFocus
+                      defaultValue={description}
+                      onChange={(e) => handleUpdateDescription(e.target.value)}
+                      className="grow"
+                      placeholder="Enter a new description for this playlist..."
+                      style={{ fontSize: "1.3rem", color: "black", width: "50rem", height: "12rem", maxWidth: "50rem", maxHeight: "12rem", minWidth: "20rem", minHeight: "4rem"}}
+                    />
+                  </ClickAwayListener>
+                )}
               </div>
             </div>
           </div>

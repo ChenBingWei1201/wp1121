@@ -46,7 +46,10 @@ export default function ActionAreaCard({
 
   const handleUpdateName = async () => {
     if (!inputRef.current) return;
-
+    if (!inputRef.current.value) {
+      alert("請輸入標題");
+      return;
+    }
     const newName = inputRef.current.value;
     if (newName !== name) {
       try {

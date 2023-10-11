@@ -72,40 +72,52 @@ export default function SongDialog(props: SongDialogProps) {
   };
 
   const handleSave = async () => {
-    try {
-      if (variant === "new") {
-        await createSong({
-          name: newName,
-          singer: newSinger,
-          link: newLink,
-          playListID: newPlayListId,
-        });
-      } else {
-        if (
-          // 完全一樣
-          newName === name &&
-          newSinger === singer &&
-          newLink === link &&
-          newPlayListId === playListId
-        ) {
-          return; // 不浪費時間傳去後端
+    if (!newName || !newSinger || !newLink) {
+      alert("請輸入歌曲名稱, 歌手名稱或歌曲連結");
+      return;
+    } else
+      try {
+        if (variant === "new") {
+          await createSong({
+            name: newName,
+            singer: newSinger,
+            link: newLink,
+            playListID: newPlayListId,
+          });
+        } else {
+          if (
+            // 完全一樣
+            newName === name &&
+            newSinger === singer &&
+            newLink === link &&
+            newPlayListId === playListId
+          ) {
+            return; // 不浪費時間傳去後端
+          } else if (newPlayListId !== playListId) {
+            await createSong({
+              name: newName,
+              singer: newSinger,
+              link: newLink,
+              playListID: newPlayListId,
+            });
+          }
+          // typescript is smart enough to know that if variant is not "new", then it must be "edit"
+          // therefore props.cardId is a valid value
+          else
+            await updateSong(props.songId, {
+              // 不是new => 是edit => update
+              name: newName,
+              singer: newSinger,
+              link: newLink,
+              playListID: newPlayListId,
+            });
         }
-        // typescript is smart enough to know that if variant is not "new", then it must be "edit"
-        // therefore props.cardId is a valid value
-        await updateSong(props.songId, {
-          // 不是new => 是edit => update
-          name: newName,
-          singer: newSinger,
-          link: newLink,
-          playListID: newPlayListId,
-        });
+        fetchSongs();
+      } catch (error) {
+        alert("Error: Failed to save card");
+      } finally {
+        handleClose();
       }
-      fetchSongs();
-    } catch (error) {
-      alert("Error: Failed to save card");
-    } finally {
-      handleClose();
-    }
   };
 
   return (
