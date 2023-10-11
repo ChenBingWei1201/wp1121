@@ -192,17 +192,16 @@ export default function PlayListTable({
     if (selectedId.length === 0) {
       alert("請勾選歌曲");
       return;
-    } else
-      alert("是否確定刪除?");
-      try {
-        selectedId.forEach(async (id) => {
-          await deleteSong(id); // bug
-          await fetchSongs();
-        });
-        setSelected([]);
-      } catch (error) {
-        alert("Error: Failed to delete card");
-      }
+    } else alert("是否確定刪除?");
+    try {
+      selectedId.forEach(async (id) => {
+        await deleteSong(id); // bug
+        await fetchSongs();
+      });
+      setSelected([]);
+    } catch (error) {
+      alert("Error: Failed to delete card");
+    }
   };
 
   const handleUpdateDescription = async (de: string) => {
@@ -248,28 +247,29 @@ export default function PlayListTable({
             />
             <div className="max-w-8xl">
               <div className=" mb-0 ml-8 text-6xl text-slate-200">
-                {!editingTitle ? (<Box
-                  onClick={() => setEditingTitle(true)}
-                  component="div"
-                  sx={{
-                    height: 50,
-                    maxWidth: 1200,
-                    minWidth: 200,
-                  }}
-                >
-                  {name}
-                </Box>) : (
+                {!editingTitle ? (
+                  <Box
+                    onClick={() => setEditingTitle(true)}
+                    component="div"
+                    sx={{
+                      height: 50,
+                      maxWidth: 1200,
+                      minWidth: 200,
+                    }}
+                  >
+                    {name}
+                  </Box>
+                ) : (
                   <ClickAwayListener onClickAway={() => setEditingTitle(false)}>
-                  <Input
-                    autoFocus
-                    defaultValue={name}
-                    onChange={(e) => handleUpdateTitle(e.target.value)}
-                    className="grow"
-                    placeholder="Enter a new name for this playlist..."
-                    sx={{ fontSize: "3rem" }}
-                    
-                  />
-                </ClickAwayListener>
+                    <Input
+                      autoFocus
+                      defaultValue={name}
+                      onChange={(e) => handleUpdateTitle(e.target.value)}
+                      className="grow"
+                      placeholder="Enter a new name for this playlist..."
+                      sx={{ fontSize: "3rem" }}
+                    />
+                  </ClickAwayListener>
                 )}
               </div>
               <div className="m-5 p-5 text-xl text-slate-200">
@@ -295,7 +295,16 @@ export default function PlayListTable({
                       onChange={(e) => handleUpdateDescription(e.target.value)}
                       className="grow"
                       placeholder="Enter a new description for this playlist..."
-                      style={{ fontSize: "1.3rem", color: "black", width: "50rem", height: "12rem", maxWidth: "50rem", maxHeight: "12rem", minWidth: "20rem", minHeight: "4rem"}}
+                      style={{
+                        fontSize: "1.3rem",
+                        color: "black",
+                        width: "50rem",
+                        height: "12rem",
+                        maxWidth: "50rem",
+                        maxHeight: "12rem",
+                        minWidth: "20rem",
+                        minHeight: "4rem",
+                      }}
                     />
                   </ClickAwayListener>
                 )}
