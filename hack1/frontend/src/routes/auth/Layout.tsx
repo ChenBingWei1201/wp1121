@@ -73,11 +73,11 @@ const AuthLayout = () => {
               <TabsTrigger
                 asChild
                 key={tab.title}
-                value=""
+                value={tab.path}
                 className="last-of-type:border-r-0"
                 data-testid={`tab-${tab.path}`}
               >
-                <NavLink to="" />
+                <NavLink to={`/${tab.path}`} />
               </TabsTrigger>
               /* End of TODO 1.3 */
             ))}
@@ -90,7 +90,13 @@ const AuthLayout = () => {
             {/* The logo should be vscoddit.svg in the public folder. */}
             {/* The logo should have alt text "VSCoddit Logo". */}
             {/* The title should be "VSCoddit" */}
-            <img data-testid="header-logo" className="h-5 w-5 brightness-200" />
+            <img
+              data-testid="header-logo"
+              className="h-5 w-5 brightness-200"
+              src="/vscoddit.svg"
+              alt="VSCoddit Logo"
+            />
+            VSCoddit
             <span data-testid="header-title" />
             {/* END of TODO 1.1 */}
           </CardTitle>
@@ -115,6 +121,10 @@ const AuthLayout = () => {
                 type="text"
                 name="username"
                 autoComplete="username"
+                placeholder="Enter Username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
               {/* End of TODO 1.4 */}
             </div>
@@ -131,6 +141,10 @@ const AuthLayout = () => {
                 type="password"
                 name="password"
                 autoComplete="current-password"
+                placeholder="Enter Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               {/* End of TODO 1.4 */}
             </div>
