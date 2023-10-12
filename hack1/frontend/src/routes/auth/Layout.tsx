@@ -53,7 +53,7 @@ const AuthLayout = () => {
       /* Reference: https://ui.shadcn.com/docs/components/toast#usage */
       if (confirmPassword !== password)
         toast({
-          description: 'Passwords do not match',
+          description: "Passwords do not match",
         });
       /* End of TODO 1.5 */
       register(username, password);
@@ -99,8 +99,7 @@ const AuthLayout = () => {
               src="/vscoddit.svg"
               alt="VSCoddit Logo"
             />
-            VSCoddit
-            <span data-testid="header-title" />
+            <span data-testid="header-title" >VSCoddit</span>
             {/* END of TODO 1.1 */}
           </CardTitle>
           <CardDescription>

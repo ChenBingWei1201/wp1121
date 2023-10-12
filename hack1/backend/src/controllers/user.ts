@@ -37,7 +37,7 @@ export const createUser = asyncWrapper(
       password: password
     });
     try {
-      res.status(201);
+      res.status(201).json(newUser);
     }
     catch (error) {
       throw new Error('`createUser` Not Implemented');
