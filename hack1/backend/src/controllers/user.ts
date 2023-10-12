@@ -29,17 +29,15 @@ export const createUser = asyncWrapper(
     req: Request<{}, {}, User.Post.Payload>,
     res: Response<User.Post.Response<Schema.Types.ObjectId>>,
   ) => {
-
     /* TODO 1.5: Ensure User Registration Functions Properly (8%) */
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     const user = await UserModel.create({
       username: username,
-      password: password
+      password: password,
     });
     try {
       res.status(201).json(user);
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error('`createUser` Not Implemented');
     }
     /* Create new user using `UserModel` */

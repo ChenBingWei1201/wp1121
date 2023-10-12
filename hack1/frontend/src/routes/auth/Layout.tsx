@@ -51,12 +51,12 @@ const AuthLayout = () => {
       /* Here, a toast is a small, non-blocking notification pop-up. */
       /* They can be created via the `toast` function provided by `useToast()` */
       /* Reference: https://ui.shadcn.com/docs/components/toast#usage */
-      if (confirmPassword !== password)
+      if (confirmPassword !== password) {
         toast({
-          description: "Passwords do not match",
+          description: 'Passwords do not match',
         });
+      } else register(username, password);
       /* End of TODO 1.5 */
-      register(username, password);
     }
   };
 
@@ -80,7 +80,7 @@ const AuthLayout = () => {
                 className="last-of-type:border-r-0"
                 data-testid={`tab-${tab.path}`}
               >
-                <NavLink to={`/${tab.path}`} >{tab.title}</NavLink>
+                <NavLink to={`/${tab.path}`}>{tab.title}</NavLink>
               </TabsTrigger>
               /* End of TODO 1.3 */
             ))}
@@ -99,7 +99,7 @@ const AuthLayout = () => {
               src="/vscoddit.svg"
               alt="VSCoddit Logo"
             />
-            <span data-testid="header-title" >VSCoddit</span>
+            <span data-testid="header-title">VSCoddit</span>
             {/* END of TODO 1.1 */}
           </CardTitle>
           <CardDescription>
