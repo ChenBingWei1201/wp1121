@@ -45,8 +45,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   /* End of TODO 1.2 */
 
   useEffect(() => {
-    if (!authenticated) 
-      navigate('/login');
+    if (!authenticated) navigate('/login');
   }, [authenticated]);
 
   const login = async (username: string, password: string) => {
