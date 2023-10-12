@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
   type PropsWithChildren,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -42,6 +43,9 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   /* Reminder: Don't import this useEffect hook if you are tired of being redirected to the login page. */
   /* Warning: But remember to add it back before submitting your work. */
   /* End of TODO 1.2 */
+  useEffect(() => {
+    if (!authenticated) navigate('/login');
+  }, [location]);
 
   const login = async (username: string, password: string) => {
     try {
