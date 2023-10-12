@@ -47,8 +47,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (!authenticated) 
       navigate('/login');
-
-  }, [location]);
+  }, [authenticated]);
 
   const login = async (username: string, password: string) => {
     try {

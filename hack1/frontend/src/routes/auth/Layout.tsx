@@ -73,7 +73,7 @@ const AuthLayout = () => {
               <TabsTrigger
                 asChild
                 key={tab.title}
-                value={tab.path}
+                value={tab.title}
                 className="last-of-type:border-r-0"
                 data-testid={`tab-${tab.path}`}
               >
