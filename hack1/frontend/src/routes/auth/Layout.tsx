@@ -52,6 +52,9 @@ const AuthLayout = () => {
       /* They can be created via the `toast` function provided by `useToast()` */
       /* Reference: https://ui.shadcn.com/docs/components/toast#usage */
 
+      toast({
+        description: "Passwords do not match"
+      })
       /* End of TODO 1.5 */
       register(username, password);
     }
@@ -73,11 +76,11 @@ const AuthLayout = () => {
               <TabsTrigger
                 asChild
                 key={tab.title}
-                value={tab.title}
+                value={tab.path}
                 className="last-of-type:border-r-0"
                 data-testid={`tab-${tab.path}`}
               >
-                <NavLink to={`/${tab.path}`} />
+                <NavLink to={`/${tab.path}`} content={`${tab.title}`}/>
               </TabsTrigger>
               /* End of TODO 1.3 */
             ))}
