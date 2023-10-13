@@ -73,6 +73,7 @@ export const updateUser = asyncWrapper(
     /* TODO 4.4: Update User Information (6%) */
     /* Return 200 with updated user */
     /* Return 404 with "User not found" if update fails */
+    // const { username, password } = 
     throw new Error('`updateUser` Not Implemented');
     /* End of TODO 5.4 */
   },
