@@ -10,6 +10,7 @@ const View = (): React.ReactNode => {
 
   /* (1/3) TODO 2.2: Navigation with `ViewFooter` Buttons (8%) */
   /* Hint 2.2.1: Link page index to React state */
+  const [pageIndex, setPageIndex] = useState<number>(0);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const post = getPostByIndex(0);
   /* End (1/3) TODO 2.2 */
