@@ -170,7 +170,7 @@ const AuthLayout = () => {
                 name="confirm-password"
                 autoComplete="new-password"
                 placeholder="Confirm Password"
-                // required
+                required={location.pathname === "/register"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
