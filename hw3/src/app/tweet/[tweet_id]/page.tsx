@@ -4,11 +4,12 @@ import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import { eq, desc, sql, and } from "drizzle-orm";
 import {
-  ArrowLeft,
+  // ArrowLeft,
   MessageCircle,
   MoreHorizontal,
   Repeat2,
   Share,
+  ChevronLeft
 } from "lucide-react";
 
 import LikeButton from "@/components/LikeButton";
@@ -181,7 +182,7 @@ export default async function TweetPage({
       <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
         <div className="mb-2 flex items-center gap-8 px-4">
           <Link href={{ pathname: "/", query: { username, handle } }}>
-            <ArrowLeft size={18} />
+            <ChevronLeft size={18} />
           </Link>
           <h1 className="text-xl font-bold">Tweet</h1>
         </div>
