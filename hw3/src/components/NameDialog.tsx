@@ -21,8 +21,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn, validateHandle, validateUsername } from "@/lib/utils";
 
-export default function NameDialog() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+// import { DialogProps } from "@mui/material";
+
+type DialogProps = {
+  dialogOpen: boolean;
+  setDialogOpen: (d: boolean) => void;
+};
+export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
+  // const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -83,10 +89,8 @@ export default function NameDialog() {
     <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Welcome to Twitter!</DialogTitle>
-          <DialogDescription>
-            Tell us your name to start tweeting.
-          </DialogDescription>
+          <DialogTitle>Welcome to Join Me!</DialogTitle>
+          <DialogDescription>Tell us your name to start.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -115,7 +119,8 @@ export default function NameDialog() {
               <span>@</span>
               <Input
                 placeholder="web.prog"
-                defaultValue={searchParams.get("handle") ?? ""}
+                defaultValue={"test"}
+                // defaultValue={searchParams.get("handle") ?? ""}
                 className={cn(handleError && "border-red-500")}
                 ref={handleInputRef}
               />
@@ -131,6 +136,7 @@ export default function NameDialog() {
         </div>
         <DialogFooter>
           <Button onClick={handleSave}>start</Button>
+          <Button onClick={() => setDialogOpen(false)}>cancel</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

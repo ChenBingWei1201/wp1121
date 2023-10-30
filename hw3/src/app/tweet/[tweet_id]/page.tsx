@@ -4,14 +4,14 @@ import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import { eq, desc, sql, and } from "drizzle-orm";
 import {
-  // ArrowLeft,
   MessageCircle,
   MoreHorizontal,
   Repeat2,
   Share,
-  ChevronLeft
+  ChevronLeft,
 } from "lucide-react";
 
+import { JoinButton } from "@/components/JoinButton";
 import LikeButton from "@/components/LikeButton";
 import ReplyInput from "@/components/ReplyInput";
 import Tweet from "@/components/Tweet";
@@ -177,20 +177,23 @@ export default async function TweetPage({
     .leftJoin(likedSubquery, eq(tweetsTable.id, likedSubquery.tweetId))
     .execute();
 
+  // const [joined, setJoined] = useState(false);
+
   return (
     <>
-      <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-        <div className="mb-2 flex items-center gap-8 px-4">
-          <Link href={{ pathname: "/", query: { username, handle } }}>
-            <ChevronLeft size={18} />
-          </Link>
-          <h1 className="text-xl font-bold">Tweet</h1>
-        </div>
-        <div className="flex flex-col px-4 pt-3">
-          <div className="flex justify-between">
-            <div className="flex w-full gap-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+      <div className="flex h-screen w-full flex-col overflow-scroll pt-2">
+        <div className="flex flex-row">
+          <div className="mb-2 flex items-center gap-8 px-4">
+            <Link href={{ pathname: "/", query: { username, handle } }}>
+              <ChevronLeft size={50} />
+            </Link>
+            {/* <h1 className="text-xl font-bold">Tweet</h1> */}
+          </div>
+          <div className="flex w-full flex-col px-4 pt-3">
+            {/* <div className="flex justify-between">
+            <div className="flex w-full gap-3"> */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* <img
                 src={getAvatar(tweet.username)}
                 alt="user avatar"
                 width={48}
@@ -207,18 +210,22 @@ export default async function TweetPage({
             <button className="h-fit rounded-full p-2.5 text-gray-400 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
               <MoreHorizontal size={16} />
             </button>
-          </div>
-          <article className="mt-3 whitespace-pre-wrap text-xl">
-            {tweet.content}
-          </article>
-          <time className="my-4 block text-sm text-gray-500">
+          </div> */}
+            <p className="contain-center my-3 flex h-16 items-center justify-between whitespace-pre-wrap rounded-xl bg-slate-200 text-3xl">
+              {`  ${tweet.content}`}
+              <span className="text-2xl">{`4人參加   `}</span>
+            </p>
+            {/* <time className="my-4 block text-sm text-gray-500"> */}
             {/* dayjs is a great library for working with dates in javascript */}
             {/* we use it to format the date in a nice way */}
-            {dayjs(tweet.createdAt).format("h:mm A · D MMM YYYY")}
-          </time>
-          <Separator />
-          <div className="my-2 flex items-center justify-between gap-4 text-gray-400">
-            <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
+            {/* {dayjs(tweet.createdAt).format("h:mm A · D MMM YYYY")}
+          </time> */}
+            {/* <Separator /> */}
+            <div className="my-3 flex h-16 items-center justify-between gap-4 rounded-xl bg-slate-200">
+              <p className="whitespace-pre-wrap text-2xl">
+                {`   From 2023-10-30 to 2023-11-30`}
+              </p>
+              {/* <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
               <MessageCircle size={20} className="-scale-x-100" />
             </button>
             <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
@@ -232,10 +239,14 @@ export default async function TweetPage({
             />
             <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
               <Share size={18} />
-            </button>
+            </button> */}
+            </div>
+            {/* <Separator /> */}
           </div>
-          <Separator />
+          <JoinButton />
+          {/* {!joined ? <Button>我想參加</Button> : <Button>我已參加</Button>} */}
         </div>
+
         <ReplyInput replyToTweetId={tweet.id} replyToHandle={tweet.handle} />
         <Separator />
         {replies.map((reply) => (

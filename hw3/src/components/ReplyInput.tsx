@@ -45,16 +45,17 @@ export default function ReplyInput({
     }
   };
 
+
   return (
     // this allows us to focus (put the cursor in) the textarea when the user
     // clicks anywhere on the div
-    <div onClick={() => textareaRef.current?.focus()}>
+    <form onClick={() => textareaRef.current?.focus()}>
       <div className="grid grid-cols-[fit-content(48px)_1fr] gap-4 px-4 pt-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <UserAvatar className="col-start-1 row-start-2 h-12 w-12" />
-        <p className="col-start-2 row-start-1 text-gray-500">
+        {/* <UserAvatar className="col-start-1 row-start-2 h-12 w-12" /> */}
+        {/* <p className="col-start-2 row-start-1 text-gray-500">
           Replying to <span className="text-brand">@{replyToHandle}</span>
-        </p>
+        </p> */}
         <GrowingTextarea
           ref={textareaRef}
           wrapperClassName="col-start-2 row-start-2"
@@ -74,6 +75,6 @@ export default function ReplyInput({
           Reply
         </button>
       </div>
-    </div>
+    </form>
   );
 }

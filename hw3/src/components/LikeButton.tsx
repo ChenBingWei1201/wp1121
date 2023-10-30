@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { EventHandler, MouseEvent } from "react";
 
-import { Heart } from "lucide-react";
+import { Heart, Check } from "lucide-react";
 
 import useLike from "@/hooks/useLike";
 import { cn } from "@/lib/utils";
@@ -65,7 +65,7 @@ export default function LikeButton({
           liked && "bg-brand/10",
         )}
       >
-        <Heart size={18} />
+        <Check size={18} />
       </div>
       {likesCount > 0 && likesCount}
     </button>

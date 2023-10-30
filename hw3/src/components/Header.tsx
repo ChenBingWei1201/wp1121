@@ -1,51 +1,69 @@
-import Link from "next/link";
+"use client";
 
-import {
-  // Bell,
-  // Bookmark,
-  // FileText,
-  // Home,
-  // Mail,
-  // MoreHorizontal,
-  // Search,
-  // User,
-  // Users,
-  ChevronLeft
-} from "lucide-react";
+// import Link from "next/link";
+import { useState } from "react";
 
-import { cn } from "@/lib/utils";
+import { styled } from "@mui/material";
+// import {
+// Bell,
+// Bookmark,
+// FileText,
+// Home,
+// Mail,
+// MoreHorizontal,
+// Search,
+// User,
+// Users,
+// ChevronLeft
+// } from "lucide-react";
+import Button from "@mui/material/Button";
+
+import NameDialog from "@/components/NameDialog";
+
+// import { cn } from "@/lib/utils";
 
 // import ProfileButton from "./ProfileButton";
 
 export default function Header() {
-  return (
-    // aside is a semantic html tag for side content
-    // <aside className="flex h-screen flex-col justify-between px-6 py-6">
-      <>
-      <div className="flex flex-col gap-2">
-        <div className="p-2">
-          <Link href="/">
-            {/* <Image src={larry} alt="Larry the bird" width={40} height={40} /> */}
-            <ChevronLeft width={40} height={40}/>
-          </Link>
-        </div>
-        {/* <HeaderButton Icon={Home} text="Home" active />
-        <HeaderButton Icon={Search} text="Explore" />
-        <HeaderButton Icon={Bell} text="Notifications" />
-        <HeaderButton Icon={Mail} text="Messages" />
-        <HeaderButton Icon={FileText} text="Lists" />
-        <HeaderButton Icon={Bookmark} text="Bookmarks" />
-        <HeaderButton Icon={Users} text="Communities" />
-        <HeaderButton Icon={User} text="Profile" />
-        <HeaderButton Icon={MoreHorizontal} text="More" /> */}
-      </div>
-      {/* <ProfileButton /> */}
-      </>
-    // </aside>
+  const [dialogOpen, setDialogOpen] = useState(false);
 
+  return (
+    <>
+      <Button
+        variant="outlined"
+        sx={{ fontSize: "1.5em", fontWeight: "1000" }}
+        onClick={() => setDialogOpen(true)}
+      >
+        切換使用者
+      </Button>
+      <NameDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+    </>
+    //aside is a semantic html tag for side content
+    //  <aside className="flex h-screen flex-col justify-between px-6 py-6">
+
+    //   <div className="flex flex-col gap-2">
+    //     <div className="p-2">
+    //       <Link href="/">
+    //         <Image src={larry} alt="Larry the bird" width={40} height={40} />
+    //         <ChevronLeft width={40} height={40}/>
+    //       </Link>
+    //     </div>
+    //     <HeaderButton Icon={Home} text="Home" active />
+    //     <HeaderButton Icon={Search} text="Explore" />
+    //     <HeaderButton Icon={Bell} text="Notifications" />
+    //     <HeaderButton Icon={Mail} text="Messages" />
+    //     <HeaderButton Icon={FileText} text="Lists" />`
+    //     <HeaderButton Icon={Bookmark} text="Bookmarks" />
+    //     <HeaderButton Icon={Users} text="Communities" />
+    //     <HeaderButton Icon={User} text="Profile" />
+    //     <HeaderButton Icon={MoreHorizontal} text="More" />
+    //   </div>
+    //   <ProfileButton />
+    //  </aside>
   );
 }
 
+/*
 type HeaderButtonProps = {
   // allow size, and strokeWidth to be string to match lucide-react's size prop
   // this is basically a interface so that we can pass in custom component if we need to
@@ -86,3 +104,4 @@ function HeaderButton({ Icon, text, active }: HeaderButtonProps) {
     </button>
   );
 }
+*/

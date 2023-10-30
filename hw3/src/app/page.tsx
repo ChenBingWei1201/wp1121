@@ -1,8 +1,11 @@
+import { Button } from "@mui/material";
 import { eq, desc, isNull, sql } from "drizzle-orm";
 
+import Header from "@/components/Header";
 import NameDialog from "@/components/NameDialog";
 import Tweet from "@/components/Tweet";
 import TweetInput from "@/components/TweetInput";
+import { SearchBar } from "@/components/ui/search";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
 import { likesTable, tweetsTable, usersTable } from "@/db/schema";
@@ -134,11 +137,20 @@ export default async function Home({
 
   return (
     <>
-      <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-        <h1 className="mb-2 bg-white px-4 text-xl font-bold">Home</h1>
-        <div className="w-full px-4 pt-3">
-          <TweetInput />
+      <div className="flex h-screen w-full flex-col overflow-scroll pt-2">
+        <div className="flex flex-row justify-between">
+          <h1 className="my-2 bg-white px-4 text-3xl text-stone-500">
+            {username} (使用者名稱)
+          </h1>
+          <div className="mr-10 mt-10 justify-end">
+            <Header />
+          </div>
         </div>
+        {/* <div className="flex flex-row justify-between w-full px-4 pt-3"> */}
+        <SearchBar />
+
+        {/* <TweetInput /> */}
+        {/* </div> */}
         <Separator />
         {tweets.map((tweet) => (
           <Tweet
@@ -155,7 +167,7 @@ export default async function Home({
           />
         ))}
       </div>
-      <NameDialog />
+      {/* <NameDialog /> */}
     </>
   );
 }
