@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import Button from "@mui/material/Button";
 
-import NameDialog from "@/components/NameDialog";
+import NameDialog from "@/components/EventsPage/NameDialog";
 
 export default function HeaderButton() {
   const [dialogOpen, setDialogOpen] = useState(false);

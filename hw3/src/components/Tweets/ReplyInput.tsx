@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 
-import GrowingTextarea from "@/components/GrowingTextarea";
-import UserAvatar from "@/components/UserAvatar";
+import GrowingTextarea from "@/components/Tweets/GrowingTextarea";
+// import UserAvatar from "@/components/UserAvatar";
 import useTweet from "@/hooks/useTweet";
 import useUserInfo from "@/hooks/useUserInfo";
 import { cn } from "@/lib/utils";

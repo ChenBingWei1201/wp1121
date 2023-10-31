@@ -4,8 +4,8 @@ import { useRef } from "react";
 
 import { ChevronDown } from "lucide-react";
 
-import GrowingTextarea from "@/components/GrowingTextarea";
-import UserAvatar from "@/components/UserAvatar";
+import GrowingTextarea from "@/components/Tweets/GrowingTextarea";
+// import UserAvatar from "@/components/UserAvatar";
 import { Separator } from "@/components/ui/separator";
 import useTweet from "@/hooks/useTweet";
 import useUserInfo from "@/hooks/useUserInfo";
@@ -43,19 +43,19 @@ export default function TweetInput() {
     <div className="flex gap-4" onClick={() => textareaRef.current?.focus()}>
       {/* <UserAvatar className="h-12 w-12" /> */}
       <div className="flex w-full flex-col px-2">
-        {/* <button className="flex w-fit items-center rounded-full border-[1px] border-gray-300 px-2 text-sm font-bold text-brand">
+        <button className="flex w-fit items-center rounded-full border-[1px] border-gray-300 px-2 text-sm font-bold text-brand">
           Everyone
           <ChevronDown size={16} className="text-gray-300" />
-        </button> */}
-        {/* <div className="mb-2 mt-6">
+        </button>
+        <div className="mb-2 mt-6">
           <GrowingTextarea
             ref={textareaRef}
             className="bg-transparent outline-none placeholder:text-gray-500"
             placeholder="What's happening?"
           />
-        </div> */}
-        {/* <Separator /> */}
-        {/* <div className="flex justify-end">
+        </div>
+        <Separator />
+        <div className="flex justify-end">
           <button
             className={cn(
               "my-2 rounded-full bg-brand px-4 py-2 text-white transition-colors hover:bg-brand/70",
@@ -66,7 +66,7 @@ export default function TweetInput() {
           >
             Tweet
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );

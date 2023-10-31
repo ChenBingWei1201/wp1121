@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import Button from "@mui/material/Button";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { set } from "zod";
 
 import EventDialog from "./EventDialog";

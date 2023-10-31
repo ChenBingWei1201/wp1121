@@ -1,11 +1,11 @@
 import { Button } from "@mui/material";
 import { eq, desc, isNull, sql } from "drizzle-orm";
 
-import Header from "@/components/HeaderButton";
-import NameDialog from "@/components/NameDialog";
-import { NewEventButton } from "@/components/NewEventButton";
-import Tweet from "@/components/Tweet";
-import TweetInput from "@/components/TweetInput";
+import HeaderButton from "@/components/EventsPage/HeaderButton";
+// import NameDialog from "@/components/EventsPage/NameDialog";
+import { NewEventButton } from "@/components/EventsPage/NewEventButton";
+import Tweet from "@/components/Tweets/Tweet";
+// import TweetInput from "@/components/TweetInput";
 import { SearchBar } from "@/components/ui/search";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
@@ -144,7 +144,7 @@ export default async function Home({
             {username} (使用者名稱)
           </h1>
           <div className="mr-10 mt-10 justify-end">
-            <Header />
+            <HeaderButton />
           </div>
         </div>
         <div className="algin-center flex w-full flex-row justify-between px-4 pt-3">

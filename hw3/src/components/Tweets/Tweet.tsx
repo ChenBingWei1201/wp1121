@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 import { MessageCircle, Repeat2, Share } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
-import { getAvatar } from "@/lib/utils";
 
-import LikeButton from "./LikeButton";
+// import { getAvatar } from "@/lib/utils";
+// import LikeButton from "./LikeButton";
 
 type TweetProps = {
   username?: string;

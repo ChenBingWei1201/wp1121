@@ -11,14 +11,15 @@ import {
   ChevronLeft,
 } from "lucide-react";
 
-import { JoinButton } from "@/components/JoinButton";
-import LikeButton from "@/components/LikeButton";
-import ReplyInput from "@/components/ReplyInput";
-import Tweet from "@/components/Tweet";
+import { JoinButton } from "@/components/Tweets/JoinButton";
+// import LikeButton from "@/components/LikeButton";
+import ReplyInput from "@/components/Tweets/ReplyInput";
+import Tweet from "@/components/Tweets/Tweet";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
 import { likesTable, tweetsTable, usersTable } from "@/db/schema";
-import { getAvatar } from "@/lib/utils";
+
+// import { getAvatar } from "@/lib/utils";
 
 type TweetPageProps = {
   params: {
@@ -243,7 +244,12 @@ export default async function TweetPage({
             </div>
             {/* <Separator /> */}
           </div>
-          <JoinButton />
+          <JoinButton
+            handle={handle}
+            initialJoinedPeople={tweet.likes}
+            initialJoined={tweet.liked}
+            tweetId={tweet.id}
+          />
           {/* {!joined ? <Button>我想參加</Button> : <Button>我已參加</Button>} */}
         </div>
 

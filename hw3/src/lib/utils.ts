@@ -24,25 +24,30 @@ function getSeed(username: string) {
 
 export function validateHandle(handle?: string | null) {
   if (!handle) return false;
-  return /^[a-z0-9\\._-]{1,25}$/.test(handle);
+  return handle;
+  // return /^[a-z0-9\\._-]{1,25}$/.test(handle);
 }
 
 export function validateUsername(username?: string | null) {
   if (!username) return false;
-  return /^[a-zA-Z0-9 ]{1,50}$/.test(username);
+  return username;
+  // return /^[a-zA-Z0-9 ]{1,50}$/.test(username);
 }
 
 export function validateTitle(title?: string | null) {
   if (!title) return false;
-  return /^[a-z0-9\\._-]{1,25}$/.test(title);
+  return true;
+  // return /^[a-z0-9\\._-]{1,25}$/.test(title);
 }
 
 export function validateFrom(formDate?: string | null) {
   if (!formDate) return false;
-  return /^[a-zA-Z0-9 ]{1,50}$/.test(formDate);
+  return true;
+  // return /^[0-9\\-]{1,20}$/.test(formDate);
 }
 
 export function validateTo(toDate?: string | null) {
   if (!toDate) return false;
-  return /^[a-z0-9\\._-]{1,25}$/.test(toDate);
+  return true;
+  // return /^[0-9\\-]{1,20}$/.test(toDate);
 }
