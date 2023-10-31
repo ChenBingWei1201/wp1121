@@ -17,7 +17,7 @@ export default function ReplyInput({
   replyToTweetId,
   replyToHandle,
 }: ReplyInputProps) {
-  const { handle } = useUserInfo();
+  const { username, handle } = useUserInfo();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { postTweet, loading } = useTweet();
 
@@ -45,7 +45,6 @@ export default function ReplyInput({
     }
   };
 
-
   return (
     // this allows us to focus (put the cursor in) the textarea when the user
     // clicks anywhere on the div
@@ -60,7 +59,7 @@ export default function ReplyInput({
           ref={textareaRef}
           wrapperClassName="col-start-2 row-start-2"
           className="bg-transparent text-xl outline-none placeholder:text-gray-500"
-          placeholder="Tweet your reply"
+          placeholder={`${username}留下你的想法`}
         />
       </div>
       <div className="p-4 text-end">

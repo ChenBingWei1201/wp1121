@@ -8,7 +8,7 @@ import UserAvatar from "@/components/UserAvatar";
 import useUserInfo from "@/hooks/useUserInfo";
 
 export default function ProfileButton() {
-  const { username, handle } = useUserInfo();
+  const { username } = useUserInfo();
   const router = useRouter();
 
   return (
@@ -21,7 +21,7 @@ export default function ProfileButton() {
       <UserAvatar />
       <div className="w-40 max-lg:hidden">
         <p className="text-sm font-bold">{username ?? "..."}</p>
-        <p className="text-sm text-gray-500">{`@${handle}`}</p>
+        {/* <p className="text-sm text-gray-500">{`@${handle}`}</p> */}
       </div>
       <MoreHorizontal size={24} className="max-lg:hidden" />
     </button>

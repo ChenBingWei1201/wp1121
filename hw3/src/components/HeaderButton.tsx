@@ -3,28 +3,11 @@
 // import Link from "next/link";
 import { useState } from "react";
 
-import { styled } from "@mui/material";
-// import {
-// Bell,
-// Bookmark,
-// FileText,
-// Home,
-// Mail,
-// MoreHorizontal,
-// Search,
-// User,
-// Users,
-// ChevronLeft
-// } from "lucide-react";
 import Button from "@mui/material/Button";
 
 import NameDialog from "@/components/NameDialog";
 
-// import { cn } from "@/lib/utils";
-
-// import ProfileButton from "./ProfileButton";
-
-export default function Header() {
+export default function HeaderButton() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (

@@ -21,8 +21,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn, validateHandle, validateUsername } from "@/lib/utils";
 
-// import { DialogProps } from "@mui/material";
-
 type DialogProps = {
   dialogOpen: boolean;
   setDialogOpen: (d: boolean) => void;
@@ -33,7 +31,7 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const usernameInputRef = useRef<HTMLInputElement>(null);
-  const handleInputRef = useRef<HTMLInputElement>(null);
+  // const handleInputRef = useRef<HTMLInputElement>(null);
   const [usernameError, setUsernameError] = useState(false);
   const [handleError, setHandleError] = useState(false);
 
@@ -46,7 +44,7 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
 
   const handleSave = () => {
     const username = usernameInputRef.current?.value;
-    const handle = handleInputRef.current?.value;
+    const handle = usernameInputRef.current?.value;
 
     const newUsernameError = !validateUsername(username);
     setUsernameError(newUsernameError);
@@ -89,8 +87,8 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
     <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Welcome to Join Me!</DialogTitle>
-          <DialogDescription>Tell us your name to start.</DialogDescription>
+          <DialogTitle>歡迎來到 Join Me!</DialogTitle>
+          <DialogDescription>請輸入名字以開始</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -111,11 +109,11 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
               </p>
             )}
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+          {/* <div className="grid grid-cols-4 items-center gap-4"> */}
+          {/* <Label htmlFor="name" className="text-right">
               Handle
-            </Label>
-            <div className="col-span-3 flex items-center gap-2">
+            </Label> */}
+          {/* <div className="col-span-3 flex items-center gap-2">
               <span>@</span>
               <Input
                 placeholder="web.prog"
@@ -124,15 +122,15 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
                 className={cn(handleError && "border-red-500")}
                 ref={handleInputRef}
               />
-            </div>
-            {handleError && (
+            </div> */}
+          {/* {handleError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
                 Invalid handle, use only{" "}
                 <span className="font-mono">[a-z0-9\._-]</span>, must be between
                 1 and 25 characters long.
               </p>
-            )}
-          </div>
+            )} */}
+          {/* </div> */}
         </div>
         <DialogFooter>
           <Button onClick={handleSave}>start</Button>

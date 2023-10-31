@@ -1,8 +1,9 @@
 import { Button } from "@mui/material";
 import { eq, desc, isNull, sql } from "drizzle-orm";
 
-import Header from "@/components/Header";
+import Header from "@/components/HeaderButton";
 import NameDialog from "@/components/NameDialog";
+import { NewEventButton } from "@/components/NewEventButton";
 import Tweet from "@/components/Tweet";
 import TweetInput from "@/components/TweetInput";
 import { SearchBar } from "@/components/ui/search";
@@ -139,18 +140,18 @@ export default async function Home({
     <>
       <div className="flex h-screen w-full flex-col overflow-scroll pt-2">
         <div className="flex flex-row justify-between">
-          <h1 className="my-2 bg-white px-4 text-3xl text-stone-500">
+          <h1 className="my-2 bg-white px-4 text-4xl text-stone-500">
             {username} (使用者名稱)
           </h1>
           <div className="mr-10 mt-10 justify-end">
             <Header />
           </div>
         </div>
-        {/* <div className="flex flex-row justify-between w-full px-4 pt-3"> */}
-        <SearchBar />
-
-        {/* <TweetInput /> */}
-        {/* </div> */}
+        <div className="algin-center flex w-full flex-row justify-between px-4 pt-3">
+          <SearchBar />
+          <NewEventButton />
+          {/* <TweetInput /> */}
+        </div>
         <Separator />
         {tweets.map((tweet) => (
           <Tweet
