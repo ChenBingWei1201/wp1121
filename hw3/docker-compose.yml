@@ -14,3 +14,7 @@ services:
       - ./pg-data:/var/lib/postgresql/data
     ports:
       - "5200:5432"
+  adminer:
+    image: adminer
+    ports:
+      - "8089:8080"
