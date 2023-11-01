@@ -7,10 +7,10 @@ export default function useLike() {
   const router = useRouter();
 
   const likeTweet = async ({
-    tweetId,
+    eventId,
     userHandle,
   }: {
-    tweetId: number;
+    eventId: number;
     userHandle: string;
   }) => {
     if (loading) return;
@@ -19,7 +19,7 @@ export default function useLike() {
     const res = await fetch("/api/joins", {
       method: "POST",
       body: JSON.stringify({
-        tweetId,
+        eventId,
         userHandle,
       }),
     });
@@ -34,10 +34,10 @@ export default function useLike() {
   };
 
   const unlikeTweet = async ({
-    tweetId,
+    eventId,
     userHandle,
   }: {
-    tweetId: number;
+    eventId: number;
     userHandle: string;
   }) => {
     if (loading) return;
@@ -46,7 +46,7 @@ export default function useLike() {
     const res = await fetch("/api/joins", {
       method: "DELETE",
       body: JSON.stringify({
-        tweetId,
+        eventId,
         userHandle,
       }),
     });

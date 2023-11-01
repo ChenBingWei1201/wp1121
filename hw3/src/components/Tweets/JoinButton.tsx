@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils";
 
 type JoinButtonProps = {
   initialJoinedPeople: number;
-  initialJoined?: boolean;
-  tweetId: number;
+  initialJoined: boolean;
+  eventId: number;
   handle?: string;
 };
 const JoinButton = ({
   initialJoinedPeople,
   initialJoined,
-  tweetId,
+  eventId,
   handle,
 }: JoinButtonProps) => {
   const [joined, setJoined] = useState(initialJoined);
@@ -29,19 +29,19 @@ const JoinButton = ({
     // button, the Link will also be clicked, which will cause the page to
     // navigate to the tweet page, which is not what we want. So we stop the
     // event propagation and prevent the default behavior of the event.
-    e.stopPropagation();
+    // e.stopPropagation();
     e.preventDefault();
     if (!handle) return;
     if (joined) {
       await unlikeTweet({
-        tweetId,
+        eventId: eventId,
         userHandle: handle,
       });
       setJoinedPeople((prev) => prev - 1);
       setJoined(false);
     } else {
       await likeTweet({
-        tweetId,
+        eventId: eventId,
         userHandle: handle,
       });
       setJoinedPeople((prev) => prev + 1);
@@ -85,13 +85,13 @@ const JoinButton = ({
       )} */}
       <button
         className={cn(
-          "m-1.5 h-1 mt-5 w-0.5",
+          "mr-5 mt-16 flex h-20 w-20 justify-center rounded-lg border-2 border-cyan-400 text-center text-2xl",
           joined && "bg-green-400",
         )}
         onClick={handleClick}
         disabled={loading}
       >
-        {!joined ? "我想參加" : "我已參加"}
+        <span className="m-1.5">{!joined ? "我想參加" : "我已參加"}</span>
       </button>
     </>
   );

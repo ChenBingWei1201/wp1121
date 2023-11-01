@@ -55,10 +55,13 @@ export const tweetsTable = pgTable(
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    replyToEventId: integer("reply_to_event_id").references(() => eventsTable.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
+    replyToEventId: integer("reply_to_event_id").references(
+      () => eventsTable.id,
+      {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      },
+    ),
     createdAt: timestamp("created_at").default(sql`now()`),
   },
   (table) => ({
@@ -103,10 +106,10 @@ export const eventsTable = pgTable(
       .notNull()
       .references(() => usersTable.handle, { onDelete: "cascade" }),
     title: varchar("title", { length: 150 }).notNull().unique(),
-    // replyToEventId: integer("reply_to_event_id"),
-    fromDate: varchar("from", { length: 9 }).notNull(),
-    toDate: varchar("to", { length: 9 }).notNull(),
+    fromDate: varchar("from", { length: 10 }).notNull(),
+    toDate: varchar("to", { length: 10 }).notNull(),
     createdAt: timestamp("created_at").default(sql`now()`),
+
     // userHandle: varchar("user_handle", { length: 50 })
     //   .notNull()
     //   .references(() => usersTable.handle, { onDelete: "cascade" }),

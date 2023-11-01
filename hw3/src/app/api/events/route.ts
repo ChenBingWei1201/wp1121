@@ -13,8 +13,8 @@ import { eventsTable } from "@/db/schema";
 const postEventRequestSchema = z.object({
   userHandle: z.string().min(1).max(50),
   title: z.string().min(1).max(280),
-  fromDate: z.string().max(9),
-  toDate: z.string().max(9),
+  fromDate: z.string().max(10),
+  toDate: z.string().max(10),
   // replyToEventId: z.number().optional(),
 });
 

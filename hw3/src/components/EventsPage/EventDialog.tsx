@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn, validateTitle, validateFrom, validateTo } from "@/lib/utils";
 import useEvent from "@/hooks/useEvent";
+import { cn, validateTitle, validateFrom, validateTo } from "@/lib/utils";
 
 // import { DialogProps } from "@mui/material";
 
@@ -36,9 +36,9 @@ export default function EventDialog({
   setDialogOpen,
 }: DialogProps) {
   // const [dialogOpen, setDialogOpen] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
   // const usernameInputRef = useRef<HTMLInputElement>(null);
   // const handleInputRef = useRef<HTMLInputElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -72,18 +72,26 @@ export default function EventDialog({
         userHandle,
         title,
         fromDate,
-        toDate
+        toDate,
       });
       titleInputRef.current.value = "";
       fromInputRef.current.value = "";
       toInputRef.current.value = "";
-      
+
       // this triggers the onInput event on the growing textarea
       // thus triggering the resize
       // for more info, see: https://developer.mozilla.org/en-US/docs/Web/API/Event
       // titleInputRef.current.dispatchEvent( // issue a new event to resize the textarea
       //   new Event("input", { bubbles: true, composed: true }),
       // );
+
+      // const username = userHandle;
+      // const handle = userHandle;
+      // const params = new URLSearchParams(searchParams);
+      // params.set("username", username!);
+      // params.set("handle", handle!);
+      // router.push(`${pathname}?${params.toString()}`);
+
       setDialogOpen(false);
       return true;
     } catch (e) {
@@ -94,37 +102,32 @@ export default function EventDialog({
   };
 
   // const handleSave = () => {
-    // const username = usernameInputRef.current?.value;
-    // const handle = handleInputRef.current?.value;
-    // const title = titleInputRef.current?.value;
-    // const fromDate = fromInputRef.current?.value;
-    // const toDate = toInputRef.current?.value;
 
-    // const newTitleError = !validateTitle(title);
-    // setTitleError(newTitleError);
-    // const newFromError = !validateFrom(fromDate);
-    // setFromError(newFromError);
-    // const newTonameError = !validateTo(toDate);
-    // setToError(newTonameError);
+  // const title = titleInputRef.current?.value;
+  // const fromDate = fromInputRef.current?.value;
+  // const toDate = toInputRef.current?.value;
 
-    // if (newTitleError || newFromError || newTonameError) {
-    //   return false;
-    // }
+  // const newTitleError = !validateTitle(title);
+  // setTitleError(newTitleError);
+  // const newFromError = !validateFrom(fromDate);
+  // setFromError(newFromError);
+  // const newTonameError = !validateTo(toDate);
+  // setToError(newTonameError);
 
-    // when navigating to the same page with different query params, we need to
-    // preserve the pathname, so we need to manually construct the url
-    // we can use the URLSearchParams api to construct the query string
-    // We have to pass in the current query params so that we can preserve the
-    // other query params. We can't set new query params directly because the
-    // searchParams object returned by useSearchParams is read-only.
-    // const params = new URLSearchParams(searchParams);
-    // params.set("title", title!);
-    // params.set("from", fromDate!);
-    // params.set("to", toDate!);
-    // params.set("username", username!);
-    // params.set("handle", handle!);
+  // if (newTitleError || newFromError || newTonameError) {
+  //   return false;
+  // }
 
-  //   router.push(`${pathname}?${params.toString()}`);
+  // when navigating to the same page with different query params, we need to
+  // preserve the pathname, so we need to manually construct the url
+  // we can use the URLSearchParams api to construct the query string
+  // We have to pass in the current query params so that we can preserve the
+  // other query params. We can't set new query params directly because the
+  // searchParams object returned by useSearchParams is read-only.
+  // params.set("title", title!);
+  // params.set("from", fromDate!);
+  // params.set("to", toDate!);
+
   //   setDialogOpen(false);
 
   //   return true;
@@ -157,7 +160,7 @@ export default function EventDialog({
             </Label>
             <Input
               placeholder="標題"
-              defaultValue={searchParams.get("title") ?? ""}
+              // defaultValue={JSON.stringify(titleInputRef) ?? ""}
               className={cn(titleError && "border-red-500", "col-span-3")}
               ref={titleInputRef}
             />
@@ -176,7 +179,7 @@ export default function EventDialog({
             </Label>
             <Input
               placeholder="From"
-              defaultValue={searchParams.get("from") ?? ""}
+              // defaultValue={JSON.stringify(fromInputRef) ?? ""}
               className={cn(fromError && "border-red-500", "col-span-3")}
               ref={fromInputRef}
             />
@@ -195,7 +198,7 @@ export default function EventDialog({
             </Label>
             <Input
               placeholder="To"
-              defaultValue={searchParams.get("to") ?? ""}
+              // defaultValue={""}
               className={cn(toError && "border-red-500", "col-span-3")}
               ref={toInputRef}
             />

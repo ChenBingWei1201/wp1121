@@ -30,9 +30,8 @@ export default function Tweet({
   authorHandle,
   content,
   // likes,
-  createdAt,
-} // liked,
-: TweetProps) {
+  createdAt, // liked,
+}: TweetProps) {
   return (
     <>
       {/* <Link

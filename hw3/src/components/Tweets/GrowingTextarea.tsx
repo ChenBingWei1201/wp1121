@@ -12,6 +12,7 @@ type GrowingTextareaProps = {
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
+  disable: boolean;
 };
 
 // this component implements a css hack that allows the textarea to grow with its content
@@ -23,7 +24,7 @@ type GrowingTextareaProps = {
 // for more information, please refer to the following link
 // https://react.dev/reference/react/forwardRef
 const GrowingTextarea = forwardRef<HTMLTextAreaElement, GrowingTextareaProps>(
-  ({ className, wrapperClassName, placeholder, value, onChange }, ref) => {
+  ({ className, wrapperClassName, placeholder, value, onChange,  disable}, ref) => {
     return (
       <div
         className={cn(
@@ -57,6 +58,7 @@ const GrowingTextarea = forwardRef<HTMLTextAreaElement, GrowingTextareaProps>(
           }}
           onChange={(e) => onChange?.(e.target.value)}
           ref={ref}
+          disabled={!disable}
         ></textarea>
       </div>
     );

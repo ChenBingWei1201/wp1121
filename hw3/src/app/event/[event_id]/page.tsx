@@ -38,11 +38,10 @@ export default async function EventPage({
   const event_id_num = parseInt(event_id);
 
   const errorRedirect = () => {
+    console.log(username, handle);
     const params = new URLSearchParams();
     username && params.set("username", username);
     handle && params.set("handle", handle);
-    // fromDate && params.set("fromDate", fromDate);
-    // toDate && params.set("toDate", toDate);
     redirect(`/?${params.toString()}`);
   };
 
@@ -64,7 +63,7 @@ export default async function EventPage({
   //   content,
   //   user_handle,
   //   created_at
-  //   FROM tweets
+  //   FROM events
   //   WHERE id = {event_id_num};
   const [eventData] = await db
     .select({
@@ -159,24 +158,37 @@ export default async function EventPage({
       .where(eq(joinsTable.userHandle, handle ?? "")),
   );
 
-  const replies = await db
-    .with(joinsSubquery, joinedSubquery)
-    .select({
-      id: tweetsTable.id,
-      content: tweetsTable.content,
-      username: usersTable.displayName,
-      handle: usersTable.handle,
-      joins: joinsSubquery.joins,
-      createdAt: tweetsTable.createdAt,
-      joined: joinedSubquery.joined,
-    })
-    .from(tweetsTable)
-    .where(eq(tweetsTable.replyToEventId, event_id_num))
-    .orderBy(desc(tweetsTable.createdAt))
-    .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
-    .leftJoin(joinsSubquery, eq(eventsTable.id, joinsSubquery.eventId))
-    .leftJoin(joinedSubquery, eq(eventsTable.id, joinedSubquery.eventId))
-    .execute();
+  const replies = await db.query.tweetsTable.findMany({
+    where: eq(tweetsTable.id, eventData.id),
+    // with: {
+    //   joinedSubquery,
+    //   joinsSubquery
+    // },
+    columns: {
+      id: true,
+      content: true,
+      userHandle: true,
+      replyToEventId: true,
+      createdAt: true,
+    },
+  });
+  // .with(joinsSubquery, joinedSubquery)
+  // .select({
+  //   id: tweetsTable.id,
+  //   content: tweetsTable.content,
+  //   username: usersTable.displayName,
+  //   handle: usersTable.handle,
+  //   joins: joinsSubquery.joins,
+  //   createdAt: tweetsTable.createdAt,
+  //   joined: joinedSubquery.joined,
+  // })
+  // .from(tweetsTable)
+  // .where(eq(tweetsTable.replyToEventId, event_id_num))
+  // .orderBy(desc(tweetsTable.createdAt))
+  // .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
+  // .leftJoin(joinsSubquery, eq(eventsTable.id, joinsSubquery.eventId))
+  // .leftJoin(joinedSubquery, eq(eventsTable.id, joinedSubquery.eventId))
+  // .execute();
 
   // const [joined, setJoined] = useState(false);
 
@@ -247,24 +259,24 @@ export default async function EventPage({
           <JoinButton
             initialJoinedPeople={event.joins}
             initialJoined={event.joined}
-            tweetId={event.id}
+            eventId={event.id}
             handle={handle}
           />
           {/* {!joined ? <Button>我想參加</Button> : <Button>我已參加</Button>} */}
         </div>
 
         <ReplyInput
-          replyToTweetId={event.id} /*replyToHandle={event.fromDate}*/
+          replyToTweetId={event.id} initialJoined={event.joined}
         />
         <Separator />
         {replies.map((reply) => (
           <Tweet
             key={reply.id}
             id={reply.id}
-            username={reply.username}
-            handle={reply.handle}
-            authorName={reply.username}
-            authorHandle={reply.handle}
+            username={reply.userHandle}
+            handle={reply.userHandle}
+            authorName={reply.userHandle}
+            authorHandle={reply.userHandle}
             content={reply.content}
             // joins={reply.joins}
             // joined={reply.joined}

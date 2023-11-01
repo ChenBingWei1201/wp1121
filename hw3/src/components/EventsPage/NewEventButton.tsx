@@ -7,7 +7,7 @@ import { set } from "zod";
 
 import EventDialog from "./EventDialog";
 
-const NewEventButton = ({userHandle} : {userHandle: string}) => {
+const NewEventButton = ({ userHandle }: { userHandle: string }) => {
   const [openEventDialog, setOpenEventDialog] = useState(false);
 
   return (

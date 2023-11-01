@@ -159,7 +159,7 @@ export default async function Home({
         </div>
         <div className="algin-center flex w-full flex-row pt-3">
           <SearchBar placeholder="搜尋想要參加的活動" data={BookData} />
-          <NewEventButton userHandle={handle}/>
+          <NewEventButton userHandle={handle} />
         </div>
         <Separator />
         {events.map((event) => (
@@ -169,6 +169,7 @@ export default async function Home({
             title={event.title}
             fromDate={event.fromDate}
             toDate={event.toDate}
+            username={handle}
             handle={handle}
             joins={event.joins}
             joined={event.joined}

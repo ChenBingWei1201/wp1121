@@ -10,12 +10,11 @@ import { cn } from "@/lib/utils";
 
 type ReplyInputProps = {
   replyToTweetId: number;
-  // replyToHandle: string;
+  initialJoined: boolean;
 };
 
 export default function ReplyInput({
-  replyToTweetId,
-  // replyToHandle,
+  replyToTweetId, initialJoined
 }: ReplyInputProps) {
   const { username, handle } = useUserInfo();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -59,7 +58,8 @@ export default function ReplyInput({
           ref={textareaRef}
           wrapperClassName="col-start-2 row-start-2"
           className="bg-transparent text-xl outline-none placeholder:text-gray-500"
-          placeholder={`${username}留下你的想法`}
+          placeholder={initialJoined ? (`${username}留下你的想法`) : (`${username}參加活動來參與討論吧`)}
+          disable={initialJoined}
         />
       </div>
       <div className="p-4 text-end">

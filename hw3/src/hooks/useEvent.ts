@@ -12,7 +12,7 @@ export default function useTweet() {
     fromDate,
     toDate,
   }: {
-    userHandle: string,
+    userHandle: string;
     title: string;
     fromDate: string;
     toDate: string;
