@@ -3,21 +3,23 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
 import { db } from "@/db";
-import { tweetsTable } from "@/db/schema";
+import { eventsTable } from "@/db/schema";
 
 // zod is a library that helps us validate data at runtime
 // it's useful for validating data coming from the client,
 // since typescript only validates data at compile time.
 // zod's schema syntax is pretty intuitive,
 // read more about zod here: https://zod.dev/
-const postTweetRequestSchema = z.object({
-  handle: z.string().min(1).max(50),
-  content: z.string().min(1).max(280),
-  replyToTweetId: z.number().optional(),
+const postEventRequestSchema = z.object({
+  userHandle: z.string().min(1).max(50),
+  title: z.string().min(1).max(280),
+  fromDate: z.string().max(9),
+  toDate: z.string().max(9),
+  // replyToEventId: z.number().optional(),
 });
 
 // you can use z.infer to get the typescript type from a zod schema
-type PostTweetRequest = z.infer<typeof postTweetRequestSchema>;
+type PostEventRequest = z.infer<typeof postEventRequestSchema>;
 
 // This API handler file would be trigger by http requests to /api/likes
 // POST requests would be handled by the POST function
@@ -31,14 +33,14 @@ export async function POST(request: NextRequest) {
   try {
     // parse will throw an error if the data doesn't match the schema
     // if that happens, we return a 400 error
-    postTweetRequestSchema.parse(data);
+    postEventRequestSchema.parse(data);
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  // the `data` variable is now guaranteed to be of type PostTweetRequest
+  // the `data` variable is now guaranteed to be of type PostEventRequest
   // but the compiler doesn't know that, so we have to cast it with `as`
-  const { handle, content, replyToTweetId } = data as PostTweetRequest;
+  const { title, fromDate, toDate, userHandle } = data as PostEventRequest;
 
   try {
     // This piece of code runs the following SQL query:
@@ -52,11 +54,12 @@ export async function POST(request: NextRequest) {
     //  {replyToTweetId}
     // )
     await db
-      .insert(tweetsTable)
+      .insert(eventsTable)
       .values({
-        userHandle: handle,
-        content,
-        replyToTweetId,
+        userHandle,
+        title,
+        fromDate,
+        toDate,
       })
       .execute();
   } catch (error) {

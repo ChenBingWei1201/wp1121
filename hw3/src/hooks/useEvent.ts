@@ -6,23 +6,26 @@ export default function useTweet() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const postTweet = async ({
-    handle,
-    content,
-    replyToTweetId,
+  const postEvent = async ({
+    userHandle,
+    title,
+    fromDate,
+    toDate,
   }: {
-    handle: string;
-    content: string;
-    replyToTweetId?: number;
+    userHandle: string,
+    title: string;
+    fromDate: string;
+    toDate: string;
   }) => {
     setLoading(true);
 
-    const res = await fetch("/api/events/tweets", {
+    const res = await fetch("/api/events", {
       method: "POST",
       body: JSON.stringify({
-        handle,
-        content,
-        replyToTweetId,
+        userHandle,
+        title,
+        fromDate,
+        toDate,
       }),
     });
 
@@ -39,7 +42,7 @@ export default function useTweet() {
   };
 
   return {
-    postTweet,
+    postEvent,
     loading,
   };
 }

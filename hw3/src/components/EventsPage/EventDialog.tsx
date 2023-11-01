@@ -20,14 +20,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn, validateTitle, validateFrom, validateTo } from "@/lib/utils";
+import useEvent from "@/hooks/useEvent";
 
 // import { DialogProps } from "@mui/material";
 
 type DialogProps = {
+  userHandle: string;
   dialogOpen: boolean;
   setDialogOpen: (d: boolean) => void;
 };
+
 export default function EventDialog({
+  userHandle,
   dialogOpen,
   setDialogOpen,
 }: DialogProps) {
@@ -40,6 +44,7 @@ export default function EventDialog({
   const titleInputRef = useRef<HTMLInputElement>(null);
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
+  const { postEvent, loading } = useEvent();
 
   // const [usernameError, setUsernameError] = useState(false);
   // const [handleError, setHandleError] = useState(false);
@@ -54,30 +59,55 @@ export default function EventDialog({
   //   setDialogOpen(!validateUsername(username) || !validateHandle(handle));
   // }, [searchParams]);
 
-  const handleSave = () => {
-    // const username = usernameInputRef.current?.value;
-    // const handle = handleInputRef.current?.value;
+  const addNewEvent = async () => {
     const title = titleInputRef.current?.value;
     const fromDate = fromInputRef.current?.value;
     const toDate = toInputRef.current?.value;
+    if (!title) return;
+    if (!fromDate) return;
+    if (!toDate) return;
 
-    const newTitleError = !validateTitle(title);
-    setTitleError(newTitleError);
-    const newFromError = !validateFrom(fromDate);
-    setFromError(newFromError);
-    const newTonameError = !validateTo(toDate);
-    setToError(newTonameError);
-
-    if (newTitleError || newFromError || newTonameError) {
+    try {
+      await postEvent({
+        userHandle,
+        title,
+        fromDate,
+        toDate
+      });
+      titleInputRef.current.value = "";
+      fromInputRef.current.value = "";
+      toInputRef.current.value = "";
+      
+      // this triggers the onInput event on the growing textarea
+      // thus triggering the resize
+      // for more info, see: https://developer.mozilla.org/en-US/docs/Web/API/Event
+      // titleInputRef.current.dispatchEvent( // issue a new event to resize the textarea
+      //   new Event("input", { bubbles: true, composed: true }),
+      // );
+      setDialogOpen(false);
+      return true;
+    } catch (e) {
+      console.error(e);
+      alert("Error posting event");
       return false;
     }
+  };
 
-    // const newUsernameError = !validateUsername(username);
-    // setUsernameError(newUsernameError);
-    // const newHandleError = !validateHandle(handle);
-    // setHandleError(newHandleError);
+  // const handleSave = () => {
+    // const username = usernameInputRef.current?.value;
+    // const handle = handleInputRef.current?.value;
+    // const title = titleInputRef.current?.value;
+    // const fromDate = fromInputRef.current?.value;
+    // const toDate = toInputRef.current?.value;
 
-    // if (newUsernameError || newHandleError) {
+    // const newTitleError = !validateTitle(title);
+    // setTitleError(newTitleError);
+    // const newFromError = !validateFrom(fromDate);
+    // setFromError(newFromError);
+    // const newTonameError = !validateTo(toDate);
+    // setToError(newTonameError);
+
+    // if (newTitleError || newFromError || newTonameError) {
     //   return false;
     // }
 
@@ -87,29 +117,29 @@ export default function EventDialog({
     // We have to pass in the current query params so that we can preserve the
     // other query params. We can't set new query params directly because the
     // searchParams object returned by useSearchParams is read-only.
-    const params = new URLSearchParams(searchParams);
-    params.set("title", title!);
-    params.set("from", fromDate!);
-    params.set("to", toDate!);
+    // const params = new URLSearchParams(searchParams);
+    // params.set("title", title!);
+    // params.set("from", fromDate!);
+    // params.set("to", toDate!);
     // params.set("username", username!);
     // params.set("handle", handle!);
 
-    router.push(`${pathname}?${params.toString()}`);
-    setDialogOpen(false);
+  //   router.push(`${pathname}?${params.toString()}`);
+  //   setDialogOpen(false);
 
-    return true;
-  };
+  //   return true;
+  // };
 
   // The Dialog component calls onOpenChange when the dialog wants to open or
   // close itself. We can perform some checks here to prevent the dialog from
   // closing if the input is invalid.
-  const handleOpenChange = (open: boolean) => {
+  const handleOpenChange = async (open: boolean) => {
     if (open) {
       setDialogOpen(true);
     } else {
       // if handleSave returns false, it means that the input is invalid, so we
       // don't want to close the dialog
-      handleSave() && setDialogOpen(false);
+      !(await addNewEvent()) && setDialogOpen(false);
     }
   };
 
@@ -179,7 +209,7 @@ export default function EventDialog({
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleSave}>新增</Button>
+          <Button onClick={addNewEvent}>新增</Button>
           <Button onClick={() => setDialogOpen(false)}>cancel</Button>
         </DialogFooter>
       </DialogContent>

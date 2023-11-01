@@ -1,20 +1,28 @@
 import { Button } from "@mui/material";
 import { eq, desc, isNull, sql } from "drizzle-orm";
 
+import BookData from "@/components/Data.json";
+import Event from "@/components/EventsPage/Event";
 import HeaderButton from "@/components/EventsPage/HeaderButton";
 // import NameDialog from "@/components/EventsPage/NameDialog";
 import { NewEventButton } from "@/components/EventsPage/NewEventButton";
-import Tweet from "@/components/Tweets/Tweet";
+// import Tweet from "@/components/Tweets/Tweet";
 // import TweetInput from "@/components/TweetInput";
-import { SearchBar } from "@/components/ui/search";
+import SearchBar from "@/components/ui/search";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
-import { likesTable, tweetsTable, usersTable } from "@/db/schema";
+import {
+  joinsTable,
+  /*, tweetsTable, */
+  usersTable,
+  eventsTable,
+  tweetsTable,
+} from "@/db/schema";
 
 type HomePageProps = {
   searchParams: {
     username?: string;
-    handle?: string;
+    handle: string;
   };
 };
 
@@ -74,19 +82,19 @@ export default async function Home({
   //   FROM likes
   //   GROUP BY tweet_id
   // )
-  const likesSubquery = db.$with("likes_count").as(
+  const joinsSubquery = db.$with("joins_count").as(
     db
       .select({
-        tweetId: likesTable.tweetId,
+        eventId: joinsTable.eventId,
         // some times we need to do some custom logic in sql
         // although drizzle-orm is very powerful, it doesn't support every possible
         // SQL query. In these cases, we can use the sql template literal tag
         // to write raw SQL queries.
         // read more about it here: https://orm.drizzle.team/docs/sql
-        likes: sql<number | null>`count(*)`.mapWith(Number).as("likes"),
+        joins: sql<number | null>`count(*)`.mapWith(Number).as("joins"),
       })
-      .from(likesTable)
-      .groupBy(likesTable.tweetId),
+      .from(joinsTable)
+      .groupBy(joinsTable.eventId),
   );
 
   // This subquery generates the following SQL:
@@ -97,43 +105,45 @@ export default async function Home({
   //   FROM likes
   //   WHERE user_handle = {handle}
   //  )
-  const likedSubquery = db.$with("liked").as(
+  const joinedSubquery = db.$with("joined").as(
     db
       .select({
-        tweetId: likesTable.tweetId,
+        eventId: joinsTable.eventId,
         // this is a way to make a boolean column (kind of) in SQL
         // so when this column is joined with the tweets table, we will
         // get a constant 1 if the user liked the tweet, and null otherwise
         // we can then use the mapWith(Boolean) function to convert the
         // constant 1 to true, and null to false
-        liked: sql<number>`1`.mapWith(Boolean).as("liked"),
+        joined: sql<number>`1`.mapWith(Boolean).as("joined"),
       })
-      .from(likesTable)
-      .where(eq(likesTable.userHandle, handle ?? "")),
+      .from(joinsTable)
+      .where(eq(joinsTable.userHandle, handle ?? "")),
   );
 
-  const tweets = await db
-    .with(likesSubquery, likedSubquery)
+  const events = await db
+    .with(joinsSubquery, joinedSubquery)
     .select({
-      id: tweetsTable.id,
-      content: tweetsTable.content,
-      username: usersTable.displayName,
-      handle: usersTable.handle,
-      likes: likesSubquery.likes,
-      createdAt: tweetsTable.createdAt,
-      liked: likedSubquery.liked,
+      id: eventsTable.id,
+      title: eventsTable.title,
+      // username: usersTable.displayName,
+      // handle: usersTable.handle,
+      fromDate: eventsTable.fromDate,
+      toDate: eventsTable.toDate,
+      joins: joinsSubquery.joins,
+      joined: joinedSubquery.joined,
+      createdAt: eventsTable.createdAt,
     })
-    .from(tweetsTable)
-    .where(isNull(tweetsTable.replyToTweetId))
-    .orderBy(desc(tweetsTable.createdAt))
+    .from(eventsTable)
+    // .where(isNull(tweetsTable.replyToEventId))
+    .orderBy(desc(eventsTable.createdAt))
     // JOIN is by far the most powerful feature of relational databases
     // it allows us to combine data from multiple tables into a single query
     // read more about it here: https://orm.drizzle.team/docs/select#join
     // or watch this video:
     // https://planetscale.com/learn/courses/mysql-for-developers/queries/an-overview-of-joins
-    .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
-    .leftJoin(likesSubquery, eq(tweetsTable.id, likesSubquery.tweetId))
-    .leftJoin(likedSubquery, eq(tweetsTable.id, likedSubquery.tweetId))
+    .innerJoin(usersTable, eq(eventsTable.userHandle, usersTable.handle))
+    .leftJoin(joinsSubquery, eq(eventsTable.id, joinsSubquery.eventId))
+    .leftJoin(joinedSubquery, eq(eventsTable.id, joinedSubquery.eventId))
     .execute();
 
   return (
@@ -147,24 +157,22 @@ export default async function Home({
             <HeaderButton />
           </div>
         </div>
-        <div className="algin-center flex w-full flex-row justify-between px-4 pt-3">
-          <SearchBar />
-          <NewEventButton />
-          {/* <TweetInput /> */}
+        <div className="algin-center flex w-full flex-row pt-3">
+          <SearchBar placeholder="搜尋想要參加的活動" data={BookData} />
+          <NewEventButton userHandle={handle}/>
         </div>
         <Separator />
-        {tweets.map((tweet) => (
-          <Tweet
-            key={tweet.id}
-            id={tweet.id}
-            username={username}
+        {events.map((event) => (
+          <Event
+            key={event.id}
+            id={event.id}
+            title={event.title}
+            fromDate={event.fromDate}
+            toDate={event.toDate}
             handle={handle}
-            authorName={tweet.username}
-            authorHandle={tweet.handle}
-            content={tweet.content}
-            likes={tweet.likes}
-            liked={tweet.liked}
-            createdAt={tweet.createdAt!}
+            joins={event.joins}
+            joined={event.joined}
+            createdAt={event.createdAt!}
           />
         ))}
       </div>

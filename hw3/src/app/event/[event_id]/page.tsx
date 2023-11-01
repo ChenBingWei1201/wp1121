@@ -12,19 +12,16 @@ import {
 } from "lucide-react";
 
 import { JoinButton } from "@/components/Tweets/JoinButton";
-// import LikeButton from "@/components/LikeButton";
 import ReplyInput from "@/components/Tweets/ReplyInput";
 import Tweet from "@/components/Tweets/Tweet";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
-import { likesTable, tweetsTable, usersTable } from "@/db/schema";
+import { eventsTable, joinsTable, usersTable, tweetsTable } from "@/db/schema";
 
-// import { getAvatar } from "@/lib/utils";
-
-type TweetPageProps = {
+type EventPageProps = {
   params: {
-    // this came from the file name: [tweet_id].tsx
-    tweet_id: string;
+    // this came from the file name: [event_id].tsx
+    event_id: string;
   };
   searchParams: {
     // this came from the query string: ?username=madmaxieee
@@ -34,25 +31,27 @@ type TweetPageProps = {
 };
 
 // these two fields are always available in the props object of a page component
-export default async function TweetPage({
-  params: { tweet_id },
+export default async function EventPage({
+  params: { event_id },
   searchParams: { username, handle },
-}: TweetPageProps) {
-  const tweet_id_num = parseInt(tweet_id);
+}: EventPageProps) {
+  const event_id_num = parseInt(event_id);
 
   const errorRedirect = () => {
     const params = new URLSearchParams();
     username && params.set("username", username);
     handle && params.set("handle", handle);
+    // fromDate && params.set("fromDate", fromDate);
+    // toDate && params.set("toDate", toDate);
     redirect(`/?${params.toString()}`);
   };
 
-  if (isNaN(tweet_id_num)) {
+  if (isNaN(event_id_num)) {
     errorRedirect();
   }
 
-  // This is the easiest way to get the tweet data
-  // you can run separate queries for the tweet data, likes, and liked
+  // This is the easiest way to get the event data
+  // you can run separate queries for the event data, joins, and joined
   // and then combine them in javascript.
   //
   // This gets things done for now, but it's not the best way to do it
@@ -66,54 +65,55 @@ export default async function TweetPage({
   //   user_handle,
   //   created_at
   //   FROM tweets
-  //   WHERE id = {tweet_id_num};
-  const [tweetData] = await db
+  //   WHERE id = {event_id_num};
+  const [eventData] = await db
     .select({
-      id: tweetsTable.id,
-      content: tweetsTable.content,
-      userHandle: tweetsTable.userHandle,
-      createdAt: tweetsTable.createdAt,
+      id: eventsTable.id,
+      title: eventsTable.title,
+      fromDate: eventsTable.fromDate,
+      toDate: eventsTable.toDate,
+      userHandle: eventsTable.userHandle,
     })
-    .from(tweetsTable)
-    .where(eq(tweetsTable.id, tweet_id_num))
+    .from(eventsTable)
+    .where(eq(eventsTable.id, event_id_num))
     .execute();
 
-  // Although typescript thinks tweetData is not undefined, it is possible
-  // that tweetData is undefined. This can happen if the tweet doesn't exist.
+  // Although typescript thinks eventData is not undefined, it is possible
+  // that eventData is undefined. This can happen if the event doesn't exist.
   // Thus the destructuring assignment above is not safe. We need to check
-  // if tweetData is undefined before using it.
-  if (!tweetData) {
+  // if eventData is undefined before using it.
+  if (!eventData) {
     errorRedirect();
   }
 
   // This piece of code runs the following SQL query on the tweets table:
   // SELECT
   //  id,
-  //  FROM likes
-  //  WHERE tweet_id = {tweet_id_num};
-  // Since we only need the number of likes, we don't actually need to select
+  //  FROM joins
+  //  WHERE event_id = {event_id_num};
+  // Since we only need the number of joins, we don't actually need to select
   // the id here, we can select a constant 1 instead. Or even better, we can
   // use the count aggregate function to count the number of rows in the table.
-  // This is what we do in the next code block in likesSubquery.
-  const likes = await db
+  // This is what we do in the next code block in joinsSubquery.
+  const joins = await db
     .select({
-      id: likesTable.id,
+      id: joinsTable.id,
     })
-    .from(likesTable)
-    .where(eq(likesTable.tweetId, tweet_id_num))
+    .from(joinsTable)
+    .where(eq(joinsTable.eventId, event_id_num))
     .execute();
 
-  const numLikes = likes.length;
+  const numLikes = joins.length;
 
-  const [liked] = await db
+  const [joined] = await db
     .select({
-      id: likesTable.id,
+      id: joinsTable.id,
     })
-    .from(likesTable)
+    .from(joinsTable)
     .where(
       and(
-        eq(likesTable.tweetId, tweet_id_num),
-        eq(likesTable.userHandle, handle ?? ""),
+        eq(joinsTable.eventId, event_id_num),
+        eq(joinsTable.userHandle, handle ?? ""),
       ),
     )
     .execute();
@@ -124,58 +124,58 @@ export default async function TweetPage({
       handle: usersTable.handle,
     })
     .from(usersTable)
-    .where(eq(usersTable.handle, tweetData.userHandle))
+    .where(eq(usersTable.handle, eventData.userHandle))
     .execute();
 
-  const tweet = {
-    id: tweetData.id,
-    content: tweetData.content,
-    username: user.displayName,
+  const event = {
+    id: eventData.id,
+    title: eventData.title,
+    fromDate: eventData.fromDate,
+    toDate: eventData.toDate,
+    joins: numLikes,
+    joined: Boolean(joined),
     handle: user.handle,
-    likes: numLikes,
-    createdAt: tweetData.createdAt,
-    liked: Boolean(liked),
   };
 
   // The following code is almost identical to the code in src/app/page.tsx
   // read the comments there for more info.
-  const likesSubquery = db.$with("likes_count").as(
+  const joinsSubquery = db.$with("joins_count").as(
     db
       .select({
-        tweetId: likesTable.tweetId,
-        likes: sql<number | null>`count(*)`.mapWith(Number).as("likes"),
+        eventId: joinsTable.eventId,
+        joins: sql<number | null>`count(*)`.mapWith(Number).as("joins"),
       })
-      .from(likesTable)
-      .groupBy(likesTable.tweetId),
+      .from(joinsTable)
+      .groupBy(joinsTable.eventId),
   );
 
-  const likedSubquery = db.$with("liked").as(
+  const joinedSubquery = db.$with("joined").as(
     db
       .select({
-        tweetId: likesTable.tweetId,
-        liked: sql<number>`1`.mapWith(Boolean).as("liked"),
+        eventId: joinsTable.eventId,
+        joined: sql<number>`1`.mapWith(Boolean).as("joined"),
       })
-      .from(likesTable)
-      .where(eq(likesTable.userHandle, handle ?? "")),
+      .from(joinsTable)
+      .where(eq(joinsTable.userHandle, handle ?? "")),
   );
 
   const replies = await db
-    .with(likesSubquery, likedSubquery)
+    .with(joinsSubquery, joinedSubquery)
     .select({
       id: tweetsTable.id,
       content: tweetsTable.content,
       username: usersTable.displayName,
       handle: usersTable.handle,
-      likes: likesSubquery.likes,
+      joins: joinsSubquery.joins,
       createdAt: tweetsTable.createdAt,
-      liked: likedSubquery.liked,
+      joined: joinedSubquery.joined,
     })
     .from(tweetsTable)
-    .where(eq(tweetsTable.replyToTweetId, tweet_id_num))
+    .where(eq(tweetsTable.replyToEventId, event_id_num))
     .orderBy(desc(tweetsTable.createdAt))
     .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
-    .leftJoin(likesSubquery, eq(tweetsTable.id, likesSubquery.tweetId))
-    .leftJoin(likedSubquery, eq(tweetsTable.id, likedSubquery.tweetId))
+    .leftJoin(joinsSubquery, eq(eventsTable.id, joinsSubquery.eventId))
+    .leftJoin(joinedSubquery, eq(eventsTable.id, joinedSubquery.eventId))
     .execute();
 
   // const [joined, setJoined] = useState(false);
@@ -195,16 +195,16 @@ export default async function TweetPage({
             <div className="flex w-full gap-3"> */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {/* <img
-                src={getAvatar(tweet.username)}
+                src={getAvatar(event.title)}
                 alt="user avatar"
                 width={48}
                 height={48}
                 className="h-12 w-12 rounded-full"
               />
               <div>
-                <p className="font-bold">{tweet.username ?? "..."}</p>
+                <p className="font-bold">{event.title ?? "..."}</p>
                 <p className="font-normal text-gray-500">
-                  @{tweet.handle ?? "..."}
+                  @{event.fromDate ?? "..."}
                 </p>
               </div>
             </div>
@@ -213,18 +213,18 @@ export default async function TweetPage({
             </button>
           </div> */}
             <p className="contain-center my-3 flex h-16 items-center justify-between whitespace-pre-wrap rounded-xl bg-slate-200 text-3xl">
-              {`  ${tweet.content}`}
-              <span className="text-2xl">{`4人參加   `}</span>
+              {`  ${event.title}`}
+              <span className="text-2xl">{`${event.joins}人參加   `}</span>
             </p>
             {/* <time className="my-4 block text-sm text-gray-500"> */}
             {/* dayjs is a great library for working with dates in javascript */}
             {/* we use it to format the date in a nice way */}
-            {/* {dayjs(tweet.createdAt).format("h:mm A · D MMM YYYY")}
+            {/* {dayjs(event.createdAt).format("h:mm A · D MMM YYYY")}
           </time> */}
             {/* <Separator /> */}
             <div className="my-3 flex h-16 items-center justify-between gap-4 rounded-xl bg-slate-200">
               <p className="whitespace-pre-wrap text-2xl">
-                {`   From 2023-10-30 to 2023-11-30`}
+                {`   From ${event.fromDate} to ${event.toDate}`}
               </p>
               {/* <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
               <MessageCircle size={20} className="-scale-x-100" />
@@ -233,10 +233,10 @@ export default async function TweetPage({
               <Repeat2 size={22} />
             </button>
             <LikeButton
-              handle={handle}
-              initialLikes={tweet.likes}
-              initialLiked={tweet.liked}
-              tweetId={tweet.id}
+              fromDate={fromDate}
+              initialLikes={event.joins}
+              initialLiked={event.joined}
+              eventId={event.id}
             />
             <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
               <Share size={18} />
@@ -245,27 +245,29 @@ export default async function TweetPage({
             {/* <Separator /> */}
           </div>
           <JoinButton
+            initialJoinedPeople={event.joins}
+            initialJoined={event.joined}
+            tweetId={event.id}
             handle={handle}
-            initialJoinedPeople={tweet.likes}
-            initialJoined={tweet.liked}
-            tweetId={tweet.id}
           />
           {/* {!joined ? <Button>我想參加</Button> : <Button>我已參加</Button>} */}
         </div>
 
-        <ReplyInput replyToTweetId={tweet.id} replyToHandle={tweet.handle} />
+        <ReplyInput
+          replyToTweetId={event.id} /*replyToHandle={event.fromDate}*/
+        />
         <Separator />
         {replies.map((reply) => (
           <Tweet
             key={reply.id}
             id={reply.id}
-            username={username}
-            handle={handle}
+            username={reply.username}
+            handle={reply.handle}
             authorName={reply.username}
             authorHandle={reply.handle}
             content={reply.content}
-            likes={reply.likes}
-            liked={reply.liked}
+            // joins={reply.joins}
+            // joined={reply.joined}
             createdAt={reply.createdAt!}
           />
         ))}

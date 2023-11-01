@@ -16,7 +16,7 @@ export default function useLike() {
     if (loading) return;
     setLoading(true);
 
-    const res = await fetch("/api/likes", {
+    const res = await fetch("/api/joins", {
       method: "POST",
       body: JSON.stringify({
         tweetId,
@@ -43,7 +43,7 @@ export default function useLike() {
     if (loading) return;
 
     setLoading(true);
-    const res = await fetch("/api/likes", {
+    const res = await fetch("/api/joins", {
       method: "DELETE",
       body: JSON.stringify({
         tweetId,

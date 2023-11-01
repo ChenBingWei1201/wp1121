@@ -51,7 +51,7 @@ const JoinButton = ({
 
   return (
     <>
-      {!joined ? (
+      {/* {!joined ? (
         <Button
           variant="outlined"
           sx={{
@@ -62,6 +62,7 @@ const JoinButton = ({
             width: 0.08,
           }}
           onClick={() => setJoined(true)}
+          disabled={loading}
         >
           我想參加
         </Button>
@@ -77,10 +78,21 @@ const JoinButton = ({
             width: 0.08,
           }}
           onClick={() => setJoined(false)}
+          disabled={loading}
         >
           我已參加
         </Button>
-      )}
+      )} */}
+      <button
+        className={cn(
+          "m-1.5 h-1 mt-5 w-0.5",
+          joined && "bg-green-400",
+        )}
+        onClick={handleClick}
+        disabled={loading}
+      >
+        {!joined ? "我想參加" : "我已參加"}
+      </button>
     </>
   );
 };

@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils";
 
 type ReplyInputProps = {
   replyToTweetId: number;
-  replyToHandle: string;
+  // replyToHandle: string;
 };
 
 export default function ReplyInput({
   replyToTweetId,
-  replyToHandle,
+  // replyToHandle,
 }: ReplyInputProps) {
   const { username, handle } = useUserInfo();
   const textareaRef = useRef<HTMLTextAreaElement>(null);

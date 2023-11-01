@@ -4,34 +4,34 @@ import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@/db";
-import { likesTable } from "@/db/schema";
+import { joinsTable } from "@/db/schema";
 
-const likeTweetRequestSchema = z.object({
-  tweetId: z.number().positive(),
+const joinEventRequestSchema = z.object({
+  eventId: z.number().positive(),
   userHandle: z.string().min(1).max(50),
 });
 
-type LikeTweetRequest = z.infer<typeof likeTweetRequestSchema>;
+type LikeTweetRequest = z.infer<typeof joinEventRequestSchema>;
 
 export async function GET(request: NextRequest) {
   const data = await request.json();
 
   try {
-    likeTweetRequestSchema.parse(data);
+    joinEventRequestSchema.parse(data);
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const { tweetId, userHandle } = data as LikeTweetRequest;
+  const { eventId, userHandle } = data as LikeTweetRequest;
 
   try {
     const [exist] = await db
       .select({ dummy: sql`1` })
-      .from(likesTable)
+      .from(joinsTable)
       .where(
         and(
-          eq(likesTable.tweetId, tweetId),
-          eq(likesTable.userHandle, userHandle),
+          eq(joinsTable.eventId, eventId),
+          eq(joinsTable.userHandle, userHandle),
         ),
       )
       .execute();
@@ -48,18 +48,18 @@ export async function POST(request: NextRequest) {
   const data = await request.json();
 
   try {
-    likeTweetRequestSchema.parse(data);
+    joinEventRequestSchema.parse(data);
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const { tweetId, userHandle } = data as LikeTweetRequest;
+  const { eventId, userHandle } = data as LikeTweetRequest;
 
   try {
     await db
-      .insert(likesTable)
+      .insert(joinsTable)
       .values({
-        tweetId,
+        eventId,
         userHandle,
       })
       .onConflictDoNothing()
@@ -78,20 +78,20 @@ export async function DELETE(request: NextRequest) {
   const data = await request.json();
 
   try {
-    likeTweetRequestSchema.parse(data);
+    joinEventRequestSchema.parse(data);
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const { tweetId, userHandle } = data as LikeTweetRequest;
+  const { eventId, userHandle } = data as LikeTweetRequest;
 
   try {
     await db
-      .delete(likesTable)
+      .delete(joinsTable)
       .where(
         and(
-          eq(likesTable.tweetId, tweetId),
-          eq(likesTable.userHandle, userHandle),
+          eq(joinsTable.eventId, eventId),
+          eq(joinsTable.userHandle, userHandle),
         ),
       )
       .execute();

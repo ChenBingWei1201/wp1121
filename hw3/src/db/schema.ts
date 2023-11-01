@@ -55,7 +55,10 @@ export const tweetsTable = pgTable(
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    replyToTweetId: integer("reply_to_tweet_id"),
+    replyToEventId: integer("reply_to_event_id").references(() => eventsTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
     createdAt: timestamp("created_at").default(sql`now()`),
   },
   (table) => ({
@@ -64,30 +67,60 @@ export const tweetsTable = pgTable(
     // we can even set composite indexes, which are indexes on multiple columns
     // learn more about composite indexes here:
     // https://planetscale.com/learn/courses/mysql-for-developers/indexes/composite-indexes
-    replyToAndTimeIndex: index("reply_to_time_index").on(
-      table.replyToTweetId,
-      table.createdAt,
-    ),
+    // replyToAndTimeIndex: index("reply_to_time_index").on(
+    //   table.replyToTweetId,
+    //   table.createdAt,
+    // ),
   }),
 );
 
-export const likesTable = pgTable(
-  "likes",
+export const joinsTable = pgTable(
+  "joins",
   {
     id: serial("id").primaryKey(),
     userHandle: varchar("user_handle", { length: 50 })
       .notNull()
       .references(() => usersTable.handle, { onDelete: "cascade" }),
-    tweetId: integer("tweet_id")
+    eventId: integer("event_id")
       .notNull()
-      .references(() => tweetsTable.id, { onDelete: "cascade" }),
+      .references(() => eventsTable.id, { onDelete: "cascade" }),
   },
   (table) => ({
-    tweetIdIndex: index("tweet_id_index").on(table.tweetId),
+    eventIdIndex: index("event_id_index").on(table.eventId),
     userHandleIndex: index("user_handle_index").on(table.userHandle),
     // unique constraints ensure that there are no duplicate combinations of
     // values in the table. In this case, we want to ensure that a user can't
     // like the same tweet twice.
-    uniqCombination: unique().on(table.userHandle, table.tweetId),
+    uniqCombination: unique().on(table.userHandle, table.eventId),
+  }),
+);
+
+export const eventsTable = pgTable(
+  "events",
+  {
+    id: serial("id").primaryKey(),
+    userHandle: varchar("user_handle", { length: 50 })
+      .notNull()
+      .references(() => usersTable.handle, { onDelete: "cascade" }),
+    title: varchar("title", { length: 150 }).notNull().unique(),
+    // replyToEventId: integer("reply_to_event_id"),
+    fromDate: varchar("from", { length: 9 }).notNull(),
+    toDate: varchar("to", { length: 9 }).notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`),
+    // userHandle: varchar("user_handle", { length: 50 })
+    //   .notNull()
+    //   .references(() => usersTable.handle, { onDelete: "cascade" }),
+    // eventId: integer("event_id")
+    //   .notNull()
+    //   .references(() => tweetsTable.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    userHandleIndex: index("user_handle_index").on(table.userHandle),
+    eventIdIndex: index("event_id_index").on(table.title),
+    // userHandleIndex: index("user_handle_index").on(table.userHandle),
+    // unique constraints ensure that there are no duplicate combinations of
+    // values in the table. In this case, we want to ensure that a user can't
+    // like the same tweet twice.
+    // uniqCombination: unique().on(table.userHandle),
   }),
 );

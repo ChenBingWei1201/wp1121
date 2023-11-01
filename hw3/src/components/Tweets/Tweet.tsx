@@ -15,9 +15,9 @@ type TweetProps = {
   authorName: string;
   authorHandle: string;
   content: string;
-  likes: number;
+  // likes: number;
   createdAt: Date;
-  liked?: boolean;
+  // liked?: boolean;
 };
 
 // note that the Tweet component is also a server component
@@ -29,13 +29,13 @@ export default function Tweet({
   authorName,
   authorHandle,
   content,
-  likes,
+  // likes,
   createdAt,
-  liked,
-}: TweetProps) {
+} // liked,
+: TweetProps) {
   return (
     <>
-      <Link
+      {/* <Link
         className="w-full px-4 pt-3 transition-colors hover:bg-gray-50"
         href={{
           pathname: `/tweet/${id}`,
@@ -44,27 +44,27 @@ export default function Tweet({
             handle,
           },
         }}
-      >
-        <div className="flex gap-4">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {/* <img
+      > */}
+      <div className="flex gap-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* <img
             src={getAvatar(authorName)}
             alt="avatar"
             className="h-12 w-12 rounded-full"
           /> */}
-          <article className="flex grow flex-row justify-between">
-            <p className="m-4 text-2xl">
-              {`${authorName}: ${content}`}
-              {/* <span className="ml-2 font-normal text-gray-400">
+        <article className="flex grow flex-row justify-between">
+          <p className="m-4 text-2xl" key={id}>
+            {`${authorName}: ${content}`}
+            {/* <span className="ml-2 font-normal text-gray-400">
                 @{authorHandle}
               </span> */}
-              {/* <span className="ml-2 font-normal text-gray-400">
+            {/* <span className="ml-2 font-normal text-gray-400">
                 {dayjs(createdAt).format("h:mm A · D MMM YYYY")}
               </span> */}
-            </p>
-            {/* `white-space: pre-wrap` tells html to render \n and \t chracters  */}
-            {/* <article className="mt-2 whitespace-pre-wrap">{content}</article> */}
-            {/* <div className="my-2 flex items-center justify-end gap-4 text-gray-400 mr-0">
+          </p>
+          {/* `white-space: pre-wrap` tells html to render \n and \t chracters  */}
+          {/* <article className="mt-2 whitespace-pre-wrap">{content}</article> */}
+          {/* <div className="my-2 flex items-center justify-end gap-4 text-gray-400 mr-0">
               <button className="rounded-full p-1.5 transition-colors duration-300 hover:bg-brand/10 hover:text-brand">
                 <MessageCircle size={20} className="-scale-x-100" />
               </button>
@@ -81,9 +81,9 @@ export default function Tweet({
                 <Share size={18} />
               </button>
             </div> */}
-          </article>
-        </div>
-      </Link>
+        </article>
+      </div>
+      {/* </Link> */}
       <Separator />
     </>
   );

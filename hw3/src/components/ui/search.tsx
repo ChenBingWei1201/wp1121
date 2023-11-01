@@ -1,6 +1,53 @@
-const SearchBar = () => {
+"use client";
+
+import React, { ReactHTMLElement, useState } from "react";
+
+import { ClickAwayListener } from "@mui/material";
+
+import "./SearchBar.css";
+import { Separator } from "./separator";
+
+type Data = {
+  author: string;
+  country: string;
+  imageLink: string;
+  language: string;
+  link: string;
+  pages: number;
+  title: string;
+  year: number;
+};
+
+type SearchBarProps = {
+  placeholder: string;
+  data: Data[];
+};
+
+const SearchBar = ({ placeholder, data }: SearchBarProps) => {
+  const [filteredData, setFilteredData] = useState<Data[]>([]);
+  const [wordEntered, setWordEntered] = useState("");
+  const [clickAway, setClickAway] = useState(false);
+  const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchWord = e.target.value;
+    setWordEntered(searchWord);
+    const newFilter: Data[] = data.filter((value) => {
+      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+    });
+
+    if (searchWord === "") {
+      setFilteredData([]);
+    } else {
+      setFilteredData(newFilter);
+    }
+  };
+
+  const clearInput = () => {
+    setFilteredData([]);
+    setWordEntered("");
+  };
+
   return (
-    <form className="my-5">
+    <form className="mx-5 my-5 w-10/12">
       <label
         htmlFor="default-search"
         className="sr-only mb-2 text-2xl font-medium text-gray-900 dark:text-white"
@@ -25,22 +72,38 @@ const SearchBar = () => {
             />
           </svg>
         </div>
-        <input
-          type="search"
-          id="default-search"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 pl-10 text-2xl text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          placeholder="搜尋想要參加的活動"
-          required
-        />
-        <button
-          type="submit"
-          className="absolute bottom-2.5 right-2.5 rounded-lg bg-blue-700 px-4 py-2 text-xl font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          搜尋
-        </button>
+        <ClickAwayListener onClickAway={() => setClickAway(true)}>
+          <input
+            type="search"
+            id="default-search"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 pl-10 text-2xl text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            placeholder={placeholder}
+            onChange={handleFilter}
+            required
+            onClick={() => setClickAway(false)}
+          />
+        </ClickAwayListener>
       </div>
+      {filteredData.length != 0 && !clickAway && (
+        <div className="dataResult absolute mt-1 h-36 w-9/12 overflow-hidden overflow-y-auto bg-white shadow-xl">
+          {filteredData.slice(0, 15).map((value: Data, key) => {
+            return (
+              <>
+                <a
+                  className="flex h-14 w-full items-center text-lg decoration-black hover:bg-slate-200 "
+                  href={value.link}
+                  target="_blank"
+                >
+                  <p className="ml-5">{value.title} </p>
+                </a>
+                <Separator />
+              </>
+            );
+          })}
+        </div>
+      )}
     </form>
   );
 };
 
-export { SearchBar };
+export default SearchBar;
