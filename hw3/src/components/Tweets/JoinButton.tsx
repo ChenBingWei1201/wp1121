@@ -85,7 +85,7 @@ const JoinButton = ({
       )} */}
       <button
         className={cn(
-          "mr-5 mt-16 flex h-20 w-20 justify-center rounded-lg border-2 border-cyan-400 text-center text-2xl",
+          "mr-5 mt-16 flex h-20 w-20 flex-wrap justify-center rounded-lg border-2 border-cyan-400 text-center text-2xl",
           joined && "bg-green-400",
         )}
         onClick={handleClick}

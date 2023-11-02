@@ -9,20 +9,20 @@ export default function useTweet() {
   const postTweet = async ({
     handle,
     content,
-    replyToTweetId,
+    replyToEventId,
   }: {
     handle: string;
     content: string;
-    replyToTweetId?: number;
+    replyToEventId?: number;
   }) => {
     setLoading(true);
 
-    const res = await fetch("/api/events/tweets", {
+    const res = await fetch(`/api/tweets`, {
       method: "POST",
       body: JSON.stringify({
         handle,
         content,
-        replyToTweetId,
+        replyToEventId,
       }),
     });
 

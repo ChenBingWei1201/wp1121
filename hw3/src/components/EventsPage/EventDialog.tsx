@@ -20,8 +20,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useEvent from "@/hooks/useEvent";
+import useLike from "@/hooks/useLike";
 import { cn, validateTitle, validateFrom, validateTo } from "@/lib/utils";
+import { eventsTable } from "@/db/schema";
 
+import DatePicker from "./DatePicker";
+import { db } from "@/db";
 // import { DialogProps } from "@mui/material";
 
 type DialogProps = {
@@ -30,13 +34,13 @@ type DialogProps = {
   setDialogOpen: (d: boolean) => void;
 };
 
-export default function EventDialog({
+export default async function EventDialog({
   userHandle,
   dialogOpen,
   setDialogOpen,
 }: DialogProps) {
   // const [dialogOpen, setDialogOpen] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
   // const pathname = usePathname();
   // const searchParams = useSearchParams();
   // const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -45,12 +49,17 @@ export default function EventDialog({
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
   const { postEvent, loading } = useEvent();
-
+  const { likeTweet } = useLike();
   // const [usernameError, setUsernameError] = useState(false);
   // const [handleError, setHandleError] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const [fromError, setFromError] = useState(false);
   const [toError, setToError] = useState(false);
+  // const totalEvent = await db.query.eventsTable.findMany({
+  //   with: {
+  //     id: true
+  //   }
+  // })
 
   // useEffect(() => {
   //   const username = searchParams.get("username");
@@ -90,9 +99,10 @@ export default function EventDialog({
       // const params = new URLSearchParams(searchParams);
       // params.set("username", username!);
       // params.set("handle", handle!);
-      // router.push(`${pathname}?${params.toString()}`);
+      // router.push(`event/${totalEvent.length+1}`);
 
       setDialogOpen(false);
+      // id+=1;
       return true;
     } catch (e) {
       console.error(e);
@@ -183,6 +193,10 @@ export default function EventDialog({
               className={cn(fromError && "border-red-500", "col-span-3")}
               ref={fromInputRef}
             />
+            {/* <DatePicker
+              placeholder="From"
+              ref={fromInputRef}
+            /> */}
             {fromError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
                 Invalid title, use only{" "}
@@ -202,6 +216,10 @@ export default function EventDialog({
               className={cn(toError && "border-red-500", "col-span-3")}
               ref={toInputRef}
             />
+            {/* <DatePicker
+              placeholder="To"
+              ref={toInputRef}
+            /> */}
             {toError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
                 Invalid title, use only{" "}

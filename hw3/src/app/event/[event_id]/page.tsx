@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import dayjs from "dayjs";
+// import { id_ID } from "@faker-js/faker";
+// import dayjs from "dayjs";
 import { eq, desc, sql, and } from "drizzle-orm";
 import {
-  MessageCircle,
-  MoreHorizontal,
-  Repeat2,
-  Share,
+  // MessageCircle,
+  // MoreHorizontal,
+  // Repeat2,
+  // Share,
   ChevronLeft,
 } from "lucide-react";
 
@@ -36,7 +37,7 @@ export default async function EventPage({
   searchParams: { username, handle },
 }: EventPageProps) {
   const event_id_num = parseInt(event_id);
-
+  console.log(event_id_num);
   const errorRedirect = () => {
     console.log(username, handle);
     const params = new URLSearchParams();
@@ -158,38 +159,35 @@ export default async function EventPage({
       .where(eq(joinsTable.userHandle, handle ?? "")),
   );
 
-  const replies = await db.query.tweetsTable.findMany({
-    where: eq(tweetsTable.id, eventData.id),
-    // with: {
-    //   joinedSubquery,
-    //   joinsSubquery
-    // },
-    columns: {
-      id: true,
-      content: true,
-      userHandle: true,
-      replyToEventId: true,
-      createdAt: true,
-    },
-  });
-  // .with(joinsSubquery, joinedSubquery)
-  // .select({
-  //   id: tweetsTable.id,
-  //   content: tweetsTable.content,
-  //   username: usersTable.displayName,
-  //   handle: usersTable.handle,
-  //   joins: joinsSubquery.joins,
-  //   createdAt: tweetsTable.createdAt,
-  //   joined: joinedSubquery.joined,
-  // })
-  // .from(tweetsTable)
-  // .where(eq(tweetsTable.replyToEventId, event_id_num))
-  // .orderBy(desc(tweetsTable.createdAt))
-  // .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
-  // .leftJoin(joinsSubquery, eq(eventsTable.id, joinsSubquery.eventId))
-  // .leftJoin(joinedSubquery, eq(eventsTable.id, joinedSubquery.eventId))
-  // .execute();
+  // const replies = await db.query.tweetsTable.findMany({
+  //   // where: eq(tweetsTable.replyToEventId, event_id_num),
+  //   columns: {
+  //     id: true,
+  //     content: true,
+  //     userHandle: true,
+  //     replyToEventId: true,
+  //     createdAt: true,
+  //   },
+  //   orderBy: [desc(tweetsTable.createdAt)],
+  // });
+  // console.log(tweetsTable.replyToEventId);
 
+  const replies = await db
+    .select({
+      id: tweetsTable.id,
+      content: tweetsTable.content,
+      username: usersTable.displayName,
+      handle: usersTable.handle,
+      createdAt: tweetsTable.createdAt,
+      replyEventId: eventsTable.id,
+    })
+    .from(tweetsTable)
+    .where(eq(tweetsTable.replyToEventId, event_id_num))
+    .orderBy(desc(tweetsTable.createdAt))
+    .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
+    .innerJoin(eventsTable, eq(tweetsTable.replyToEventId, eventsTable.id))
+    .execute();
+  // console.log(replies);
   // const [joined, setJoined] = useState(false);
 
   return (
@@ -265,18 +263,16 @@ export default async function EventPage({
           {/* {!joined ? <Button>我想參加</Button> : <Button>我已參加</Button>} */}
         </div>
 
-        <ReplyInput
-          replyToTweetId={event.id} initialJoined={event.joined}
-        />
+        <ReplyInput replyToEventId={event.id} initialJoined={event.joined} />
         <Separator />
         {replies.map((reply) => (
           <Tweet
             key={reply.id}
             id={reply.id}
-            username={reply.userHandle}
-            handle={reply.userHandle}
-            authorName={reply.userHandle}
-            authorHandle={reply.userHandle}
+            username={reply.username}
+            handle={reply.handle}
+            authorName={reply.username}
+            authorHandle={reply.handle}
             content={reply.content}
             // joins={reply.joins}
             // joined={reply.joined}

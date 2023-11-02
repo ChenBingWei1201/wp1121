@@ -51,10 +51,10 @@ export default function Event({
           <div className="flex h-14 grow flex-row justify-between whitespace-pre-wrap text-3xl">
             <span className="self-center">{`   ${title}`}</span>
             <div className="mt-0 flex flex-row">
-              <span className="self-center mr-5">
+              <span className="mr-5 self-center">
                 {joined && <Check width="80" color="green" size={55} />}
               </span>
-              <span className="self-center mr-3">
+              <span className="mr-3 self-center">
                 {joins > 0 && `${joins}人參加`}
               </span>
             </div>

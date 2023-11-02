@@ -27,7 +27,7 @@ type PostTweetRequest = z.infer<typeof postTweetRequestSchema>;
 // https://nextjs.org/docs/app/building-your-application/routing/route-handlers
 export async function POST(request: NextRequest) {
   const data = await request.json();
-
+  console.log(data);
   try {
     // parse will throw an error if the data doesn't match the schema
     // if that happens, we return a 400 error

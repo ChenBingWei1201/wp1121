@@ -9,12 +9,13 @@ import useUserInfo from "@/hooks/useUserInfo";
 import { cn } from "@/lib/utils";
 
 type ReplyInputProps = {
-  replyToTweetId: number;
+  replyToEventId: number; // key 
   initialJoined: boolean;
 };
 
 export default function ReplyInput({
-  replyToTweetId, initialJoined
+  replyToEventId, // key
+  initialJoined,
 }: ReplyInputProps) {
   const { username, handle } = useUserInfo();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -29,7 +30,7 @@ export default function ReplyInput({
       await postTweet({
         handle,
         content,
-        replyToTweetId,
+        replyToEventId, // key: isn not replyToTweetId
       });
       textareaRef.current.value = "";
       // this triggers the onInput event on the growing textarea
@@ -58,7 +59,11 @@ export default function ReplyInput({
           ref={textareaRef}
           wrapperClassName="col-start-2 row-start-2"
           className="bg-transparent text-xl outline-none placeholder:text-gray-500"
-          placeholder={initialJoined ? (`${username}留下你的想法`) : (`${username}參加活動來參與討論吧`)}
+          placeholder={
+            initialJoined
+              ? `${username}留下你的想法`
+              : `${username}參加活動來參與討論吧`
+          }
           disable={initialJoined}
         />
       </div>
@@ -69,9 +74,9 @@ export default function ReplyInput({
             "disabled:cursor-not-allowed disabled:bg-brand/40 disabled:hover:bg-brand/40",
           )}
           onClick={handleReply}
-          disabled={loading}
+          disabled={loading || !initialJoined}
         >
-          Reply
+          傳送
         </button>
       </div>
     </form>

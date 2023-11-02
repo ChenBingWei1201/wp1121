@@ -39,6 +39,7 @@ export default function useTweet() {
     // from server components.
     router.refresh();
     setLoading(false);
+    // return res.json();
   };
 
   return {

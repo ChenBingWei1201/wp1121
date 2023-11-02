@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
     //  {content},
     //  {replyToTweetId}
     // )
+    // const event = 
     await db
       .insert(eventsTable)
       .values({
@@ -68,6 +69,6 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
-
+  
   return new NextResponse("OK", { status: 200 });
 }

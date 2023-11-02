@@ -24,7 +24,10 @@ type GrowingTextareaProps = {
 // for more information, please refer to the following link
 // https://react.dev/reference/react/forwardRef
 const GrowingTextarea = forwardRef<HTMLTextAreaElement, GrowingTextareaProps>(
-  ({ className, wrapperClassName, placeholder, value, onChange,  disable}, ref) => {
+  (
+    { className, wrapperClassName, placeholder, value, onChange, disable },
+    ref,
+  ) => {
     return (
       <div
         className={cn(

@@ -71,9 +71,10 @@ export const tweetsTable = pgTable(
     // learn more about composite indexes here:
     // https://planetscale.com/learn/courses/mysql-for-developers/indexes/composite-indexes
     // replyToAndTimeIndex: index("reply_to_time_index").on(
-    //   table.replyToTweetId,
+    //   table.replyToEventId,
     //   table.createdAt,
     // ),
+    replyToEventIndex: index("reply_to_event_id").on(table.replyToEventId),
   }),
 );
 
