@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { /*useEffect,*/ useRef, useState } from "react";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+// import { eq } from "drizzle-orm";
 
+// import { useSearchParams } from "next/navigation";
 // all components is src/components/ui are lifted from shadcn/ui
 // this is a good set of components built on top of tailwindcss
 // see how to use it here: https://ui.shadcn.com/
@@ -19,47 +19,37 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+// import DatePicker from "./DatePicker";
+// import { db } from "@/db";
+// import { eventsTable } from "@/db/schema";
 import useEvent from "@/hooks/useEvent";
+import { cn/*, validateTitle, validateFrom, validateTo*/ } from "@/lib/utils";
 import useLike from "@/hooks/useLike";
-import { cn, validateTitle, validateFrom, validateTo } from "@/lib/utils";
-import { eventsTable } from "@/db/schema";
-
-import DatePicker from "./DatePicker";
-import { db } from "@/db";
+import { usePathname } from "next/navigation";
 // import { DialogProps } from "@mui/material";
-
+import { useRouter } from "next/navigation";
 type DialogProps = {
   userHandle: string;
   dialogOpen: boolean;
   setDialogOpen: (d: boolean) => void;
 };
 
-export default async function EventDialog({
+export default function EventDialog({
   userHandle,
   dialogOpen,
   setDialogOpen,
 }: DialogProps) {
-  // const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
-  // const pathname = usePathname();
+  const pathname = usePathname();
   // const searchParams = useSearchParams();
-  // const usernameInputRef = useRef<HTMLInputElement>(null);
-  // const handleInputRef = useRef<HTMLInputElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
   const { postEvent, loading } = useEvent();
   const { likeTweet } = useLike();
-  // const [usernameError, setUsernameError] = useState(false);
-  // const [handleError, setHandleError] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const [fromError, setFromError] = useState(false);
   const [toError, setToError] = useState(false);
-  // const totalEvent = await db.query.eventsTable.findMany({
-  //   with: {
-  //     id: true
-  //   }
-  // })
 
   // useEffect(() => {
   //   const username = searchParams.get("username");
@@ -77,7 +67,8 @@ export default async function EventDialog({
     if (!toDate) return;
 
     try {
-      await postEvent({
+      // newEvent = 
+      const newEventId = await postEvent({
         userHandle,
         title,
         fromDate,
@@ -99,10 +90,24 @@ export default async function EventDialog({
       // const params = new URLSearchParams(searchParams);
       // params.set("username", username!);
       // params.set("handle", handle!);
-      // router.push(`event/${totalEvent.length+1}`);
+      // const [eventData] = await db
+      //   .select({
+      //     id: eventsTable.id,
+      //     title: eventsTable.title,
+      //     fromDate: eventsTable.fromDate,
+      //     toDate: eventsTable.toDate,
+      //     userHandle: eventsTable.userHandle,
+      //   })
+      //   .from(eventsTable)
+      //   .where(eq(eventsTable.id, event_id_num))
+      //   .execute();
 
       setDialogOpen(false);
-      // id+=1;
+      await likeTweet({
+        eventId: newEventId,
+        userHandle,
+      });
+      router.push(`/event/${newEventId}?username=${userHandle}&handle=${userHandle}`);
       return true;
     } catch (e) {
       console.error(e);
@@ -230,7 +235,7 @@ export default async function EventDialog({
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={addNewEvent}>新增</Button>
+          <Button onClick={addNewEvent} disabled={loading}>新增</Button>
           <Button onClick={() => setDialogOpen(false)}>cancel</Button>
         </DialogFooter>
       </DialogContent>

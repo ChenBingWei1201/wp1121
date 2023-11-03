@@ -1,13 +1,12 @@
-import { Button } from "@mui/material";
-import { eq, desc, isNull, sql } from "drizzle-orm";
+// import { Button } from "@mui/material";
+import { eq, desc/*, isNull,*/, sql } from "drizzle-orm";
 
-import BookData from "@/components/Data.json";
+// import BookData from "@/components/Data.json";
 import Event from "@/components/EventsPage/Event";
 import HeaderButton from "@/components/EventsPage/HeaderButton";
 // import NameDialog from "@/components/EventsPage/NameDialog";
 import { NewEventButton } from "@/components/EventsPage/NewEventButton";
-// import Tweet from "@/components/Tweets/Tweet";
-// import TweetInput from "@/components/TweetInput";
+
 import SearchBar from "@/components/ui/search";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
@@ -16,7 +15,7 @@ import {
   /*, tweetsTable, */
   usersTable,
   eventsTable,
-  tweetsTable,
+  // tweetsTable,
 } from "@/db/schema";
 
 type HomePageProps = {
@@ -158,7 +157,7 @@ export default async function Home({
           </div>
         </div>
         <div className="algin-center flex w-full flex-row pt-3">
-          <SearchBar placeholder="搜尋想要參加的活動" data={BookData} />
+          <SearchBar placeholder="搜尋想要參加的活動" data={events} username={username} handle={handle}/>
           <NewEventButton userHandle={handle} />
         </div>
         <Separator />

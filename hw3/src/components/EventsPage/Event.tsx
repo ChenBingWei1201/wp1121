@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 // import { JoinButton } from "../Tweets/JoinButton";
-import dayjs from "dayjs";
-import { MessageCircle, Repeat2, Share } from "lucide-react";
+// import dayjs from "dayjs";
+// import { MessageCircle, Repeat2, Share } from "lucide-react";
 import { Check } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -26,8 +26,8 @@ export default function Event({
   id,
   joins,
   joined,
-  fromDate,
-  toDate,
+  // fromDate,
+  // toDate,
   handle,
   username, // createdAt
 }: EventProps) {

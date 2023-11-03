@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { EventHandler, MouseEvent } from "react";
 
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 
 import useLike from "@/hooks/useLike";
 import { cn } from "@/lib/utils";
@@ -14,14 +14,14 @@ type JoinButtonProps = {
   eventId: number;
   handle?: string;
 };
-const JoinButton = ({
-  initialJoinedPeople,
+function JoinButton({
+  // initialJoinedPeople,
   initialJoined,
   eventId,
   handle,
-}: JoinButtonProps) => {
+}: JoinButtonProps) {
   const [joined, setJoined] = useState(initialJoined);
-  const [joinedPeople, setJoinedPeople] = useState(initialJoinedPeople);
+  // const [joinedPeople, setJoinedPeople] = useState(initialJoinedPeople);
   const { likeTweet, unlikeTweet, loading } = useLike();
 
   const handleClick: EventHandler<MouseEvent> = async (e) => {
@@ -37,14 +37,14 @@ const JoinButton = ({
         eventId: eventId,
         userHandle: handle,
       });
-      setJoinedPeople((prev) => prev - 1);
+      // setJoinedPeople((prev) => prev - 1);
       setJoined(false);
     } else {
       await likeTweet({
         eventId: eventId,
         userHandle: handle,
       });
-      setJoinedPeople((prev) => prev + 1);
+      // setJoinedPeople((prev) => prev + 1);
       setJoined(true);
     }
   };

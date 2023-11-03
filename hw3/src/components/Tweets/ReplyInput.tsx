@@ -9,7 +9,7 @@ import useUserInfo from "@/hooks/useUserInfo";
 import { cn } from "@/lib/utils";
 
 type ReplyInputProps = {
-  replyToEventId: number; // key 
+  replyToEventId: number; // key
   initialJoined: boolean;
 };
 

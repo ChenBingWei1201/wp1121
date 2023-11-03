@@ -2,6 +2,14 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+// type NewEvent = {
+//   userHandle: string;
+//   title: string;
+//   fromDate: string;
+//   toDate: string;
+//   id: number;
+//   createdAt: Date | null;
+// }
 export default function useTweet() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -16,7 +24,7 @@ export default function useTweet() {
     title: string;
     fromDate: string;
     toDate: string;
-  }) => {
+  }): Promise<number> => {
     setLoading(true);
 
     const res = await fetch("/api/events", {
@@ -40,6 +48,8 @@ export default function useTweet() {
     router.refresh();
     setLoading(false);
     // return res.json();
+    // console.log((await res.json()).newEvent[0].id);
+    return (await res.json()).newEvent[0].id;
   };
 
   return {

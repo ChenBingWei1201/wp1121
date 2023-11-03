@@ -13,8 +13,8 @@ import { eventsTable } from "@/db/schema";
 const postEventRequestSchema = z.object({
   userHandle: z.string().min(1).max(50),
   title: z.string().min(1).max(280),
-  fromDate: z.string().max(10),
-  toDate: z.string().max(10),
+  fromDate: z.string().max(13),
+  toDate: z.string().max(13),
   // replyToEventId: z.number().optional(),
 });
 
@@ -41,6 +41,14 @@ export async function POST(request: NextRequest) {
   // the `data` variable is now guaranteed to be of type PostEventRequest
   // but the compiler doesn't know that, so we have to cast it with `as`
   const { title, fromDate, toDate, userHandle } = data as PostEventRequest;
+  let newEvent: {
+    userHandle: string;
+    title: string;
+    fromDate: string;
+    toDate: string;
+    id: number;
+    createdAt: Date | null;
+  }[];
 
   try {
     // This piece of code runs the following SQL query:
@@ -53,8 +61,7 @@ export async function POST(request: NextRequest) {
     //  {content},
     //  {replyToTweetId}
     // )
-    // const event = 
-    await db
+    const event = await db
       .insert(eventsTable)
       .values({
         userHandle,
@@ -62,13 +69,16 @@ export async function POST(request: NextRequest) {
         fromDate,
         toDate,
       })
+      .returning()
       .execute();
+      newEvent = event;
+      // console.log(event);
   } catch (error) {
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 },
     );
   }
-  
-  return new NextResponse("OK", { status: 200 });
+
+  return NextResponse.json({newEvent}, { status: 200 });
 }

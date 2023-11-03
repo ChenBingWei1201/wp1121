@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 // import { id_ID } from "@faker-js/faker";
 // import dayjs from "dayjs";
-import { eq, desc, sql, and } from "drizzle-orm";
+import { eq, desc/*, sql*/, and } from "drizzle-orm";
 import {
   // MessageCircle,
   // MoreHorizontal,
@@ -37,7 +37,7 @@ export default async function EventPage({
   searchParams: { username, handle },
 }: EventPageProps) {
   const event_id_num = parseInt(event_id);
-  console.log(event_id_num);
+  // console.log(event_id_num);
   const errorRedirect = () => {
     console.log(username, handle);
     const params = new URLSearchParams();
@@ -139,25 +139,25 @@ export default async function EventPage({
 
   // The following code is almost identical to the code in src/app/page.tsx
   // read the comments there for more info.
-  const joinsSubquery = db.$with("joins_count").as(
-    db
-      .select({
-        eventId: joinsTable.eventId,
-        joins: sql<number | null>`count(*)`.mapWith(Number).as("joins"),
-      })
-      .from(joinsTable)
-      .groupBy(joinsTable.eventId),
-  );
+  // const joinsSubquery = db.$with("joins_count").as(
+  //   db
+  //     .select({
+  //       eventId: joinsTable.eventId,
+  //       joins: sql<number | null>`count(*)`.mapWith(Number).as("joins"),
+  //     })
+  //     .from(joinsTable)
+  //     .groupBy(joinsTable.eventId),
+  // );
 
-  const joinedSubquery = db.$with("joined").as(
-    db
-      .select({
-        eventId: joinsTable.eventId,
-        joined: sql<number>`1`.mapWith(Boolean).as("joined"),
-      })
-      .from(joinsTable)
-      .where(eq(joinsTable.userHandle, handle ?? "")),
-  );
+  // const joinedSubquery = db.$with("joined").as(
+  //   db
+  //     .select({
+  //       eventId: joinsTable.eventId,
+  //       joined: sql<number>`1`.mapWith(Boolean).as("joined"),
+  //     })
+  //     .from(joinsTable)
+  //     .where(eq(joinsTable.userHandle, handle ?? "")),
+  // );
 
   // const replies = await db.query.tweetsTable.findMany({
   //   // where: eq(tweetsTable.replyToEventId, event_id_num),

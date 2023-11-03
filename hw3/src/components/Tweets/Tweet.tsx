@@ -1,7 +1,7 @@
-import Link from "next/link";
+// import Link from "next/link";
 
-import dayjs from "dayjs";
-import { MessageCircle, Repeat2, Share } from "lucide-react";
+// import dayjs from "dayjs";
+// import { MessageCircle, Repeat2, Share } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -23,14 +23,15 @@ type TweetProps = {
 // note that the Tweet component is also a server component
 // all client side things are abstracted away in other components
 export default function Tweet({
-  username,
-  handle,
+  // username,
+  // handle,
   id,
   authorName,
-  authorHandle,
+  // authorHandle,
   content,
   // likes,
-  createdAt, // liked,
+  // createdAt, 
+  // liked,
 }: TweetProps) {
   return (
     <>

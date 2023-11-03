@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 import Button from "@mui/material/Button";
-import { set } from "zod";
+// import { set } from "zod";
 
 import EventDialog from "./EventDialog";
 
-const NewEventButton = ({ userHandle }: { userHandle: string }) => {
+function NewEventButton({ userHandle }: { userHandle: string }) {
   const [openEventDialog, setOpenEventDialog] = useState(false);
 
   return (

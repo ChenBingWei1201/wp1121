@@ -1,37 +1,39 @@
 "use client";
 
-import React, { ReactHTMLElement, useState } from "react";
-
+import React, { useState } from "react";
+import Link from "next/link";
 import { ClickAwayListener } from "@mui/material";
 
 import "./SearchBar.css";
 import { Separator } from "./separator";
-
+import { useRouter } from "next/navigation";
 type Data = {
-  author: string;
-  country: string;
-  imageLink: string;
-  language: string;
-  link: string;
-  pages: number;
+  id: number;
   title: string;
-  year: number;
+  fromDate: string;
+  toDate: string;
+  joins: number;
+  joined: boolean;
+  createdAt: Date | null;
 };
 
 type SearchBarProps = {
   placeholder: string;
   data: Data[];
+  username?: string;
+  handle?: string;
 };
 
-const SearchBar = ({ placeholder, data }: SearchBarProps) => {
+const SearchBar = ({ placeholder, data, username, handle }: SearchBarProps) => {
   const [filteredData, setFilteredData] = useState<Data[]>([]);
   const [wordEntered, setWordEntered] = useState("");
   const [clickAway, setClickAway] = useState(false);
+  // const router = useRouter();
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchWord = e.target.value;
     setWordEntered(searchWord);
     const newFilter: Data[] = data.filter((value) => {
-      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+      return value.title/*.toLowerCase()*/.includes(searchWord.toLowerCase());
     });
 
     if (searchWord === "") {
@@ -41,10 +43,10 @@ const SearchBar = ({ placeholder, data }: SearchBarProps) => {
     }
   };
 
-  const clearInput = () => {
-    setFilteredData([]);
-    setWordEntered("");
-  };
+  // const clearInput = () => {
+  //   setFilteredData([]);
+  //   setWordEntered("");
+  // };
 
   return (
     <form className="mx-5 my-5 w-10/12">
@@ -85,17 +87,20 @@ const SearchBar = ({ placeholder, data }: SearchBarProps) => {
         </ClickAwayListener>
       </div>
       {filteredData.length != 0 && !clickAway && (
-        <div className="dataResult absolute mt-1 h-36 w-9/12 overflow-hidden overflow-y-auto bg-white shadow-xl">
+        <div className="dataResult absolute mt-1 h-12/12 w-9/12 overflow-hidden overflow-y-auto bg-white shadow-xl">
           {filteredData.slice(0, 15).map((value: Data, key) => {
             return (
               <>
-                <a
+                <Link href={{ pathname: `/event/${value.id}`, query: { username, handle } }}>
+                  <p className="flex h-14 w-full items-center text-xl decoration-black hover:bg-slate-200">{`     ${value.title}`}</p>
+                </Link>
+
+                {/* <a
                   className="flex h-14 w-full items-center text-lg decoration-black hover:bg-slate-200 "
-                  href={value.link}
+                  href={`/${value.id}`}
                   target="_blank"
-                >
-                  <p className="ml-5">{value.title} </p>
-                </a>
+                > */}
+                {/* </a> */}
                 <Separator />
               </>
             );

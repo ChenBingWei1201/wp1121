@@ -40,14 +40,14 @@ const GrowingTextarea = forwardRef<HTMLTextAreaElement, GrowingTextareaProps>(
           // after: adds a pseudo element after the element and style it
           // learn more about pseudo elements here: https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
           // you may not think this is useful, but it is actually very useful for styling custom components and cool hacks
-          "after:invisible after:whitespace-pre after:content-[attr(data-replicated-value)]",
-          "after:col-span-1 after:col-start-1 after:row-span-1 after:row-start-1",
+          // "after:invisible after:whitespace-pre after:content-[attr(data-replicated-value)]",
+          // "after:col-span-1 after:col-start-1 after:row-span-1 after:row-start-1",
         )}
       >
         <textarea
           className={cn(
             className,
-            "resize-none overflow-hidden",
+            "resize-none",
             "col-span-1 col-start-1 row-span-1 row-start-1",
           )}
           placeholder={placeholder}
