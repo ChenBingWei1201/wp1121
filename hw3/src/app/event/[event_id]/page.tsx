@@ -3,7 +3,11 @@ import { redirect } from "next/navigation";
 
 // import { id_ID } from "@faker-js/faker";
 // import dayjs from "dayjs";
-import { eq, desc/*, sql*/, and } from "drizzle-orm";
+import {
+  eq,
+  /*desc, sql*/
+  and,
+} from "drizzle-orm";
 import {
   // MessageCircle,
   // MoreHorizontal,
@@ -183,7 +187,7 @@ export default async function EventPage({
     })
     .from(tweetsTable)
     .where(eq(tweetsTable.replyToEventId, event_id_num))
-    .orderBy(desc(tweetsTable.createdAt))
+    .orderBy(tweetsTable.createdAt)
     .innerJoin(usersTable, eq(tweetsTable.userHandle, usersTable.handle))
     .innerJoin(eventsTable, eq(tweetsTable.replyToEventId, eventsTable.id))
     .execute();

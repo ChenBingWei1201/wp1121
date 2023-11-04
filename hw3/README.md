@@ -1,7 +1,6 @@
 # Web Programming HW#3
 
-See the live demo here: [https://112-1-unit2-twitter-clone.vercel.app/](https://112-1-unit2-twitter-clone.vercel.app/)
-If you have any questions about this repo, feel free to open an issue on this repo or contact me at [eewebprogramming@googlegroups.com](mailto:eewebprogramming@googlegroups.com?subject=twitter-clone%20question)
+#### **Please clear you database first and follow the readme clearfully!**
 
 ## Running the app
 
@@ -51,48 +50,40 @@ This command launches a web UI to view or edit data in the database.
 yarn drizzle-kit studio
 ```
 
-## Setup guide
+## Introduction
+本 app 由以下三個部分組成，其功能如下所述：
+1. **主頁面：**使用者可以在這個頁面**設定使用者名稱**與**總覽活動**。這個頁面應提供搜尋活動之功能，並可以點擊個別活動、前往各活動之「瀏覽活動」頁面。
+2.「新增活動」功能：提供使用者新增活動。請實作為懸浮於主頁面上方的 modal。
+3.「瀏覽活動」頁面：使用者可以在這裡瀏覽活動的訊息。如果加入活動，則可以參與討論。
 
-1. Create a next app, and select default options on all prompts
+### 主頁面
+1. 使用者可以在這個頁面輸入（切換）使用者名稱，**任何活動的留言都以此名稱顯示**
+2. 使用者可以在這個頁面總覽所有活動。每一項活動至少要能看到其活動名稱、自己是否參加（打勾符號）、目前有幾人參加三項資訊。
+3. 點擊活動時，進入該活動之「瀏覽活動」頁面。
+4. 點擊「新增」按鈕時，打開「新增活動」功能。
+5. 「搜尋想參加的活動」欄位：使用者可以在這個欄位對活動名稱進行關鍵字搜尋。若活動名稱中包含該關鍵字，則應顯示於搜尋結果，反之則不應顯示，search bar，如同google搜尋框一樣可點擊想要的搜尋結果，並直接跳轉到該活動頁面。
 
-```bash
-yarn create next-app
-```
+### 「新增活動」功能
 
-2. Follow the instructions [here](https://orm.drizzle.team/docs/quick-postgresql/node-postgres) to setup drizzle. If you want to use [neon](https://neon.tech/)'s serverless PostgreSQL feature, follow the instructions [here](https://orm.drizzle.team/docs/quick-postgresql/neon) (you can still use database URL to connect to neon's database like a regular PostgreSQL database).
+1. 提供使用者新增活動。請實作為懸浮於主頁面上方的 modal。
+2. 新增活動時，使用者須填入**活動名稱、開始日期時間、結束日期時間**三項資訊。點擊「新增」按鈕時，若滿足下列條件，則新增該活動，並導引使用者前往該活動之「瀏覽活動」頁面。
+    1. 三項資訊都有填寫，且時間形式僅包含年、月、日、小時
+    2. 開始、結束日期時間合法（i.e., 是真實可能出現的時間）
+3. 成功新增活動後，須導引使用者至「瀏覽活動」頁面，並且自動將使用者自身加入活動。
+4. 如果未點擊「新增」而是點擊 modal 外的區域，則取消新增活動。
 
-3. Copy and paste other config files as needed
+### 「瀏覽活動」頁面
 
-## Other tips and tricks
-
-### VSCode
-
-When navigating more complex codebases, it's useful to leverage your editor's functionality.
-
-- `cmd + click` on a symbol (variable name, function name...) to jump to its definition
-- `cmd + shift + f` to search for a string in the entire project
-- `cmd + shift + o` to search for a symbol in the current file
-- `cmd + p` to search for a file
-- right click on a symbol and select "Find all references" to find all places where the symbol is used
-- right click on a symbol and select "Rename symbol" to rename the symbol
-- hover and click on the chevron next to the line number to fold code segments or comment segments
-
-Many web dev tools provide vscode plugins to make your life easier, here are some of the essential ones:
-
-- eslint: show eslint errors and warnings inline
-- tailwindcss: auto-completes tailwind classes, hover tailwind classes to see corresponding css code
-- prettier: work with the format document command to format your code
-
-### Nvim
-
-If you are using neovim you probably know what you are doing, check out my neovim config repo [here](https://github.com/madmaxieee/nvim)
-
-## Other resources
-
-- [React Server Components: A Comprehensive Breakdown](https://www.youtube.com/watch?v=VIwWgV3Lc6s)
-- [I didn't realize THIS about Tailwind...](https://www.youtube.com/watch?v=ZuLn42merAg)
-- [I WISH I Knew These Tailwind Tips Earlier](https://www.youtube.com/watch?v=QBajvZaWLXs)
-- [MySQL for developers](https://planetscale.com/learn/courses/mysql-for-developers/introduction/course-introduction)
-  - very good course on relational databases, please watch it if you have time
-  - although we are using Postgres, most of the concepts are the same
-  - refer to postgres docs and drizzle docs about postgres specific syntax
+1. 使用者可以在這個頁面瀏覽個別活動之開始日期時間、結束日期時間、留言
+2. 點擊左上角「返回」按鈕（圖中以 ❮ 符號表示），可以返回**主頁面**
+3. 每一則留言須包含使用者名稱與留言內容。留言長度若長於一行能顯示的字數，則需自動換行（line wrapping）以顯示完整留言。
+4. 留言區的留言應依照存入資料庫時間，從最舊到最新由上至下排列
+5. 在留言區應該有一個留言輸入框，依照使用者是否參加活動而有不同行為：
+    1. 未參加活動時，應提示使用者可以參加活動以加入討論，並不允許使用者輸入內容。
+    2. 已參加活動時，應允許使用者輸入內容，並提示使用者可以在這裡輸入留言。
+    3. 使用者點進一個未拜訪過的活動頁面時，預設狀態是「未參加活動」。
+    4. 關於「如何參加/退出活動」，請見以下兩點。
+6. 參加活動：在未參加活動的情況下，使用者可以點擊「我想參加」按鈕。按下按鈕後，按鈕應改為顯示「我已參加」，並改變顏色。此時用戶便可以使用留言功能。
+    1. 自己的訊息發送後，應即時更新至畫面上，不需使用者重新整理。
+    2. **來自其他用戶的訊息發送後，不須立即顯示，重新整理後按照留言順序出現即可。**
+7. 退出活動：在已參加活動的情況下，使用者可以按下「我已參加」按鈕來退出活動。按下按鈕後，按鈕應改為顯示「我想參加」。不需刪除使用者已留下的留言，但是留言框必須返回無法使用的狀態。

@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { EventHandler, MouseEvent } from "react";
 
 // import Button from "@mui/material/Button";
-
 import useLike from "@/hooks/useLike";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +21,7 @@ function JoinButton({
 }: JoinButtonProps) {
   const [joined, setJoined] = useState(initialJoined);
   // const [joinedPeople, setJoinedPeople] = useState(initialJoinedPeople);
-  const { likeTweet, unlikeTweet, loading } = useLike();
+  const { likeTweet, unlikeTweet } = useLike();
 
   const handleClick: EventHandler<MouseEvent> = async (e) => {
     // since the parent node of the button is a Link, when we click on the
@@ -89,12 +88,12 @@ function JoinButton({
           joined && "bg-green-400",
         )}
         onClick={handleClick}
-        disabled={loading}
+        // disabled={loading}
       >
         <span className="m-1.5">{!joined ? "我想參加" : "我已參加"}</span>
       </button>
     </>
   );
-};
+}
 
 export { JoinButton };

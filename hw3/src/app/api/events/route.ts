@@ -12,9 +12,9 @@ import { eventsTable } from "@/db/schema";
 // read more about zod here: https://zod.dev/
 const postEventRequestSchema = z.object({
   userHandle: z.string().min(1).max(50),
-  title: z.string().min(1).max(280),
-  fromDate: z.string().max(13),
-  toDate: z.string().max(13),
+  title: z.string().min(1).max(50),
+  fromDate: z.string().min(13).max(13),
+  toDate: z.string().min(13).max(13),
   // replyToEventId: z.number().optional(),
 });
 
@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
     //  {content},
     //  {replyToTweetId}
     // )
+
     const event = await db
       .insert(eventsTable)
       .values({
@@ -71,8 +72,8 @@ export async function POST(request: NextRequest) {
       })
       .returning()
       .execute();
-      newEvent = event;
-      // console.log(event);
+    newEvent = event;
+    // console.log(event);
   } catch (error) {
     return NextResponse.json(
       { error: "Something went wrong" },
@@ -80,5 +81,5 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({newEvent}, { status: 200 });
+  return NextResponse.json({ newEvent }, { status: 200 });
 }

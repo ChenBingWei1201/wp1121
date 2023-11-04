@@ -34,13 +34,13 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
   // const handleInputRef = useRef<HTMLInputElement>(null);
   const [usernameError, setUsernameError] = useState(false);
   const [handleError, setHandleError] = useState(false);
-
+  
   useEffect(() => {
     const username = searchParams.get("username");
     const handle = searchParams.get("handle");
     // if any of the username or handle is not valid, open the dialog
     setDialogOpen(!validateUsername(username) || !validateHandle(handle));
-  }, [searchParams]);
+  }, [searchParams, setDialogOpen]);
 
   const handleSave = () => {
     const username = usernameInputRef.current?.value;
@@ -70,6 +70,10 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
     return true;
   };
 
+  const handleCancel = () => {
+    if (!usernameInputRef.current?.value) alert("username required!");
+    else setDialogOpen(false);
+  };
   // The Dialog component calls onOpenChange when the dialog wants to open or
   // close itself. We can perform some checks here to prevent the dialog from
   // closing if the input is invalid.
@@ -103,9 +107,7 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
             />
             {usernameError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
-                Invalid username, use only{" "}
-                <span className="font-mono">[a-z0-9 ]</span>, must be between 1
-                and 50 characters long.
+                Invalid username, it must be between 1 and 50 characters long.
               </p>
             )}
           </div>
@@ -134,7 +136,7 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
         </div>
         <DialogFooter>
           <Button onClick={handleSave}>start</Button>
-          <Button onClick={() => setDialogOpen(false)}>cancel</Button>
+          <Button onClick={handleCancel}>cancel</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

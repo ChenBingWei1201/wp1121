@@ -1,9 +1,16 @@
 "use client";
 
-import { /*useEffect,*/ useRef, useState } from "react";
+import {
+  /*useEffect,*/
+  useRef,
+  useState,
+} from "react";
+
+// import { usePathname } from "next/navigation";
+// import { DialogProps } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 // import { eq } from "drizzle-orm";
-
 // import { useSearchParams } from "next/navigation";
 // all components is src/components/ui are lifted from shadcn/ui
 // this is a good set of components built on top of tailwindcss
@@ -23,11 +30,9 @@ import { Label } from "@/components/ui/label";
 // import { db } from "@/db";
 // import { eventsTable } from "@/db/schema";
 import useEvent from "@/hooks/useEvent";
-import { cn/*, validateTitle, validateFrom, validateTo*/ } from "@/lib/utils";
 import useLike from "@/hooks/useLike";
-import { usePathname } from "next/navigation";
-// import { DialogProps } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { cn, validateTitle, validateFrom, validateTo } from "@/lib/utils";
+
 type DialogProps = {
   userHandle: string;
   dialogOpen: boolean;
@@ -40,12 +45,12 @@ export default function EventDialog({
   setDialogOpen,
 }: DialogProps) {
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname();
   // const searchParams = useSearchParams();
   const titleInputRef = useRef<HTMLInputElement>(null);
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
-  const { postEvent, loading } = useEvent();
+  const { postEvent } = useEvent();
   const { likeTweet } = useLike();
   const [titleError, setTitleError] = useState(false);
   const [fromError, setFromError] = useState(false);
@@ -66,8 +71,18 @@ export default function EventDialog({
     if (!fromDate) return;
     if (!toDate) return;
 
+    const newTitleError = !validateTitle(title);
+    setTitleError(newTitleError);
+    const newFromError = !validateFrom(fromDate);
+    setFromError(newFromError);
+    const newToError = !validateTo(toDate);
+    setToError(newToError);
+    // alert("")
+    if (newTitleError) return alert("title is invalid");
+    else if (newFromError) return alert("from date is invalid");
+    else if (newToError) return alert("to date is invalid");
+
     try {
-      // newEvent = 
       const newEventId = await postEvent({
         userHandle,
         title,
@@ -84,31 +99,17 @@ export default function EventDialog({
       // titleInputRef.current.dispatchEvent( // issue a new event to resize the textarea
       //   new Event("input", { bubbles: true, composed: true }),
       // );
-
-      // const username = userHandle;
-      // const handle = userHandle;
-      // const params = new URLSearchParams(searchParams);
-      // params.set("username", username!);
-      // params.set("handle", handle!);
-      // const [eventData] = await db
-      //   .select({
-      //     id: eventsTable.id,
-      //     title: eventsTable.title,
-      //     fromDate: eventsTable.fromDate,
-      //     toDate: eventsTable.toDate,
-      //     userHandle: eventsTable.userHandle,
-      //   })
-      //   .from(eventsTable)
-      //   .where(eq(eventsTable.id, event_id_num))
-      //   .execute();
-
-      setDialogOpen(false);
-      await likeTweet({
-        eventId: newEventId,
-        userHandle,
-      });
-      router.push(`/event/${newEventId}?username=${userHandle}&handle=${userHandle}`);
-      return true;
+      if (!newTitleError && !newFromError && !newToError) {
+        setDialogOpen(false);
+        await likeTweet({
+          eventId: newEventId,
+          userHandle,
+        });
+        router.push(
+          `/event/${newEventId}?username=${userHandle}&handle=${userHandle}`,
+        );
+        return true;
+      }
     } catch (e) {
       console.error(e);
       alert("Error posting event");
@@ -117,21 +118,6 @@ export default function EventDialog({
   };
 
   // const handleSave = () => {
-
-  // const title = titleInputRef.current?.value;
-  // const fromDate = fromInputRef.current?.value;
-  // const toDate = toInputRef.current?.value;
-
-  // const newTitleError = !validateTitle(title);
-  // setTitleError(newTitleError);
-  // const newFromError = !validateFrom(fromDate);
-  // setFromError(newFromError);
-  // const newTonameError = !validateTo(toDate);
-  // setToError(newTonameError);
-
-  // if (newTitleError || newFromError || newTonameError) {
-  //   return false;
-  // }
 
   // when navigating to the same page with different query params, we need to
   // preserve the pathname, so we need to manually construct the url
@@ -181,9 +167,8 @@ export default function EventDialog({
             />
             {titleError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
-                Invalid title, use only{" "}
-                <span className="font-mono">[a-z0-9 ]</span>, must be between 1
-                and 50 characters long.
+                Invalid title, it must be between 1 and 50 characters long.
+                {/*<span className="font-mono">[a-z0-9 ]</span>,*/}
               </p>
             )}
           </div>
@@ -193,20 +178,14 @@ export default function EventDialog({
               From
             </Label>
             <Input
-              placeholder="From"
+              placeholder="YYYY-MM-DD HH"
               // defaultValue={JSON.stringify(fromInputRef) ?? ""}
               className={cn(fromError && "border-red-500", "col-span-3")}
               ref={fromInputRef}
             />
-            {/* <DatePicker
-              placeholder="From"
-              ref={fromInputRef}
-            /> */}
             {fromError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
-                Invalid title, use only{" "}
-                <span className="font-mono">[a-z0-9 ]</span>, must be between 1
-                and 50 characters long.
+                Invalid from date. (p.s. hour is between 0-23)
               </p>
             )}
           </div>
@@ -216,26 +195,20 @@ export default function EventDialog({
               To
             </Label>
             <Input
-              placeholder="To"
+              placeholder="YYYY-MM-DD HH"
               // defaultValue={""}
               className={cn(toError && "border-red-500", "col-span-3")}
               ref={toInputRef}
             />
-            {/* <DatePicker
-              placeholder="To"
-              ref={toInputRef}
-            /> */}
             {toError && (
               <p className="col-span-3 col-start-2 text-xs text-red-500">
-                Invalid title, use only{" "}
-                <span className="font-mono">[a-z0-9 ]</span>, must be between 1
-                and 50 characters long.
+                Invalid to date. (p.s. hour is between 0-23)
               </p>
             )}
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={addNewEvent} disabled={loading}>新增</Button>
+          <Button onClick={addNewEvent}>新增</Button>
           <Button onClick={() => setDialogOpen(false)}>cancel</Button>
         </DialogFooter>
       </DialogContent>

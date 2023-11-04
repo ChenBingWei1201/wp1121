@@ -1,8 +1,6 @@
 // import Link from "next/link";
-
 // import dayjs from "dayjs";
 // import { MessageCircle, Repeat2, Share } from "lucide-react";
-
 import { Separator } from "@/components/ui/separator";
 
 // import { getAvatar } from "@/lib/utils";
@@ -28,11 +26,10 @@ export default function Tweet({
   id,
   authorName,
   // authorHandle,
-  content,
-  // likes,
-  // createdAt, 
+  content, // likes,
   // liked,
-}: TweetProps) {
+} // createdAt,
+: TweetProps) {
   return (
     <>
       {/* <Link

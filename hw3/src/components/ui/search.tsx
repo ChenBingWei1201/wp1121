@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { ClickAwayListener } from "@mui/material";
 
 import "./SearchBar.css";
 import { Separator } from "./separator";
-import { useRouter } from "next/navigation";
+
 type Data = {
   id: number;
   title: string;
@@ -33,7 +36,8 @@ const SearchBar = ({ placeholder, data, username, handle }: SearchBarProps) => {
     const searchWord = e.target.value;
     setWordEntered(searchWord);
     const newFilter: Data[] = data.filter((value) => {
-      return value.title/*.toLowerCase()*/.includes(searchWord.toLowerCase());
+      return value.title /*.toLowerCase()*/
+        .includes(searchWord.toLowerCase());
     });
 
     if (searchWord === "") {
@@ -87,11 +91,16 @@ const SearchBar = ({ placeholder, data, username, handle }: SearchBarProps) => {
         </ClickAwayListener>
       </div>
       {filteredData.length != 0 && !clickAway && (
-        <div className="dataResult absolute mt-1 h-12/12 w-9/12 overflow-hidden overflow-y-auto bg-white shadow-xl">
+        <div className="dataResult h-12/12 absolute mt-1 w-9/12 overflow-hidden overflow-y-auto bg-white shadow-xl">
           {filteredData.slice(0, 15).map((value: Data, key) => {
             return (
               <>
-                <Link href={{ pathname: `/event/${value.id}`, query: { username, handle } }}>
+                <Link
+                  href={{
+                    pathname: `/event/${value.id}`,
+                    query: { username, handle },
+                  }}
+                >
                   <p className="flex h-14 w-full items-center text-xl decoration-black hover:bg-slate-200">{`     ${value.title}`}</p>
                 </Link>
 

@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import Button from "@mui/material/Button";
-// import { set } from "zod";
 
+// import { set } from "zod";
 import EventDialog from "./EventDialog";
 
 function NewEventButton({ userHandle }: { userHandle: string }) {
@@ -32,6 +32,6 @@ function NewEventButton({ userHandle }: { userHandle: string }) {
       />
     </>
   );
-};
+}
 
 export { NewEventButton };

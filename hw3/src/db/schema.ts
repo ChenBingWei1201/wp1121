@@ -43,7 +43,7 @@ export const tweetsTable = pgTable(
   "tweets",
   {
     id: serial("id").primaryKey(),
-    content: varchar("content", { length: 280 }).notNull(),
+    content: varchar("content", { length: 200 }).notNull(),
     userHandle: varchar("user_handle", { length: 50 })
       .notNull()
       // this is a foreign key constraint. It ensures that the user_handle
@@ -106,9 +106,9 @@ export const eventsTable = pgTable(
     userHandle: varchar("user_handle", { length: 50 })
       .notNull()
       .references(() => usersTable.handle, { onDelete: "cascade" }),
-    title: varchar("title", { length: 150 }).notNull().unique(),
-    fromDate: varchar("from", { length: 10 }).notNull(),
-    toDate: varchar("to", { length: 10 }).notNull(),
+    title: varchar("title", { length: 50 }).notNull().unique(),
+    fromDate: varchar("from", { length: 13 }).notNull(),
+    toDate: varchar("to", { length: 13 }).notNull(),
     createdAt: timestamp("created_at").default(sql`now()`),
 
     // userHandle: varchar("user_handle", { length: 50 })
