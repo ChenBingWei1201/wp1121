@@ -1,12 +1,17 @@
 export type User = {
   id: string;
   username: string;
-  email: string;
   provider: "github" | "credentials";
 };
 
-export type Document = {
+export type Chatroom = {
   id: string;
-  title: string;
+  name: string;
+};
+
+export type Message = {
+  id: string;
   content: string;
+  senderId: User["id"];
+  timestamp: Date;
 };
