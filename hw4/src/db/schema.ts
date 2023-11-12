@@ -18,44 +18,53 @@ export const usersTable = pgTable(
     id: serial("id").primaryKey(),
     displayId: uuid("display_id").defaultRandom().notNull().unique(),
     username: varchar("username", { length: 100 }).notNull(),
-    email: varchar("email", { length: 100 }).notNull().unique(),
-    hashedPassword: varchar("hashed_password", { length: 100 }),
-    provider: varchar("provider", {
-      length: 100,
-      enum: ["github", "credentials"],
-    })
-      .notNull()
-      .default("credentials"),
   },
   (table) => ({
     displayIdIndex: index("display_id_index").on(table.displayId),
-    emailIndex: index("email_index").on(table.email),
   }),
 );
 
 export const usersRelations = relations(usersTable, ({ many }) => ({
-  usersToDocumentsTable: many(usersToDocumentsTable),
+  usersToChatroomsTable: many(usersToChatroomsTable),
+  usersToMessagesTable: many(usersToMessagesTable),
 }));
 
-export const documentsTable = pgTable(
-  "documents",
+export const chatroomsTable = pgTable(
+  "chatrooms",
   {
     id: serial("id").primaryKey(),
     displayId: uuid("display_id").defaultRandom().notNull().unique(),
-    title: varchar("title", { length: 100 }).notNull(),
-    content: text("content").notNull(),
+    name: varchar("name", { length: 100 }).notNull(),
   },
   (table) => ({
     displayIdIndex: index("display_id_index").on(table.displayId),
   }),
 );
 
-export const documentsRelations = relations(documentsTable, ({ many }) => ({
-  usersToDocumentsTable: many(usersToDocumentsTable),
+export const chatroomsRelations = relations(chatroomsTable, ({ many }) => ({
+  usersToChatroomsTable: many(usersToChatroomsTable),
+  chatroomsToMessagesTable: many(chatroomsToMessagesTable),
 }));
 
-export const usersToDocumentsTable = pgTable(
-  "users_to_documents",
+export const messagesTable = pgTable(
+  "messages",
+  {
+    id: serial("id").primaryKey(),
+    displayId: uuid("display_id").defaultRandom().notNull().unique(),
+    content: text("content").notNull(),
+  },
+  (table) => ({
+    displayIdIndex: index("display_id_index").on(table.displayId),
+  })
+);
+
+export const messagesRelations = relations(messagesTable, ({ many }) => ({
+  usersToMessagesTable: many(usersToMessagesTable),
+  chatroomToMessagesTable: many(chatroomsToMessagesTable),
+}));
+
+export const usersToChatroomsTable = pgTable(
+  "users_to_chatrooms",
   {
     id: serial("id").primaryKey(),
     userId: uuid("user_id")
@@ -64,34 +73,118 @@ export const usersToDocumentsTable = pgTable(
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    documentId: uuid("document_id")
+    chatroomId: uuid("chatroom_id")
       .notNull()
-      .references(() => documentsTable.displayId, {
+      .references(() => chatroomsTable.displayId, {
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
   },
   (table) => ({
-    userAndDocumentIndex: index("user_and_document_index").on(
+    userAndChatroomIndex: index("user_and_chatroom_index").on(
       table.userId,
-      table.documentId,
+      table.chatroomId,
     ),
-    // This is a unique constraint on the combination of userId and documentId.
+    // This is a unique constraint on the combination of userId and chatroomId.
     // This ensures that there is no duplicate entry in the table.
-    uniqCombination: unique().on(table.documentId, table.userId),
+    uniqCombination: unique().on(table.chatroomId, table.userId),
   }),
 );
 
-export const usersToDocumentsRelations = relations(
-  usersToDocumentsTable,
+export const usersToChatroomsRelations = relations(
+  usersToChatroomsTable,
   ({ one }) => ({
-    document: one(documentsTable, {
-      fields: [usersToDocumentsTable.documentId],
-      references: [documentsTable.displayId],
+    chatroom: one(chatroomsTable, {
+      fields: [usersToChatroomsTable.chatroomId],
+      references: [chatroomsTable.displayId],
     }),
     user: one(usersTable, {
-      fields: [usersToDocumentsTable.userId],
+      fields: [usersToChatroomsTable.userId],
       references: [usersTable.displayId],
+    }),
+  }),
+);
+
+export const usersToMessagesTable = pgTable(
+  "users_to_messages",
+  {
+    id: serial("id").primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => usersTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    messageId: uuid("message_id")
+      .notNull()
+      .references(() => messagesTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+  },
+  (table) => ({
+    userAndMessageIndex: index("user_and_message_index").on(
+      table.userId,
+      table.messageId,
+    ),
+    // This is a unique constraint on the combination of userId and messageId.
+    // This ensures that there is no duplicate entry in the table.
+    uniqCombination: unique().on(table.messageId, table.userId),
+  }),
+);
+
+export const usersToMessagesRelations = relations(
+  usersToMessagesTable,
+  ({ one }) => ({
+    message: one(messagesTable, {
+      fields: [usersToMessagesTable.messageId],
+      references: [messagesTable.displayId],
+    }),
+    user: one(usersTable, {
+      fields: [usersToMessagesTable.userId],
+      references: [usersTable.displayId],
+    }),
+  }),
+);
+
+export const chatroomsToMessagesTable = pgTable(
+  "chatrooms_to_messages",
+  {
+    id: serial("id").primaryKey(),
+    chatroomId: uuid("user_id")
+      .notNull()
+      .references(() => chatroomsTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    messageId: uuid("message_id")
+      .notNull()
+      .references(() => messagesTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+  },
+  (table) => ({
+    userAndMessageIndex: index("user_and_message_index").on(
+      table.chatroomId,
+      table.messageId,
+    ),
+    // This is a unique constraint on the combination of userId and messageId.
+    // This ensures that there is no duplicate entry in the table.
+    uniqCombination: unique().on(table.messageId, table.chatroomId),
+  }),
+);
+
+export const chatroomsToMessagesRelations = relations(
+  chatroomsToMessagesTable,
+  ({ one }) => ({
+    message: one(messagesTable, {
+      fields: [chatroomsToMessagesTable.messageId],
+      references: [messagesTable.displayId],
+    }),
+    chatroom: one(chatroomsTable, {
+      fields: [chatroomsToMessagesTable.chatroomId],
+      references: [chatroomsTable.displayId],
     }),
   }),
 );
