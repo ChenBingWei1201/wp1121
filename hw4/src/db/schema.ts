@@ -55,7 +55,7 @@ export const messagesTable = pgTable(
   },
   (table) => ({
     displayIdIndex: index("display_id_index").on(table.displayId),
-  })
+  }),
 );
 
 export const messagesRelations = relations(messagesTable, ({ many }) => ({
