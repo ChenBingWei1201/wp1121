@@ -16,6 +16,7 @@ function SignOutPage() {
     toast({
         title: "Success",
         description: "Sign out successfully!",
+        color: "green",
     });
   }, [session, router]);
 

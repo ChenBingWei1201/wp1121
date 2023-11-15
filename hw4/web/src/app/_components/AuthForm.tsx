@@ -21,6 +21,7 @@ function AuthForm() {
         title: "Error",
         description: "Username required!",
         variant: "destructive",
+        color: "red",
       });
       return;
     }
@@ -28,6 +29,7 @@ function AuthForm() {
       toast({
         title: "Success",
         description: "Login Successfully!",
+        color: "green",
       });
       setSignedIn(true);
       router.push("/chats");

@@ -71,6 +71,8 @@ export function ChatProvider ({ children }: Props) {
       toast({
         title: "Error",
         description: "Your name, friend, or message are required!",
+        variant: "destructive",
+        color: "red",
       });
       return;
     }
@@ -80,6 +82,7 @@ export function ChatProvider ({ children }: Props) {
       toast({
         title: "Success",
         description: "Messages send!",
+        color: "green",
       });
     }
   };
@@ -88,6 +91,7 @@ export function ChatProvider ({ children }: Props) {
     toast({
       title: "Success",
       description: "Messages cleared!",
+      color: "green",
     });
     sendData(["clear"]);
   };
@@ -117,6 +121,8 @@ export function ChatProvider ({ children }: Props) {
       toast({
         title: "Error",
         description: "Name or to is required!",
+        variant: "destructive",
+        color: "red",
       });
     else
       await sendData(["CHAT", { name, to }]);

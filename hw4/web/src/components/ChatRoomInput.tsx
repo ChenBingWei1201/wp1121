@@ -18,6 +18,7 @@ function ChatRoomInput() {
         title: "Error",
         description: "Username required!",
         variant: "destructive",
+        color: "red",
       });
       router.push("/");
       return;
@@ -31,6 +32,7 @@ function ChatRoomInput() {
         title: "Error",
         description: "Message content required!",
         variant: "destructive",
+        color: "red",
       });
       return;
     }
@@ -39,6 +41,7 @@ function ChatRoomInput() {
         title: "Error",
         description: "Username required!",
         variant: "destructive",
+        color: "red",
       });
       return;
     }

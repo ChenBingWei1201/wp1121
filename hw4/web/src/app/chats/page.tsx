@@ -141,6 +141,8 @@ export default function Chat() {
               toast({
                 title: "Error",
                 description: "Name or to is required!",
+                variant: "destructive",
+                color: "red",
               });
               return;
             }
