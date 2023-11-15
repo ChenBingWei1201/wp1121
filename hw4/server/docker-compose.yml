@@ -1,0 +1,15 @@
+version: "3.1"
+
+services:
+  mongodb:
+    image: mongo
+    environment:
+      MONDO_DB: messenger-clone
+      MONDO_USER: mongo
+      MONDO_PASSWORD: mongo
+    ports:
+      - "27017:27017"
+  adminer:
+    image: adminer
+    ports:
+      - "8010:8080"
