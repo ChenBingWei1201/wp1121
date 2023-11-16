@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Tabs } from 'antd';
 
 export const ChatBoxWrapper = styled.div`
-  height: calc(240px - 36px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -10,7 +10,7 @@ export const ChatBoxWrapper = styled.div`
 
 export const ChatBoxesWrapper = styled(Tabs)`
   width: 100%;
-  height: 300px;
+  height: 500px;
   background: #eeeeee52;
   border-radius: 10px;
   margin: 20px;
@@ -28,6 +28,6 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  width: 500px;
+  width: 700px;
   margin: auto;
 `;
