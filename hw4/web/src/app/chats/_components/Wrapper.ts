@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Tabs } from 'antd';
+import { Tabs } from "antd";
+import styled from "styled-components";
 
 export const ChatBoxWrapper = styled.div`
   height: 100%;
@@ -19,7 +19,7 @@ export const ChatBoxesWrapper = styled(Tabs)`
 `;
 
 export const FootRef = styled.div`
-  height: 20px
+  height: 20px;
 `;
 
 export const Wrapper = styled.div`
@@ -28,6 +28,6 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  width: 700px;
+  width: 600px;
   margin: auto;
 `;

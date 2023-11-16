@@ -2,12 +2,14 @@
 
 // import { useState } from "react";
 // Run: npx shadcn-ui@latest add card
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useUser } from "@/context/user";
-import AuthInput from "./AuthInput";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
+
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
+import { useUser } from "@/context/user";
+
+import AuthInput from "./AuthInput";
 
 function AuthForm() {
   const { toast } = useToast();
@@ -24,8 +26,7 @@ function AuthForm() {
         color: "red",
       });
       return;
-    }
-    else {
+    } else {
       toast({
         title: "Success",
         description: "Login Successfully!",
@@ -43,12 +44,7 @@ function AuthForm() {
       </CardHeader>
       <CardContent className=" flex flex-col gap-2">
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <AuthInput
-            label="Name"
-            type="name"
-            value={me}
-            setValue={setMe}
-          />
+          <AuthInput label="Name" type="name" value={me} setValue={setMe} />
           <Button type="submit" className="w-full">
             Sign in
           </Button>

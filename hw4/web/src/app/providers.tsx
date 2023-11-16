@@ -1,5 +1,6 @@
-import { UserProvider } from "@/context/user";
 import React from "react";
+
+import { UserProvider } from "@/context/user";
 
 type Props = {
   children: React.ReactNode;

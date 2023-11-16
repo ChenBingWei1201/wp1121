@@ -10,15 +10,15 @@ function SignOutPage() {
   const { data: session } = useSession();
   const { toast } = useToast();
   const router = useRouter();
-  
+
   useEffect(() => {
     router.push("/");
     toast({
-        title: "Success",
-        description: "Sign out successfully!",
-        color: "green",
+      title: "Success",
+      description: "Sign out successfully!",
+      color: "green",
     });
-  }, [session, router]);
+  }, [session, router, toast]);
 
   return <></>;
 }

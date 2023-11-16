@@ -1,54 +1,56 @@
-"use client"
-import { useState/*, useEffect*/, createContext, useContext } from "react";
-// import { message } from 'antd'
+"use client";
+
+import { useState, createContext, useContext } from "react";
+
+import client from "@/client/client";
 import { useToast } from "@/components/ui/use-toast";
 
 export type Message = {
-    name: string;
-    to: string;
-    body: string;
+  name: string;
+  to: string;
+  body: string;
 };
 
 export type ChatContext = {
-    status: { type: string; msg: string };
-    // displayStatus: (s: { type: string; msg: string }) => void;
-    messages: Message[];
-    sendMessage: (msg: Message) => void;
-    clearMessages: () => void;
-    startChat: (name: string, to: string) => void;
+  status: { type: string; msg: string };
+  messages: Message[];
+  sendMessage: (msg: Message) => void;
+  clearMessages: () => void;
+  startChat: (name: string, to: string) => void;
 };
 
-// 1. define context
 const ChatContext = createContext<ChatContext>({
-  status: {type: "", msg: ""},
-  // displayStatus: () => {},
+  status: { type: "", msg: "" },
   messages: [],
   sendMessage: () => {},
   clearMessages: () => {},
   startChat: () => {},
-})
+});
 
 type Props = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
-// 2. define context provider
-export function ChatProvider ({ children }: Props) {
-  const client = new WebSocket('ws://localhost:4000');
+export function ChatProvider({ children }: Props) {
+  // const client = new WebSocket("ws://localhost:4000");
 
   const [messages, setMessages] = useState<Message[]>([]);
-  const [status, setStatus] = useState<{ type: string; msg: string }>({type: "", msg: ""});
+  const [status, setStatus] = useState<{ type: string; msg: string }>({
+    type: "",
+    msg: "",
+  });
   const { toast } = useToast();
 
   client.onmessage = (byteString) => {
     const { data } = byteString;
-    const [ task, payload ] = JSON.parse(data); // is [] not {}
+    const [task, payload] = JSON.parse(data); // is [] not {}
     switch (task) {
-      case "init": 
+      case "init":
         setMessages(payload);
         break;
       case "output":
         setMessages(() => [...messages, ...payload]);
+        // setMessages((ms) => ms.slice(0, -1));
         break;
       case "status":
         setStatus(payload);
@@ -58,27 +60,26 @@ export function ChatProvider ({ children }: Props) {
         break;
       default:
         break;
-    };
+    }
   };
 
-  const sendData = async (data: any) => {
-    await client.send(JSON.stringify(data));
+  const sendData = (data: any) => {
+    client.send(JSON.stringify(data));
   };
 
   const sendMessage = (msg: Message) => {
-    const { name, to , body } = msg;
+    const { name, to, body } = msg;
     if (!name || !to || !body) {
       toast({
         title: "Error",
-        description: "Your name, friend, or message are required!",
+        description: "Please add your friend to start a chat!",
         variant: "destructive",
         color: "red",
       });
       return;
-    }
-    else {
-      setMessages([...messages, { name, to , body }]); // msg = { name, to , body }
-      sendData(["MESSAGE", { name, to , body }]);
+    } else {
+      setMessages([...messages, { name, to, body }]);
+      sendData(["MESSAGE", { name, to, body }]);
       toast({
         title: "Success",
         description: "Messages send!",
@@ -86,7 +87,7 @@ export function ChatProvider ({ children }: Props) {
       });
     }
   };
-      
+
   const clearMessages = () => {
     toast({
       title: "Success",
@@ -96,27 +97,7 @@ export function ChatProvider ({ children }: Props) {
     sendData(["clear"]);
   };
 
-  // const displayStatus = (s: { type: string; msg: string }) => {
-  //   if(s.msg) {
-  //     const { type, msg } = s;
-  //     const content = { content: msg, duration: 0.75 };
-  //     switch (type) {
-  //       case 'success':
-  //         message.success(content);
-  //         break;
-  //       case 'error':
-  //         message.error(content);
-  //         break;
-  //       case 'info':
-  //         message.info(content);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
-  // }
-
-  const startChat = async (name: string, to: string) =>  {
+  const startChat = (name: string, to: string) => {
     if (!name || !to)
       toast({
         title: "Error",
@@ -124,21 +105,22 @@ export function ChatProvider ({ children }: Props) {
         variant: "destructive",
         color: "red",
       });
-    else
-      await sendData(["CHAT", { name, to }]);
-  }
-  
+    else sendData(["CHAT", { name, to }]);
+  };
+
   return (
     <ChatContext.Provider
       value={{
-        status, messages,
-        sendMessage, clearMessages, startChat
-        }}
+        status,
+        messages,
+        sendMessage,
+        clearMessages,
+        startChat,
+      }}
     >
       {children}
     </ChatContext.Provider>
   );
 }
 
-// 3. Define Context Consumer
 export const useChat = () => useContext(ChatContext);

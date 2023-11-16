@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "install": "cd web && yarn && cd ../server && yarn && cd ../package && yarn",
+    "install": "cd web && yarn && cd ../server && yarn",
     "web": "cd web && yarn dev",
     "server": "cd server && yarn dev"
   }

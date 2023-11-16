@@ -1,9 +1,13 @@
 "use client";
+
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { useChat } from "@/context/chat";
 import { useUser } from "@/context/user";
+
 import { useToast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 function ChatRoomInput() {
   const { toast } = useToast();
@@ -56,11 +60,11 @@ function ChatRoomInput() {
         placeholder="Aa"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="text-md flex-1 border border-gray-300 p-1 rounded-md outline-none focus:border-gray-600 transition duration-200 ease-in-out"
+        className="text-md flex-1 rounded-md border border-gray-300 p-1 outline-none transition duration-200 ease-in-out focus:border-gray-600"
       />
       <button
         type="submit"
-        className="bg-black text-white py-1 px-2 rounded-lg text-sm hover:bg-gray-700 transition duration-200 ease-in-out"
+        className="rounded-lg bg-black px-2 py-1 text-sm text-white transition duration-200 ease-in-out hover:bg-gray-700"
       >
         Send
       </button>

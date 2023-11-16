@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv-defaults';
+import dotenv from "dotenv-defaults";
+import mongoose from "mongoose";
 
 export default {
   connect: () => {
@@ -9,13 +9,14 @@ export default {
       process.exit(1);
     }
     mongoose
-      .connect(
-        process.env.MONGO_URL, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-      }as mongoose.ConnectOptions)
-      .then((res) => console.log("mongo db connection created"));
-    mongoose.connection.on('error',
-      console.error.bind(console, 'connection error:'));
-  }
+      .connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      } as mongoose.ConnectOptions)
+      .then(() => console.log("mongo db connection created"));
+    mongoose.connection.on(
+      "error",
+      console.error.bind(console, "connection error:"),
+    );
+  },
 };

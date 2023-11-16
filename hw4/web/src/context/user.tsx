@@ -3,7 +3,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 
 const LOCALSTORAGE_KEY = "save-me";
-const saveMe = localStorage.getItem(LOCALSTORAGE_KEY); 
+const saveMe = localStorage.getItem(LOCALSTORAGE_KEY);
 
 export type UserContext = {
   me: string;
