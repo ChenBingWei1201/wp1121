@@ -5,16 +5,19 @@ import { useState, createContext, useContext } from "react";
 import client from "@/client/client";
 import { useToast } from "@/components/ui/use-toast";
 
-export type Message = {
+export type AMessage = {
   name: string;
   to: string;
   body: string;
 };
 
+type Data1 = (string | { name: string; to: string; body: string; })[];
+type Data2 = (string | { name: string; to: string; })[];
+
 export type ChatContext = {
   status: { type: string; msg: string };
-  messages: Message[];
-  sendMessage: (msg: Message) => void;
+  messages: AMessage[];
+  sendMessage: (msg: AMessage) => void;
   clearMessages: () => void;
   startChat: (name: string, to: string) => void;
 };
@@ -31,10 +34,11 @@ type Props = {
   children: React.ReactNode;
 };
 
+
 export function ChatProvider({ children }: Props) {
   // const client = new WebSocket("ws://localhost:4000");
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<AMessage[]>([]);
   const [status, setStatus] = useState<{ type: string; msg: string }>({
     type: "",
     msg: "",
@@ -63,11 +67,11 @@ export function ChatProvider({ children }: Props) {
     }
   };
 
-  const sendData = (data: any) => {
+  const sendData = (data: (Data1 | Data2)) => {
     client.send(JSON.stringify(data));
   };
 
-  const sendMessage = (msg: Message) => {
+  const sendMessage = (msg: AMessage) => {
     const { name, to, body } = msg;
     if (!name || !to || !body) {
       toast({

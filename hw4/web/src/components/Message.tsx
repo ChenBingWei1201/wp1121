@@ -24,12 +24,12 @@ const StyledMessage = styled.div<StyledMessageProps>`
   }
 `;
 
-const Message = ({ isMe, message }: { isMe: boolean; message: string }) => {
+function Message({ isMe, message }: { isMe: boolean; message: string }) {
   return (
     <StyledMessage isMe={isMe}>
       <p>{message}</p>
     </StyledMessage>
   );
-};
+}
 
 export default Message;

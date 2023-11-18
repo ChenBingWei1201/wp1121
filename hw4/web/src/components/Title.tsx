@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Title() { 
+export default function Title() {
   return (
     <Wrapper>
       <Image
@@ -27,4 +27,4 @@ export default function Title() {
       <h1>Messenger</h1>
     </Wrapper>
   );
-};
+}

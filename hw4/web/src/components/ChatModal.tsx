@@ -2,11 +2,15 @@ import { Modal, Form, Input } from "antd";
 
 type ChatModalProps = {
   open: boolean;
-  onCreate: any;
-  onCancel: any;
+  onCreate: ({ name }: { name: string; }) => void;
+  onCancel: () => void;
 };
 
-const ChatModal = ({ open, onCreate, onCancel }: ChatModalProps) => {
+export default function ChatModal({
+  open,
+  onCreate,
+  onCancel,
+}: ChatModalProps) {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -44,6 +48,4 @@ const ChatModal = ({ open, onCreate, onCancel }: ChatModalProps) => {
       </Form>
     </Modal>
   );
-};
-
-export default ChatModal;
+}

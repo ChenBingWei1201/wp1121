@@ -9,6 +9,7 @@ import Message from "@/components/Message";
 import Title from "@/components/Title";
 import { Button } from "@/components/ui/button";
 import { useChat } from "@/context/chat";
+import type { AMessage } from "@/context/chat";
 import { useUser } from "@/context/user";
 
 import InputForm from "./_components/InputForm";
@@ -18,13 +19,19 @@ import {
   FootRef,
 } from "./_components/Wrapper";
 
+type ChatBoxType = {
+  label: string;
+  children: JSX.Element;
+  key: string;
+};
+
 export default function Chat() {
   const { messages, startChat } = useChat();
   const { me } = useUser();
   const [msgSent, setMsgSent] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string>("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [chatBoxes, setChatBoxes] = useState<any>([]);
+  const [chatBoxes, setChatBoxes] = useState<ChatBoxType[]>([]);
   const [friend, setFriend] = useState<string>("");
 
   const msgFooter = useRef<HTMLDivElement>(null);
@@ -35,16 +42,14 @@ export default function Chat() {
     } as ScrollIntoViewOptions);
   };
 
-  const displayChat = (chat: any) => {
+  const displayChat = (chat: AMessage[]) => {
     return chat.length === 0 ? (
       <p style={{ color: "#ccc" }}> No messages... </p>
     ) : (
       <ChatBoxWrapper>
-        {chat.map(
-          ({ name, body }: { name: string; body: string }, i: string) => (
-            <Message isMe={name === me} message={body} key={i}></Message>
-          ),
-        )}
+        {chat.map(({ name, body }, i) => (
+          <Message isMe={name === me} message={body} key={i}></Message>
+        ))}
         <FootRef ref={msgFooter}></FootRef>
       </ChatBoxWrapper>
     );
@@ -74,7 +79,13 @@ export default function Chat() {
     return friend;
   };
 
-  const removeChatBox = (targetKey: string, activeKey: string) => {
+  const removeChatBox = (
+    targetKey:
+      | string
+      | React.MouseEvent<Element, MouseEvent>
+      | React.KeyboardEvent<Element>,
+    activeKey: string,
+  ) => {
     const index = chatBoxes.findIndex(
       ({ key }: { key: string }) => key === activeKey,
     );
@@ -111,7 +122,7 @@ export default function Chat() {
       setChatBoxes(newChatBoxes);
       setMsgSent(true);
     }
-  }, [messages]);
+  }, [messages, activeKey, friend, chatBoxes, extractChat]);
 
   return (
     <>
@@ -121,12 +132,18 @@ export default function Chat() {
           tabBarStyle={{ height: "36px" }}
           type="editable-card"
           activeKey={activeKey}
-          onChange={(key: any) => {
+          onChange={(key: string) => {
             setFriend(key);
             setActiveKey(key);
             startChat(me, key);
           }}
-          onEdit={(targetKey: any, action: string) => {
+          onEdit={(
+            targetKey:
+              | string
+              | React.MouseEvent<Element, MouseEvent>
+              | React.KeyboardEvent<Element>,
+            action: string,
+          ) => {
             if (action === "add") setModalOpen(true);
             else if (action === "remove")
               setActiveKey(removeChatBox(targetKey, activeKey));

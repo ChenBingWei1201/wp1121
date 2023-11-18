@@ -9,7 +9,7 @@ import { useUser } from "@/context/user";
 
 import { useToast } from "./ui/use-toast";
 
-function ChatRoomInput() {
+export default function ChatRoomInput() {
   const { toast } = useToast();
   const { sendMessage } = useChat();
   const { me } = useUser();
@@ -27,7 +27,7 @@ function ChatRoomInput() {
       router.push("/");
       return;
     }
-  }, [me, router]);
+  }, [me, router, toast]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,5 +71,3 @@ function ChatRoomInput() {
     </form>
   );
 }
-
-export default ChatRoomInput;
