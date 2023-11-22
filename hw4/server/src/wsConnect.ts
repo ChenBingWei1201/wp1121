@@ -132,8 +132,8 @@ export default {
 
         try {
           await message.save();
-        } catch (e: any) {
-          throw new Error(e);
+        } catch (e) {
+          throw new Error("Message save error" + e);
         }
 
         broadcastMessage(wss, ["output", [payload]], {

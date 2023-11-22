@@ -107,8 +107,8 @@ export default function Chat() {
     scrollToBottom();
     setMsgSent(false);
   }, [msgSent, chatBoxes]);
-
-  useEffect(() => {
+// eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {  
     if (chatBoxes.length !== 0) {
       const index = chatBoxes.findIndex(
         ({ key }: { key: string }) => key === activeKey,
@@ -122,7 +122,7 @@ export default function Chat() {
       setChatBoxes(newChatBoxes);
       setMsgSent(true);
     }
-  }, [messages, activeKey, friend, chatBoxes, extractChat]);
+  }, [messages]);
 
   return (
     <>

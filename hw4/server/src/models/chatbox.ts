@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
-
+import type { Types } from "mongoose";
 const Schema = mongoose.Schema;
+import type { MessageData, UserData, ChatBoxData } from "@/package/types/chatbox"
 
 /******* User Schema *******/
-const UserSchema = new Schema({
+interface UserDocument extends Omit<UserData, "id" | "chatBoxes">,
+  mongoose.Document {
+    chatBoxes: Types.ObjectId[];
+}
+
+interface UserModel extends mongoose.Model<UserDocument> {}
+
+const UserSchema = new mongoose.Schema<UserDocument>({
   name: {
     type: String,
     required: [true, "Name field is required."],
@@ -16,16 +24,24 @@ const UserSchema = new Schema({
   ],
 });
 
-const UserModel = mongoose.model("User", UserSchema);
+const UserModel = mongoose.model<UserDocument, UserModel>("User", UserSchema);
 
 /******* Message Schema *******/
-const MessageSchema = new Schema({
+interface MessageDocument extends Omit<MessageData, "id" | "sender" | "chatBox" >,
+  mongoose.Document {
+    sender: Types.ObjectId;
+    chatBox: Types.ObjectId;
+}
+
+interface MessageModel extends mongoose.Model<MessageDocument> {}
+
+const MessageSchema = new Schema<MessageDocument>({
   chatBox: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "ChatBox",
   },
   sender: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
   body: {
@@ -34,10 +50,18 @@ const MessageSchema = new Schema({
   },
 });
 
-const MessageModel = mongoose.model("Message", MessageSchema);
+const MessageModel = mongoose.model<MessageDocument, MessageModel>("Message", MessageSchema);
 
 /******* ChatBox Schema *******/
-const ChatBoxSchema = new Schema({
+interface ChatBoxDocument extends Omit<ChatBoxData, "id" | "users" | "messages">,
+  mongoose.Document {
+    users: Types.ObjectId[];
+    messages: Types.ObjectId[];
+}
+
+interface ChatBoxModel extends mongoose.Model<ChatBoxDocument> {}
+
+const ChatBoxSchema = new Schema<ChatBoxDocument>({
   name: {
     type: String,
     required: [true, "Name field is required."],
@@ -56,6 +80,6 @@ const ChatBoxSchema = new Schema({
   ],
 });
 
-const ChatBoxModel = mongoose.model("ChatBox", ChatBoxSchema);
+const ChatBoxModel = mongoose.model<ChatBoxDocument, ChatBoxModel>("ChatBox", ChatBoxSchema);
 
 export { UserModel, MessageModel, ChatBoxModel };
