@@ -2,7 +2,7 @@ import { Modal, Form, Input } from "antd";
 
 type ChatModalProps = {
   open: boolean;
-  onCreate: ({ name }: { name: string; }) => void;
+  onCreate: ({ name }: { name: string }) => void;
   onCancel: () => void;
 };
 

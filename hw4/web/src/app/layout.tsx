@@ -25,8 +25,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           {/* <SessionProvider session={null}> */}
-            {children}
-            <Toaster />
+          {children}
+          <Toaster />
           {/* </SessionProvider> */}
         </Providers>
       </body>

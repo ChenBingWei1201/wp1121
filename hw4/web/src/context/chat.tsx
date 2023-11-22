@@ -11,8 +11,8 @@ export type AMessage = {
   body: string;
 };
 
-type Data1 = (string | { name: string; to: string; body: string; })[];
-type Data2 = (string | { name: string; to: string; })[];
+type Data1 = (string | { name: string; to: string; body: string })[];
+type Data2 = (string | { name: string; to: string })[];
 
 export type ChatContext = {
   status: { type: string; msg: string };
@@ -33,7 +33,6 @@ const ChatContext = createContext<ChatContext>({
 type Props = {
   children: React.ReactNode;
 };
-
 
 export function ChatProvider({ children }: Props) {
   // const client = new WebSocket("ws://localhost:4000");
@@ -67,7 +66,7 @@ export function ChatProvider({ children }: Props) {
     }
   };
 
-  const sendData = (data: (Data1 | Data2)) => {
+  const sendData = (data: Data1 | Data2) => {
     client.send(JSON.stringify(data));
   };
 

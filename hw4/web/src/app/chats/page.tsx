@@ -107,8 +107,8 @@ export default function Chat() {
     scrollToBottom();
     setMsgSent(false);
   }, [msgSent, chatBoxes]);
-// eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
     if (chatBoxes.length !== 0) {
       const index = chatBoxes.findIndex(
         ({ key }: { key: string }) => key === activeKey,

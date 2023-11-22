@@ -25,9 +25,18 @@ const StyledMessage = styled.div<StyledMessageProps>`
 `;
 
 function Message({ isMe, message }: { isMe: boolean; message: string }) {
+  const linkRegex = /(https?:\/\/[^\s]+)/g;
+  const links = message.match(linkRegex);
+
   return (
     <StyledMessage isMe={isMe}>
-      <p>{message}</p>
+      {links ? (
+        <a href={links[0]} target="_blank">
+          <p>{message}</p>
+        </a>
+      ) : (
+        <p>{message}</p>
+      )}
     </StyledMessage>
   );
 }
