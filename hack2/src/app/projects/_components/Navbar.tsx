@@ -56,6 +56,7 @@ export default async function Navbar() {
             {
               // TODO: 7. Display user's name here
               // hint: line 14 of this file
+              userId
               // TODO: 7. end
             }
           </span>
