@@ -6,6 +6,6 @@ import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 export default function SignOutButton() {
-  return <Button variant={"outline"} onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL})}>Sign Out</Button>;
+  return <Button data-testid="sign-out-button" variant={"outline"} onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL})}>Sign Out</Button>;
 }
 // TODO: 4. end
