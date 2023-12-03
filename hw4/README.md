@@ -12,7 +12,7 @@ copy .env.example to .env.local
 cd web
 cp .env.example .env.local
 cd ../server
-cp .env.example .env.local
+cp .env.example .env
 ```
 and paste your mongodb url to MONGO_URL
 **please delete any data in your mongodb in advance!**
