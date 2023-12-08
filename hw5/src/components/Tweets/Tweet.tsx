@@ -27,8 +27,8 @@ export default function Tweet({
   authorName,
   // authorHandle,
   content, // likes,
-  // liked,
-} // createdAt,
+  // createdAt,
+} // liked,
 : TweetProps) {
   return (
     <>
