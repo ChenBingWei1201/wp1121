@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5400:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: WPFP
+      PGDATA: /var/lib/postgresql/data
+    # this option mounts the local folder ./pg-data to the container folder /var/lib/postgresql/data
+    # which makes the data persistent even if the container is deleted
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+  admin:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8070:8080"

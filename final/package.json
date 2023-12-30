@@ -1,11 +1,17 @@
 {
-  "name": "final",
+  "name": "final-project",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install:all": "cd frontend && pnpm install && cd ../backend && pnpm install && pnpm setup",
+    "frontend": "cd frontend && pnpm run dev",
+    "backend": "cd backend && pnpm start"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "magic-sdk": "^21.4.1"
+  }
 }
