@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import logoURL from "../../images/lightning.png";
 import { UserContext } from "../../context/userContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const NavBar = () => {
   const { user } = useContext(UserContext);
+  const [userPhoto, setUserPhoto] = useState("https://http.cat/200");
+  useEffect(() => {
+    if (user) {
+      setUserPhoto(user.photoLink);
+    }
+  }, [userPhoto]);
   return (
     <>
       <nav className="flex items-center justify-between bg-white py-4 px-12 overflow-x-hidden border-b-2">
@@ -48,12 +54,7 @@ const NavBar = () => {
           )}
           {user ? (
             <Link to={`/user/${user.id}`}>
-              {/* <p> {user.name} </p> */}
-              <img
-                src={user.photoLink}
-                alt="logo"
-                className="w-8 rounded-full"
-              />
+              <img src={userPhoto} alt="logo" className="w-8 rounded-full" />
             </Link>
           ) : (
             <Link to={`/user`}>

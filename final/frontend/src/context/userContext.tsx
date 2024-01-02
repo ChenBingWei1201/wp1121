@@ -3,7 +3,7 @@ import { Magic } from "magic-sdk";
 import { env } from "../env";
 import { useLazyQuery } from "@apollo/client";
 import { ALL_USERS_QUERY } from "../graphql";
-import type { User } from "../../../shared/shared_types";
+import type { User } from "@shared/shared_types";
 
 export type UserContextType = {
   user: User | null;

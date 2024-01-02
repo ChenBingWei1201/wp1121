@@ -5,9 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { ALL_USERS_QUERY, CREATE_USER_MUTATION } from "../../graphql";
 import { env } from "../../env";
 import { UserContext } from "../../context/userContext";
-// Run: npx shadcn-ui@latest add button
 import { Button } from "../../components/Login/ui/button";
-// Run: npx shadcn-ui@latest add card
 import {
   Card,
   CardContent,
@@ -26,10 +24,10 @@ const LoginPage = () => {
   const [studentId, setStudentId] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const { fetchUser } = useContext(UserContext);
-  const queryUser = useQuery(ALL_USERS_QUERY);
+  const { data } = useQuery(ALL_USERS_QUERY);
   const [createUser] = useMutation(CREATE_USER_MUTATION);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (isSignUp) {
       if (!validateUsername(name)) {
@@ -40,8 +38,8 @@ const LoginPage = () => {
         alert("Invalid Student ID!");
         return null;
       }
-      const [findUser] = queryUser.data.AllUsers.filter(
-        (e) => e.password === email,
+      const [findUser] = ((data && data.AllUsers) ?? []).filter(
+        (e) => e?.password === email,
       );
       if (findUser) {
         alert("Email already Signed up!");
@@ -54,7 +52,7 @@ const LoginPage = () => {
             name: name,
             password: email,
             studentID: studentId,
-            photoLink: "",
+            photoLink: "https://http.cat/200",
           },
         },
         onCompleted: () => {
@@ -63,8 +61,8 @@ const LoginPage = () => {
       });
       alert("Sign Up Successful!");
     } else {
-      const [findUser] = queryUser.data.AllUsers.filter(
-        (e) => e.password === email,
+      const [findUser] = ((data && data.AllUsers) ?? []).filter(
+        (e) => e?.password === email,
       );
       if (!findUser) {
         alert("Email not registered!");
@@ -155,25 +153,6 @@ const LoginPage = () => {
               Sign {isSignUp ? "Up" : "In"}
             </Button>
           </form>
-          {/* <div className="flex w-full items-center gap-1 py-2">
-          <div className="h-[1px] grow border-t"></div>
-          <p className="text-xs text-gray-400">or</p>
-          <div className="h-[1px] grow border-t"></div>
-        </div> */}
-
-          {/* <Button
-          onClick={async () => {
-            signIn("github", {
-              callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/projects`,
-            });
-          }}
-          className="flex w-full"
-          variant={"outline"}
-        > */}
-          {/* Remember to copy "github.png" to ./public folder
-          <Image src="/github.png" alt="github icon" width={20} height={20} />
-          <span className="grow">Sign In with Github</span> */}
-          {/* </Button> */}
         </CardContent>
       </Card>
     </>

@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client";
 import { ALL_USERS_QUERY } from "../../graphql";
-
 type CommentOverviewProps = {
   commenterId?: number;
   content?: string;
@@ -14,9 +13,11 @@ const CommentOverview = ({ commenterId, content }: CommentOverviewProps) => {
   } = useQuery(ALL_USERS_QUERY);
   if (allLoading) return <div>Loading...</div>;
   if (allError) return <div>{allError.message}</div>;
+  // console.log(queryUser?.AllUsers);
   const commenter = queryUser?.AllUsers?.filter(
-    (user) => user?.id === commenterId,
+    (commenter) => commenter?.id === commenterId,
   );
+  // console.log(commenter);
   if (!commenter) throw new Error("commenter is undefined");
 
   return (

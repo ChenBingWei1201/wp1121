@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-// import { useState } from "react";
 import { useContext } from "react";
 import { ALL_USERS_QUERY } from "../../graphql";
 import { Link, useParams } from "react-router-dom";
@@ -15,7 +14,6 @@ const ProfilePage = () => {
   const users = JSON.parse(JSON.stringify(data?.AllUsers));
   if (!userid) return;
   const user = users.filter((user: User) => `${user.id}` === userid)[0];
-  // console.log(user);
   return (
     <div className="flex rounded bg-white mt-5 mb-5 justify-center">
       <div className="flex flex-row w-fit">
@@ -60,13 +58,6 @@ const ProfilePage = () => {
               </span>
             </div>
             <p className="p-1 px-4 rounded">{user.studentID}</p>
-
-            {/* <div className="flex mt-2">
-              <span className="bg-slate-400 p-1 px-4 rounded text-white center">
-                PhotoLink
-              </span>
-            </div>
-            <p className="p-1 px-4 rounded">{user.photoLink}</p> */}
           </div>
         </div>
       </div>

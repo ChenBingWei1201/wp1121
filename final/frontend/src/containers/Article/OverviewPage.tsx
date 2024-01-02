@@ -47,9 +47,23 @@ const ArticlePageOverview = () => {
   if (!id) throw new Error("id is undefined");
   const articleId = parseInt(id);
 
-  const [theArticle] = allArticlesData?.AllArticles?.filter(
-    (e: { id: number }) => e.id === articleId,
-  );
+  const [theArticle] =
+    allArticlesData?.AllArticles?.filter(
+      (
+        e: {
+          __typename?: "Article" | undefined;
+          id: number;
+          writerId: number;
+          date: string;
+          title: string;
+          content: string;
+          tags: (string | null)[];
+          topic: string;
+          commentsId: (number | null)[];
+          likesId: (number | null)[];
+        } | null,
+      ) => e?.id === articleId,
+    ) ?? [];
   const articleContent = theArticle?.content;
   const articleTags = theArticle?.tags;
 
@@ -65,6 +79,7 @@ const ArticlePageOverview = () => {
   const allArticleComments = allArticleCommentsData?.AllArticleComments?.filter(
     (comment) => comment?.rootArticleId === articleId,
   );
+  // console.log(allArticleComments);
 
   return (
     <>

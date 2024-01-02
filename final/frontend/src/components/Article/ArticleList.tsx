@@ -51,6 +51,7 @@ const ArticleList = ({ filter, searchByTags, search }: ArticleListProps) => {
   const sortbytext = sortbytime.filter((e: { title: string }) =>
     e.title.toLowerCase().includes(search.toLowerCase()),
   );
+  // console.log("sortbytext", sortbytext);
   // console.log("search",search);
   // console.log("text = ",sortbytext);
   return (
@@ -65,8 +66,8 @@ const ArticleList = ({ filter, searchByTags, search }: ArticleListProps) => {
             .split("T")[0];
           return (
             <ArticleItem
-              key={article?.id}
-              id={article?.id}
+              key={article.id}
+              id={article.id}
               title={article?.title}
               writer={user.name}
               writerId={user.id}
