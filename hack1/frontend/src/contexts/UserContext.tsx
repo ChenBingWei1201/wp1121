@@ -45,7 +45,9 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
   /* End of TODO 1.2 */
 
   useEffect(() => {
-    if (!authenticated) if(location.pathname !== "/login" && location.pathname !== "/register") navigate('/login');
+    if (!authenticated)
+      if (location.pathname !== '/login' && location.pathname !== '/register')
+        navigate('/login');
   }, [authenticated]);
 
   const login = async (username: string, password: string) => {
