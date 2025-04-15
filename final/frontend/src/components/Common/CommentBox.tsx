@@ -12,8 +12,9 @@ type CommentBoxProps = {
 const CommentBox = ({ rootArticleId }: CommentBoxProps) => {
   const { user } = useContext(UserContext);
   const [comment, setComment] = useState("");
-  const [,{ loading: allLoading, error: allError }] =
-    useLazyQuery(ALL_ARTICLECOMMENTS_QUERY);
+  const [, { loading: allLoading, error: allError }] = useLazyQuery(
+    ALL_ARTICLECOMMENTS_QUERY,
+  );
 
   const [createComment, { loading, error }] = useMutation(
     CREATE_ARTICLECOMMENT_MUTATION,
@@ -28,7 +29,7 @@ const CommentBox = ({ rootArticleId }: CommentBoxProps) => {
     await createComment({
       variables: {
         articleCommentInput: {
-          commenterId: (user?.id ? user?.id : 1),
+          commenterId: user?.id ? user?.id : 1,
           rootArticleId: rootArticleId,
           content: content,
         },

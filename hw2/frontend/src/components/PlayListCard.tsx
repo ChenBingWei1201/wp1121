@@ -90,7 +90,7 @@ export default function ActionAreaCard({
               component="img"
               height="100"
               image={imageURL}
-              alt="owl"
+              alt="image"
               sx={{ borderRadius: "12%" }}
               onClick={seeSongList}
             />

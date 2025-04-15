@@ -50,7 +50,7 @@ const ArticleItem = ({
               <div className="flex space-x-2">
                 <Link to={`/user/${writerId}`} className="w-8 m-1">
                   <img
-                    src={photoLink? photoLink: "https://http.cat/200"}
+                    src={photoLink ? photoLink : "https://http.cat/200"}
                     alt="twitter link"
                     className="rounded-full"
                   />

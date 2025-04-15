@@ -110,5 +110,9 @@ export function SongProvider({ children }: SongProviderProps) {
 
 // this is a custom hook, the name must start with "use"
 export default function useSongs() {
-  return useContext(SongContext);
+  const context = useContext(SongContext);
+  if (context === undefined) {
+    throw new Error("useSongs must be used within a SongProvider");
+  }
+  return context;
 }

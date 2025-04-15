@@ -11,11 +11,7 @@ import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 
 import useSongs from "@/hooks/useSongs.tsx";
-import {
-  createSong,
-  /*, deleteSong*/
-  updateSong,
-} from "@/utils/client.ts";
+import { createSong, updateSong } from "@/utils/client.ts";
 
 // this pattern is called discriminated type unions
 // you can read more about it here: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions

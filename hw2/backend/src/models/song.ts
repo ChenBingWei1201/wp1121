@@ -32,14 +32,6 @@ const SongSchema = new mongoose.Schema<SongDocument>(
   },
   {
     timestamps: true,
-    // toJSON: {
-    //   transform: (_, ret): void => {
-    //     ret.id = ret._id.toString();
-    //     ret.list_id = ret.list_id.toString();
-    //     delete ret._id;
-    //     delete ret.__v;
-    //   },
-    // },
   },
 );
 

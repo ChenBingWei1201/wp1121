@@ -34,7 +34,7 @@ export default function NameDialog({ dialogOpen, setDialogOpen }: DialogProps) {
   // const handleInputRef = useRef<HTMLInputElement>(null);
   const [usernameError, setUsernameError] = useState(false);
   const [handleError, setHandleError] = useState(false);
-  
+
   useEffect(() => {
     const username = searchParams.get("username");
     const handle = searchParams.get("handle");

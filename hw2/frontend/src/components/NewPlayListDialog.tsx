@@ -21,7 +21,6 @@ export default function NewListDialog({
 }: NewPlayListDialogProps) {
   // using a ref to get the dom element is one way to get the value of a input
   // another way is to use a state variable and update it on change, which can be found in CardDialog.tsx
-  // const textfieldRef = useRef<HTMLInputElement>(null);
   const { fetchPlayLists } = useSongs();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -43,7 +42,7 @@ export default function NewListDialog({
         onClose();
       }
   };
-  // const [form] = Form.useForm();
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add a list</DialogTitle>
